@@ -1,4 +1,5 @@
 import './style.scss';
+// The following import will be changed. Because at this point, the client app doesn't know which screen is the current screen.
 import { LoginId } from 'ul-javascript/login-id';
 import { loginId, loginPassword } from './screens';
 
