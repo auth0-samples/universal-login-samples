@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+  </head>
+  <body>
+    <script>
+      window.universal_login_context = {
+  screen: {
+    name: 'login-screen',
+    links: {
+      signup: 'https://example.com/signup',
+      reset_password: 'https://example.com/reset-password',
+    },
+    captcha: {
+      siteKey: 'your-site-key',
+      action: 'login',
+    },
+  },
+  untrusted_data: {
+    submitted_form_data: {
+      email: 'user@example.com',
+      phone: '+1234567890',
+      username: 'exampleUser',
+    },
+  },
+  tenant: {
+    id: 'tenant123',
+    name: 'Example Tenant',
+    branding: {
+      logo_url: 'https://example.com/logo.png',
+      colors: {
+        primary: '#000000',
+        page_background: '#FFFFFF',
+      },
+    },
+    metadata: {
+      key1: 'value1',
+      key2: 'value2',
+    },
+  },
+  prompt: {
+    name: 'login-prompt',
+  },
+  organization: {
+    id: 'org123',
+    name: 'Example Organization',
+    usage: 'Testing',
+    display_name: 'Example Org',
+    branding: {
+      logo_url: 'https://example.com/org-logo.png',
+      colors: {
+        primary: '#000000',
+        page_background: '#FFFFFF',
+      },
+    },
+    metadata: {
+      key1: 'value1',
+      key2: 'value2',
+    },
+  },
+  client: {
+    id: 'client123',
+    name: 'Example Client',
+    logo_uri: 'https://example.com/client-logo.png',
+    description: 'An example client for testing purposes',
+    metadata: {
+      key1: 'value1',
+      key2: 'value2',
+    },
+  },
+  transaction: {
+    state: 'transaction-state',
+    errors: [
+      {
+        code: 'error1',
+        field: 'field1',
+        message: 'This is an example error message',
+      },
+    ],
+    locale: 'en-US',
+    country_code: {
+      code: 'US',
+      prefix: '+1',
+    },
+    connections: [
+      {
+        name: 'example-connection',
+        display_name: 'Example Connection',
+        strategy: 'example-strategy',
+        options: {
+          signup_enabled: true,
+          username_required: false,
+          forgot_password_enabled: true,
+          show_as_button: true,
+          icon_url: 'https://example.com/icon.png',
+          attributes: {
+            email: {
+              signup_status: 'enabled',
+            },
+            username: {
+              signup_status: 'disabled',
+              validation: {
+                max_length: 20,
+                min_length: 5,
+                allowed_types: {
+                  email: true,
+                  phone_number: false,
+                },
+              },
+            },
+            phone: {
+              signup_status: 'enabled',
+            },
+          },
+          passkey_config: {
+            public_key: {
+              challenge: new ArrayBuffer(16),
+            },
+          },
+          password_config: {
+            policy: 'strong',
+            min_length: 8,
+          },
+        },
+        metadata: {
+          key1: 'value1',
+          key2: 'value2',
+        },
+      },
+    ],
+  },
+  user: {
+    id: 'user123',
+    name: 'Example User',
+    email: 'user@example.com',
+    phone: '+1234567890',
+    username: 'user123',
+    metadata: {
+      key1: 'value1',
+      key2: 'value2',
+    },
+  },
+};
+    </script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

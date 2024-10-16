@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Poppins', 'Inter', sans-serif;
+  background-color: #1c1c1c;
+  font-size: 0.9rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@mixin flex($align: center, $justify: center, $direction: column) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  flex-direction: $direction;
+}
+
+@mixin button-style($bg-color) {
+  height: 40px;
+  padding: 5px 10px;
+  margin: 10px 0;
+  font-size: inherit;
+  background-color: $bg-color;
+  border-radius: 8px;
+  width: 100%;
+  color: $dark-75;
+  opacity: 0.8;
+  border: 1px solid transparent;
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid #282828;
+    opacity: 1;
+  }
+}
+
+@mixin form-elements($font-size: inherit, $color: #333) {
+  color: $color;
+  font-size: $font-size;
+}
+
+$primary-color: #ffcc00; 
+$dark-75: #484848;
+$color-danger: #ff4d4d; 
+
+#app {
+  @include flex();
+  background-image: linear-gradient(153deg, #607D8B, #fecd35);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.ul-screen-name {
+  @include form-elements();
+  position: fixed;
+  padding: 5px 15px;
+  top: 10px;
+  left: 10px;
+  color: $dark-75;
+  border-radius: 3px;
+  box-shadow: 0 0 0.2em #000;
+  background-color: $primary-color;
+}
+
+input {
+  width: 100%;
+  height: 40px;
+  padding: 12px;
+  margin: 10px 0;
+  font-size: inherit;
+  border: 1px solid $dark-75;
+  border-radius: 8px;
+  color: #333;
+  background-color: #fff;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-width: 2px;
+  }
+}
+
+button {
+  @include button-style($primary-color);
+}
+
+.ul-form-container {
+  @include flex();
+
+  background-color: #fff;
+  border-radius: 12px;
+  position: absolute;
+  top: clamp(10%, 15vh, 100px);
+  width: min(90%, 320px);
+  padding: 20px 20px 50px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s ease;
+
+  & > form {
+    width: 100%;
+  }
+
+  .ul-description {
+    background: #e0f7fa;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    color: #282828;
+  }
+
+  .ul-logo {
+    @include flex();
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    color: $primary-color;
+    background: $dark-75;
+    position: relative;
+    font-size: 25px;
+    font-weight: bold;
+    font-family: math;
+  }
+
+  .ul-links {
+    @include flex(center, space-between, row-reverse);
+    width: 100%;
+  }
+
+  .ul-link {
+    @include form-elements(inherit, #827717);
+    text-decoration: none;
+    margin-top: 10px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .login-form label {
+    @include form-elements();
+  }
+
+  .ul-errors, .ul-connections {
+    width: 100%;
+    padding-top: 10px;
+
+    .ul-error, .ul-connection {
+      @include flex(flex-start);
+      @include button-style($primary-color);
+    }
+
+    .ul-error {
+      background-color: $color-danger; 
+      color: #fff;
+    }
+
+    // .ul-connection {
+    //   color: #282828;
+    //   background-color: $primary-color;
+    //   opacity: 0.8;
+    //   border: 1px solid transparent;
+      
+    //   cursor: pointer;
+      
+    //   &:hover {
+    //     border: 1px solid #282828;
+    //     opacity: 1;
+    //   }
+    // }
+  }
+
+  .ul-separator {
+    @include flex();
+    width: 100%;
+    margin: 30px 0 15px;
+    background-color: #999;
+    height: 1px;
+
+    &::before {
+      @include flex();
+
+      content: "Or";
+      color: $dark-75;
+      background-color: #fff;
+      padding: 0 10px;
+      position: absolute;
+    }
+  }
+
+  .ul-button-danger {
+    background-color: $color-danger;
+    color: #fff;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
