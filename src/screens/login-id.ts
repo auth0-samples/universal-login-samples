@@ -1,9 +1,6 @@
 import { LoginId } from 'ul-javascript/login-id';
 import { createFormContainer, createLinks, createErrors, createSeparator, createConnections } from './common';
-console.log('new LoginId()', new LoginId());
 const { screen, transaction, submitForm, submitFederatedLoginForm } = new LoginId();
-
-
 
 const formString = `
   <label for="username">Username</label>

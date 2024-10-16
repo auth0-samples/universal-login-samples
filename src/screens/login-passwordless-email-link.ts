@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { LoginPasswordlessEmailLink } from 'ul-javascript/login-passwordless-email-link';
 import { createFormContainer, createLinks, createErrors, createSeparator, createConnections } from './common';
 

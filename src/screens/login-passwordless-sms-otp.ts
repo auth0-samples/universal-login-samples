@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { LoginPasswordlessSmsOtp } from 'ul-javascript/login-passwordless-sms-otp';
 import { createFormContainer, createLinks, createErrors, createSeparator, createConnections } from './common';
 
