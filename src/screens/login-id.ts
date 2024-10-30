@@ -1,6 +1,8 @@
 import { LoginId } from 'ul-javascript/login-id';
 import { createFormContainer, createLinks, createErrors, createSeparator, createConnections } from './common';
-const { screen, transaction, submitForm, submitFederatedLoginForm } = new LoginId();
+const loginIdManager = new LoginId();
+const{ screen, transaction, continueWithFederatedLogin } = loginIdManager;
+
 
 const formString = `
   <label for="username">Username</label>
@@ -8,8 +10,16 @@ const formString = `
   <button type="submit">Sign In</button>
 `;
 
+function callback(e: Event) {
+  e.preventDefault();
+  const $form = e.currentTarget as HTMLFormElement | null
+  if (!$form) return;
+  const formData = new FormData($form);
+  loginIdManager.continueWithUsername({username: formData.get('username') as string});
+}
+
 export function loginId() {
-  const $app = createFormContainer('login-id', formString, screen.texts?.description, submitForm);
+  const $app = createFormContainer('login-id', formString, screen.texts?.description, callback);
   const $formContainer = $app.querySelector('.ul-form-container');
 
   if (screen.isSignupEnabled) {
@@ -23,7 +33,8 @@ export function loginId() {
 
   if (transaction.hasConnections) {
     $formContainer?.appendChild(createSeparator());
-    $formContainer?.appendChild(createConnections(transaction.connections, submitFederatedLoginForm));
+    //@ts-ignore
+    $formContainer?.appendChild(createConnections(transaction.connections, continueWithFederatedLogin));
   }
 
   document.body.appendChild($app);
