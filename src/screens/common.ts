@@ -108,3 +108,20 @@ export const createSeparator = () => {
   $separator.classList.add('ul-separator');
   return $separator;
 }
+
+export const renderImage = (src: string, alt:string) => {
+  const $img = document.createElement('img');
+  $img.src = src;           // Set the image source
+  $img.alt = alt || '';     // Set the alt text (optional)
+  $img.classList.add('ul-img'); // Add class if needed
+  return $img;
+}
+
+export const createInputBox = (name: string, placeholder: string) => {
+  const $inputBox = document.createElement('input');
+  $inputBox.type = 'text';                     // Set the input type
+  $inputBox.name = name;                        // Set the dynamic name attribute
+  $inputBox.placeholder = placeholder || '';    // Set the placeholder text (optional)
+  $inputBox.classList.add('ul-separator-input'); // Add class if needed
+  return $inputBox;
+}

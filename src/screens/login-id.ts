@@ -1,5 +1,5 @@
 import { LoginId } from 'ul-javascript/login-id';
-import { createFormContainer, createLinks, createErrors, createSeparator, createConnections } from './common';
+import { createFormContainer, createLinks, createErrors, createSeparator, createConnections, createInputBox, renderImage } from './common';
 const loginIdManager = new LoginId();
 const{ screen, transaction, continueWithFederatedLogin } = loginIdManager;
 
@@ -15,7 +15,10 @@ function callback(e: Event) {
   const $form = e.currentTarget as HTMLFormElement | null
   if (!$form) return;
   const formData = new FormData($form);
-  loginIdManager.continueWithUsername({username: formData.get('username') as string});
+  loginIdManager.continueWithUsername({
+    username: formData.get('username') as string,
+    captcha: formData.get('captcha') as string
+  });
 }
 
 export function loginId() {
@@ -39,3 +42,17 @@ export function loginId() {
 
   document.body.appendChild($app);
 }
+
+function renderSimpleCaptcha(){
+  if(screen.captcha?.provider === "auth0"){
+    const captchaDiv = renderImage(screen.captcha.image as string,"captchaImage")
+    const captchaInput = createInputBox("captcha","captcha")
+    const submitButton = document.querySelector('button[type="submit"]');
+    submitButton?.parentNode?.insertBefore(captchaDiv, submitButton);
+    submitButton?.parentNode?.insertBefore(captchaInput, submitButton);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  renderSimpleCaptcha();
+});
