@@ -17,6 +17,6 @@
     "vite": "^5.4.1"
   },
   "dependencies": {
-    "ul-javascript": "file:/Users/gyanesh.gouraw/Documents/workspace/auth0-SDKs/universal-login/packages/ul-javascript"
+    "ul-javascript": "file:../universal-login/packages/ul-javascript"
   }
 }

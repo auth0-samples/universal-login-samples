@@ -1,39 +1,39 @@
-import './style.scss';
-// The following import will be changed. Because at this point, the client app doesn't know which screen is the current screen.
-import { LoginId } from 'ul-javascript/login-id';
-import { loginId, loginPassword } from './screens';
+import { currentScreen } from 'ul-javascript';
+import { render as loginId } from './screens/login-id';
+import { render as loginPassword } from './screens/login-password';
+import { render as signupId } from './screens/signup-id';
+import { render as passwordlessEmail } from './screens/login-passwordless-email-code';
+import { render as passwordlessSms } from './screens/login-passwordless-sms-otp';
+import { render as signupPassword } from './screens/signup-password';
+import { render as passkeyEnrollment } from './screens/passkey-enrollment';
+import { render as passkeyEnrollmentLocal } from './screens/passkey-enrollment-local';
 
-let loginManager = new LoginId();
-const { screen } = loginManager;
-
-const currentScreen = screen.name;
-
-if (import.meta.env.MODE === 'development') {
-  loginId(); // Load whatever component you want to work on.
-} else {
-  switch(currentScreen) {
-    case 'login-id':
-      loginId();
-      break;
-    case 'login':
-      // login();
-      break;
-    case 'login-password':
-      loginPassword();
-      break;
-    case 'signup-id':
-      // signUpId();
-      break;
-    case 'signup-password':
-      // signUpPassword();
-      break;
-    case 'login-passwordless-email-code':
-      // loginPasswordlessEmailCode();
-      break;
-    case 'consent':
-      // consent();
-      break;
-    default:
-      console.error('Screen not found', currentScreen);
-  }
+switch (currentScreen()) {
+  case 'login-id':
+    loginId();
+    break;
+  case 'login-password':
+    loginPassword();
+    break;
+  case 'signup-id':
+    signupId();
+    break;
+  case 'signup-password':
+    signupPassword();
+    break;
+  case 'login-passwordless-email-code':
+    passwordlessEmail();
+    break;
+  case 'login-passwordless-sms-otp':
+    passwordlessSms();
+    break;
+  case 'passkey-enrollment':
+    passkeyEnrollment();
+    break;
+  case 'passkey-enrollment-local':
+    passkeyEnrollmentLocal();
+    break;
+  default:
+    console.error("Unknown screen");
 }
+

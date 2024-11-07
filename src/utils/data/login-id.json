@@ -1,0 +1,75 @@
+{
+  "importName": "LoginId",
+  "instanceName": "loginId",
+  "importPath": "login-id",
+  "data": {
+    "branding": [
+      "name"
+    ],
+    "client": [
+      "description",
+      "id",
+      "logoUri",
+      "metaData",
+      "name"
+    ],
+    "organization": [
+      "branding",
+      "displayName",
+      "id",
+      "metadata",
+      "name",
+      "usage"
+    ],
+    "prompt": [
+      "name"
+    ],
+    "screen": [
+      "captcha",
+      "isSignupEnabled",
+      "links",
+      "name",
+      "passwordResetLink",
+      "signupLink",
+      "texts"
+    ],
+    "tenant": [
+      "enabledFactors",
+      "enabledLocales",
+      "friendlyName",
+      "name"
+    ],
+    "transaction": [
+      "alternateConnections",
+      "connections",
+      "countryCode",
+      "countryPrefix",
+      "errors",
+      "hasConnections",
+      "hasErrors",
+      "locale",
+      "state"
+    ],
+    "untrustedData": [
+      "authParams.ext",
+      "authParams.loginHint",
+      "authParams.screenHint",
+      "authParams.uiLocales",
+      "submittedFormData"
+    ],
+    "user": [
+      "appMetadata",
+      "email",
+      "enrolledFactors",
+      "id",
+      "organizations.branding.logoUrl",
+      "organizations.displayName",
+      "organizations.organizationId",
+      "organizations.organizationName",
+      "phoneNumber",
+      "picture",
+      "userMetadata",
+      "username"
+    ]
+  }
+}
