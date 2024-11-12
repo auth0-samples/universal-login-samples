@@ -78,6 +78,10 @@ body {
     margin-top: 2rem;
     width: 100%;
 
+    button.pick-country-code {
+      @include button;
+    }
+
     input {
       @include input-box;
     }

@@ -16,6 +16,7 @@ export async function render() {
       </div>
 
       <div class='input-container'>
+        <button class='pick-country-code hidden' id='pick-country-code'>Pick country code - ${ loginId.transaction.countryCode }: +${ loginId.transaction.countryPrefix } > </button>
         <label>Enter your username</label>
         <input type='text' id='username' value='' placeholder='Enter your username' />
 
@@ -71,6 +72,9 @@ export async function render() {
 
   // Handle Username/Email login.
   function showPromptInput() {
+    const $pickCountryCode = $prompt.querySelector('#pick-country-code') as HTMLButtonElement;
+    $pickCountryCode.classList.remove('hidden');
+    $pickCountryCode.addEventListener('click', () => loginId.continueWithCountryCode({}));
     const $continueButton = $prompt.querySelector('#continue') as HTMLButtonElement;
     const $username = ($prompt.querySelector('#username') as HTMLInputElement);
     const $captcha = ($prompt.querySelector('#captcha') as HTMLInputElement);
