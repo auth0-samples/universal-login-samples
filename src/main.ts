@@ -7,6 +7,8 @@ import { render as passwordlessSms } from './screens/login-passwordless-sms-otp'
 import { render as signupPassword } from './screens/signup-password';
 import { render as passkeyEnrollment } from './screens/passkey-enrollment';
 import { render as passkeyEnrollmentLocal } from './screens/passkey-enrollment-local';
+import { render as phoneIdentifierChallenge } from './screens/phone-identifier-challenge';
+import { render as interstitialCaptcha } from './screens/interstitial-captcha';
 
 switch (currentScreen()) {
   case 'login-id':
@@ -32,6 +34,12 @@ switch (currentScreen()) {
     break;
   case 'passkey-enrollment-local':
     passkeyEnrollmentLocal();
+    break;
+  case 'phone-identifier-challenge':
+    phoneIdentifierChallenge();
+    break;
+  case 'interstitial-captcha':
+    interstitialCaptcha();
     break;
   default:
     console.error("Unknown screen");
