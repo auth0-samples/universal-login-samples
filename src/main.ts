@@ -8,6 +8,7 @@ import { render as signupPassword } from './screens/signup-password';
 import { render as passkeyEnrollment } from './screens/passkey-enrollment';
 import { render as passkeyEnrollmentLocal } from './screens/passkey-enrollment-local';
 import { render as phoneIdentifierChallenge } from './screens/phone-identifier-challenge';
+import { render as emailIdentifierChallenge } from './screens/email-identifier-challenge';
 import { render as interstitialCaptcha } from './screens/interstitial-captcha';
 
 switch (currentScreen()) {
@@ -37,6 +38,9 @@ switch (currentScreen()) {
     break;
   case 'phone-identifier-challenge':
     phoneIdentifierChallenge();
+    break;
+  case 'email-identifier-challenge':
+    emailIdentifierChallenge();
     break;
   case 'interstitial-captcha':
     interstitialCaptcha();
