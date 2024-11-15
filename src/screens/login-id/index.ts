@@ -51,8 +51,6 @@ export async function render() {
   const $prompt = new DOMParser().parseFromString(promptTemplate, 'text/html').body.firstChild as HTMLElement;
 
   showPromptInput();
-  console.log('xxxxxx 1', loginId.branding.getSettings())
-  console.log('xxxxxx 2', loginId.branding.getThemes())
 
   if (loginId.screen.hasCaptcha) {
     showCaptcha();
