@@ -1,4 +1,4 @@
-import { EmailIdentifierChallenge } from 'ul-javascript/email-identifier-challenge';
+import EmailIdentifierChallenge from 'ul-javascript/email-identifier-challenge';
  
 export async function render() {
   await import('../../styles/screens/email-identifier-challenge.scss');

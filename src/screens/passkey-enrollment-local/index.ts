@@ -1,4 +1,4 @@
-import { PasskeyEnrollmentLocal } from 'ul-javascript/passkey-enrollment-local';
+import PasskeyEnrollmentLocal from 'ul-javascript/passkey-enrollment-local';
  
 export async function render() {
   await import('../../styles/screens/passkey-enrollment.scss');

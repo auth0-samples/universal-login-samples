@@ -1,4 +1,4 @@
-import { LoginId } from 'ul-javascript/login-id';
+import LoginId from 'ul-javascript/login-id';
  
 export async function render() {
   await import('../../styles/screens/login-id.scss');

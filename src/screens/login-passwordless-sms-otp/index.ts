@@ -1,4 +1,4 @@
-import { LoginPasswordlessSmsOtp } from 'ul-javascript/login-passwordless-sms-otp';
+import LoginPasswordlessSmsOtp from 'ul-javascript/login-passwordless-sms-otp';
  
 export async function render() {
   await import('../../styles/screens/login-passwordless-sms-otp.scss');
