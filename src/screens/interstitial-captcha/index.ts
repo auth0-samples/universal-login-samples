@@ -1,4 +1,4 @@
-import { InterstitialCaptcha } from 'ul-javascript/interstitial-captcha';
+import InterstitialCaptcha from 'ul-javascript/interstitial-captcha';
  
 export async function render() {
   await import('../../styles/screens/interstitial-captcha.scss');

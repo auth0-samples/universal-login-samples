@@ -1,4 +1,4 @@
-import { LoginId } from 'ul-javascript/login-id';
+import LoginId from 'ul-javascript/login-id';
  
 export async function render() {
   await import('../../styles/screens/login-id.scss');
@@ -51,6 +51,8 @@ export async function render() {
   const $prompt = new DOMParser().parseFromString(promptTemplate, 'text/html').body.firstChild as HTMLElement;
 
   showPromptInput();
+  console.log('xxxxxx 1', loginId.branding.getSettings())
+  console.log('xxxxxx 2', loginId.branding.getThemes())
 
   if (loginId.screen.hasCaptcha) {
     showCaptcha();

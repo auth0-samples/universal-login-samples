@@ -1,4 +1,4 @@
-import { SignupId } from 'ul-javascript/signup-id';
+import SignupId from 'ul-javascript/signup-id';
  
 export async function render() {
   await import('../../styles/screens/signup-id.scss');

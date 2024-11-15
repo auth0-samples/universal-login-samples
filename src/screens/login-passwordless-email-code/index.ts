@@ -1,4 +1,4 @@
-import { LoginPasswordlessEmailCode } from 'ul-javascript/login-passwordless-email-code';
+import LoginPasswordlessEmailCode from 'ul-javascript/login-passwordless-email-code';
  
 export async function render() {
   await import('../../styles/screens/login-passwordless-email-code.scss');

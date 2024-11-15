@@ -1,4 +1,4 @@
-import { PhoneIdentifierChallenge } from 'ul-javascript/phone-identifier-challenge';
+import PhoneIdentifierChallenge from 'ul-javascript/phone-identifier-challenge';
  
 export async function render() {
   await import('../../styles/screens/phone-identifier-challenge.scss');

@@ -1,4 +1,4 @@
-import { LoginPassword } from 'ul-javascript/login-password';
+import LoginPassword from 'ul-javascript/login-password';
  
 export async function render() {
   await import('../../styles/screens/login-password.scss');
