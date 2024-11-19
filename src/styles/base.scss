@@ -106,6 +106,24 @@ body {
         padding: 20px;
       }
     }
+
+    .enrollment-types {
+      margin-top: 10px;
+      @include flex(flex-start, flex-start, row);
+
+      button {
+        @include federated-button;
+
+        &:last-child {
+          margin-left: 10px;
+        }
+
+        &.selected {
+          background-color: $primary-color;
+          color: white;
+        }
+      }
+    }
   
     .button-container {
       width: 100%;
