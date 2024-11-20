@@ -1,8 +1,9 @@
 @import './mixins.scss';
 
-$primary-color: #673ab7;
-$primary-color-hover: #7e57c2;
-$prompt-bg-color: #ede7f6;
+$primary-color: #282828;
+$primary-color-hover: #484848;
+$prompt-bg-color: #ffffff;
+$danger-color: #bf360c;
 
 body {
   margin: 0;
@@ -40,9 +41,7 @@ body {
   height: 100%;
   margin: 0 auto;
   padding: 50px 30px;
-  border: 1px solid #ededed;
-  box-shadow: 0 0 0.1em #484848;
-  background-color: #f3e5f5;
+  background-color: $prompt-bg-color;
 
   .prompt-elements {
     @include flex;
@@ -161,7 +160,7 @@ body {
       margin-top: 10px;
       justify-content: flex-start;
       padding: 10px;
-      background: #ef5350;
+      background: $danger-color;
       color: white;
     }
   }
