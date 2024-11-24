@@ -11,8 +11,8 @@ export async function render() {
       </div>
 
       <div class='title-container'>
-        <h1>${ interstitialCaptcha.screen.texts?.title }</h1>
-        <p>${ interstitialCaptcha.screen.texts?.description }</p>
+        <h1>${ interstitialCaptcha.screen.getScreenTexts()?.title }</h1>
+        <p>${ interstitialCaptcha.screen.getScreenTexts()?.description }</p>
       </div>
 
       <div class='input-container'>

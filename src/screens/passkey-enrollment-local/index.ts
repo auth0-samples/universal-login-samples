@@ -12,19 +12,19 @@ export async function render() {
       </div>
 
       <div class='title-container'>
-        <h1 id='pageTitle'>${ passkeyEnrollmentLocal.screen.texts?.title }</h1>
-        <p id='description'>${ passkeyEnrollmentLocal.screen.texts?.description }</p>
+        <h1 id='pageTitle'>${ passkeyEnrollmentLocal.screen.getScreenTexts()?.title }</h1>
+        <p id='description'>${ passkeyEnrollmentLocal.screen.getScreenTexts()?.description }</p>
       </div>
 
       <div class='benefits-container'>
         <div class='section'>
-          <h3>${ passkeyEnrollmentLocal.screen.texts?.passkeyBenefit1Title }</h3>
-          <p>${ passkeyEnrollmentLocal.screen.texts?.passkeyBenefit1Description }</p>
+          <h3>${ passkeyEnrollmentLocal.screen.getScreenTexts()?.passkeyBenefit1Title }</h3>
+          <p>${ passkeyEnrollmentLocal.screen.getScreenTexts()?.passkeyBenefit1Description }</p>
         </div>
 
         <div class='section'>
-          <h3>${ passkeyEnrollmentLocal.screen.texts?.passkeyBenefit2Title }</h3>
-          <p>${ passkeyEnrollmentLocal.screen.texts?.passkeyBenefit2Description }</p>
+          <h3>${ passkeyEnrollmentLocal.screen.getScreenTexts()?.passkeyBenefit2Title }</h3>
+          <p>${ passkeyEnrollmentLocal.screen.getScreenTexts()?.passkeyBenefit2Description }</p>
         </div>        
       </div>
 

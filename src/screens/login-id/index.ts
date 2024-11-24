@@ -11,8 +11,8 @@ export async function render() {
       </div>
 
       <div class='title-container'>
-        <h1>${ loginId.screen.texts?.title }</h1>
-        <p>${ loginId.screen.texts?.description }</p>
+        <h1>${ loginId.screen.getScreenTexts()?.title }</h1>
+        <p>${ loginId.screen.getScreenTexts()?.description }</p>
       </div>
 
       <div class='input-container'>
@@ -60,7 +60,7 @@ export async function render() {
     showErrors();
   }
 
-  if (loginId.screen.passkey) {
+  if (loginId.screen.hasPasskey) {
     showPasskeys();
   }
   

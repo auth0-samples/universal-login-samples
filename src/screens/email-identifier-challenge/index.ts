@@ -11,14 +11,14 @@ export async function render() {
       </div>
 
       <div class='title-container'>
-        <h1>${ emailChallenge.screen.texts?.title }</h1>
-        <p>${ emailChallenge.screen.texts?.pageTitle }</p>
-        <p>${ emailChallenge.screen.texts?.emailDescription } ${ emailChallenge.screen?.data?.email }</p>
+        <h1>${ emailChallenge.screen.getScreenTexts()?.title }</h1>
+        <p>${ emailChallenge.screen.getScreenTexts()?.pageTitle }</p>
+        <p>${ emailChallenge.screen.getScreenTexts()?.emailDescription } ${ emailChallenge.screen.getScreenData()?.email }</p>
       </div>
 
       <div class='input-container'>
-        <label>${ emailChallenge.screen.texts?.placeholder }</label>
-        <input type='text' id='otp' value='' placeholder='${ emailChallenge.screen.texts?.placeholder }' />
+        <label>${ emailChallenge.screen.getScreenTexts()?.placeholder }</label>
+        <input type='text' id='otp' value='' placeholder='${ emailChallenge.screen.getScreenTexts()?.placeholder }' />
 
         <div class='captcha-container hidden'>
           <img src='${ emailChallenge.screen.captchaImage }' />
@@ -32,7 +32,7 @@ export async function render() {
 
         <div class='links-container'>
           <a id='resend' href="#">Resend Code</a>
-          <a id='goBack' href="#">${ emailChallenge.screen.texts?.backButtonText }</a>
+          <a id='goBack' href="#">${ emailChallenge.screen.getScreenTexts()?.backButtonText }</a>
         </div>
 
         <div class='links-container'>

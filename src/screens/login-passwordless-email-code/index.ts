@@ -11,8 +11,8 @@ export async function render() {
       </div>
 
       <div class='title-container'>
-        <h1>${ passwordlessEmail.screen.texts?.title }</h1>
-        <p>${ passwordlessEmail.screen.texts?.description }</p>
+        <h1>${ passwordlessEmail.screen.getScreenTexts()?.title }</h1>
+        <p>${ passwordlessEmail.screen.getScreenTexts()?.description }</p>
       </div>
 
       <div class='input-container'>

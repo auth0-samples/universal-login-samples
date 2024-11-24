@@ -12,24 +12,24 @@ export async function render() {
       </div>
 
       <div class='title-container'>
-        <h1 id='pageTitle'>${ passkeyEnrollment.screen.texts?.title }</h1>
-        <p id='description'>${ passkeyEnrollment.screen.texts?.description }</p>
+        <h1 id='pageTitle'>${ passkeyEnrollment.screen.getScreenTexts()?.title }</h1>
+        <p id='description'>${ passkeyEnrollment.screen.getScreenTexts()?.description }</p>
       </div>
 
       <div class='benefits-container'>
         <div class='section'>
-          <h3>${ passkeyEnrollment.screen.texts?.passkeyBenefit1Title }</h3>
-          <p>${ passkeyEnrollment.screen.texts?.passkeyBenefit1Description }</p>
+          <h3>${ passkeyEnrollment.screen.getScreenTexts()?.passkeyBenefit1Title }</h3>
+          <p>${ passkeyEnrollment.screen.getScreenTexts()?.passkeyBenefit1Description }</p>
         </div>
 
         <div class='section'>
-          <h3>${ passkeyEnrollment.screen.texts?.passkeyBenefit2Title }</h3>
-          <p>${ passkeyEnrollment.screen.texts?.passkeyBenefit2Description }</p>
+          <h3>${ passkeyEnrollment.screen.getScreenTexts()?.passkeyBenefit2Title }</h3>
+          <p>${ passkeyEnrollment.screen.getScreenTexts()?.passkeyBenefit2Description }</p>
         </div>
 
         <div class='section'>
-          <h3>${ passkeyEnrollment.screen.texts?.passkeyBenefit3Title }</h3>
-          <p>${ passkeyEnrollment.screen.texts?.passkeyBenefit3Description }</p>
+          <h3>${ passkeyEnrollment.screen.getScreenTexts()?.passkeyBenefit3Title }</h3>
+          <p>${ passkeyEnrollment.screen.getScreenTexts()?.passkeyBenefit3Description }</p>
         </div>        
       </div>
 

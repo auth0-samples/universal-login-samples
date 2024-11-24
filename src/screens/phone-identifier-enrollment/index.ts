@@ -4,7 +4,7 @@ export async function render() {
   await import('../../styles/screens/phone-identifier-enrollment.scss');
   
   const phoneEnrollment = new PhoneIdentifierEnrollment();
-  let selectedType =  phoneEnrollment.screen.data?.message_type;
+  let selectedType =  phoneEnrollment.screen.getScreenData()?.message_type;
   
   const promptTemplate = `
     <div class='prompt-container'>
@@ -13,14 +13,14 @@ export async function render() {
       </div>
 
       <div class='title-container'>
-        <h1>${ phoneEnrollment.screen.texts?.title }</h1>
-        <p>${ phoneEnrollment.screen.texts?.pageTitle }</p>
-        <p>${ phoneEnrollment.screen.texts?.smsDescription }</p>
+        <h1>${ phoneEnrollment.screen.getScreenTexts()?.title }</h1>
+        <p>${ phoneEnrollment.screen.getScreenTexts()?.pageTitle }</p>
+        <p>${ phoneEnrollment.screen.getScreenTexts()?.smsDescription }</p>
       </div>
 
       <div class='input-container'>
-        <label>${ phoneEnrollment.screen.texts?.placeholder }</label>
-        <input type='text' id='otp' value='${ phoneEnrollment.screen.data?.phone_number }' placeholder='${ phoneEnrollment.screen.texts?.placeholder }' disabled/>
+        <label>${ phoneEnrollment.screen.getScreenTexts()?.placeholder }</label>
+        <input type='text' id='otp' value='${ phoneEnrollment.screen.getScreenData()?.phone_number }' placeholder='${ phoneEnrollment.screen.getScreenTexts()?.placeholder }' disabled/>
 
         <div class='captcha-container hidden'>
           <img src='${ phoneEnrollment.screen.captchaImage }' />
@@ -39,7 +39,7 @@ export async function render() {
       </div>
 
       <div class='links-container'>
-        <a id='goBack' href="#">${ phoneEnrollment.screen.texts?.backButtonText }</a>
+        <a id='goBack' href="#">${ phoneEnrollment.screen.getScreenTexts()?.backButtonText }</a>
       </div>
 
       <div class='error-container hidden'></div>

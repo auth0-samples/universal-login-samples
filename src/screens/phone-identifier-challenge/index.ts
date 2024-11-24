@@ -11,14 +11,14 @@ export async function render() {
       </div>
 
       <div class='title-container'>
-        <h1>${ phoneChallenge.screen.texts?.title }</h1>
-        <p>${ phoneChallenge.screen.texts?.pageTitle }</p>
-        <p>${ phoneChallenge.screen.texts?.smsDescription }</p>
+        <h1>${ phoneChallenge.screen.getScreenTexts()?.title }</h1>
+        <p>${ phoneChallenge.screen.getScreenTexts()?.pageTitle }</p>
+        <p>${ phoneChallenge.screen.getScreenTexts()?.smsDescription }</p>
       </div>
 
       <div class='input-container'>
-        <label>${ phoneChallenge.screen.texts?.placeholder }</label>
-        <input type='text' id='otp' value='' placeholder='${ phoneChallenge.screen.texts?.placeholder }' />
+        <label>${ phoneChallenge.screen.getScreenTexts()?.placeholder }</label>
+        <input type='text' id='otp' value='' placeholder='${ phoneChallenge.screen.getScreenTexts()?.placeholder }' />
 
         <div class='captcha-container hidden'>
           <img src='${ phoneChallenge.screen.captchaImage }' />
@@ -31,7 +31,7 @@ export async function render() {
         </div>
 
         <div class='links-container'>
-          <label>${ phoneChallenge.screen.texts?.resendText }</label>
+          <label>${ phoneChallenge.screen.getScreenTexts()?.resendText }</label>
           <a id='resend' href="#">Resend OTP</a>
         </div>
       </div>

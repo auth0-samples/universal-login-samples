@@ -11,8 +11,8 @@ export async function render() {
       </div>
 
       <div class='title-container'>
-        <h1>${ loginPassword.screen.texts?.title }</h1>
-        <p>${ loginPassword.screen.texts?.description }</p>
+        <h1>${ loginPassword.screen.getScreenTexts()?.title }</h1>
+        <p>${ loginPassword.screen.getScreenTexts()?.description }</p>
       </div>
 
       <div class='input-container'>
