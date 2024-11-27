@@ -17,7 +17,7 @@ export async function render() {
 
       <div class='input-container'>
         <label>Email address</label>
-        <input type='email' id='email' value='${ passwordlessEmail.untrustedData.authParams.loginHint }' disabled/>
+        <input type='email' id='email' value='${ passwordlessEmail.untrustedData.getAuthParams()?.loginHint }' disabled/>
         <label>Enter email code</label>
         <input type='text' id='code' value='' placeholder='Enter email code' />
   
@@ -51,7 +51,7 @@ export async function render() {
 
     $continueButton.addEventListener('click', () => {
       const options = {
-        email: passwordlessEmail.untrustedData.authParams.loginHint as string,
+        email: passwordlessEmail.untrustedData.getAuthParams()?.loginHint as string,
         code: $code.value
       }
   
@@ -60,7 +60,7 @@ export async function render() {
 
     $resend.addEventListener('click', (e) => {
       e.preventDefault();
-      passwordlessEmail.continueWithResendCode({ email: passwordlessEmail.untrustedData.authParams.loginHint as string });
+      passwordlessEmail.continueWithResendCode({ email: passwordlessEmail.untrustedData.getAuthParams()?.loginHint as string });
     });
   }
 
@@ -69,7 +69,7 @@ export async function render() {
     const $errorContainer = $prompt.querySelector('.error-container') as HTMLElement;
     $errorContainer.classList.remove('hidden');
 
-    passwordlessEmail.transaction.errors.forEach((error) => {
+    passwordlessEmail.transaction.getErrors()?.forEach((error) => {
       const $error = document.createElement('p');
       $error.textContent = error.message;
       $errorContainer.appendChild($error);

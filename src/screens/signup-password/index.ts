@@ -17,7 +17,7 @@ export async function render() {
 
       <div class='input-container'>
         <label>Enter your email</label>
-        <input type='text' id='email' value='${ signupPassword.untrustedData.authParams?.loginHint }' placeholder='Enter your email' disabled />
+        <input type='text' id='email' value='${ signupPassword.untrustedData.getAuthParams()?.loginHint }' placeholder='Enter your email' disabled />
         <label>Enter your password</label>
         <input type='password' id='password' value='' placeholder='Enter your password' />
 
@@ -62,7 +62,7 @@ export async function render() {
     const $captcha = ($prompt.querySelector('#captcha') as HTMLInputElement);
     $continueButton.addEventListener('click', () => {
       const options = {
-        email: signupPassword.untrustedData.authParams?.loginHint as string,
+        email: signupPassword.untrustedData.getAuthParams()?.loginHint as string,
         // username: $username.value,
         password: $password.value,
         captcha: ''
@@ -87,7 +87,7 @@ export async function render() {
     const $errorContainer = $prompt.querySelector('.error-container') as HTMLElement;
     $errorContainer.classList.remove('hidden');
 
-    signupPassword.transaction.errors.forEach((error) => {
+    signupPassword.transaction.getErrors()?.forEach((error) => {
       const $error = document.createElement('p');
       $error.textContent = error.message;
       $errorContainer.appendChild($error);

@@ -98,7 +98,7 @@ export async function render() {
     const $errorContainer = $prompt.querySelector('.error-container') as HTMLElement;
     $errorContainer.classList.remove('hidden');
 
-    emailChallenge.transaction.errors.forEach((error) => {
+    emailChallenge.transaction.getErrors()?.forEach((error) => {
       const $error = document.createElement('p');
       $error.textContent = error.message;
       $errorContainer.appendChild($error);

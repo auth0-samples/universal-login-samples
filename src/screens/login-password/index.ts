@@ -17,7 +17,7 @@ export async function render() {
 
       <div class='input-container'>
         <label>Enter your username</label>
-        <input type='text' id='username' value='${ loginPassword.untrustedData.authParams?.loginHint }' placeholder='Enter your username' disabled />
+        <input type='text' id='username' value='${ loginPassword.untrustedData.getAuthParams()?.loginHint }' placeholder='Enter your username' disabled />
         <label>Enter your password</label>
         <input type='password' id='password' value='' placeholder='Enter your password' />
 
@@ -86,7 +86,7 @@ export async function render() {
     const $errorContainer = $prompt.querySelector('.error-container') as HTMLElement;
     $errorContainer.classList.remove('hidden');
 
-    loginPassword.transaction.errors.forEach((error) => {
+    loginPassword.transaction.getErrors()?.forEach((error) => {
       const $error = document.createElement('p');
       $error.textContent = error.message;
       $errorContainer.appendChild($error);

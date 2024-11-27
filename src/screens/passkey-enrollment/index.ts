@@ -83,7 +83,7 @@ based on the key values create title and description elements
   // Show errors
   const $errorContainer = $prompt.querySelector('.error-container') as HTMLElement;
   if(passkeyEnrollment.transaction.hasErrors) {
-    passkeyEnrollment.transaction.errors.forEach((error) => {
+    passkeyEnrollment.transaction.getErrors()?.forEach((error) => {
       const $error = document.createElement('p');
       $error.textContent = error.message;
       $errorContainer.appendChild($error);

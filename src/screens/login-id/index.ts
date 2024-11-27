@@ -103,7 +103,7 @@ export async function render() {
     const $errorContainer = $prompt.querySelector('.error-container') as HTMLElement;
     $errorContainer.classList.remove('hidden');
 
-    loginId.transaction.errors.forEach((error) => {
+    loginId.transaction.getErrors()?.forEach((error) => {
       const $error = document.createElement('p');
       $error.textContent = error.message;
       $errorContainer.appendChild($error);
@@ -125,7 +125,7 @@ export async function render() {
     $federatedLoginContainer.classList.remove('hidden');
 
     const $buttonListFragment = document.createDocumentFragment();
-    loginId.transaction.alternateConnections?.forEach((connection) => {
+    loginId.transaction.getAlternateConnections()?.forEach((connection) => {
       const $button = document.createElement('button');
       $button.textContent = `Continue with ${connection.name}`;
       $button.addEventListener('click', () => loginId.continueWithFederatedLogin({connection: connection.name}));

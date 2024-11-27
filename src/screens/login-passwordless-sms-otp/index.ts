@@ -17,7 +17,7 @@ export async function render() {
 
       <div class='input-container'>
         <label>Email address</label>
-        <input type='tel' id='phone' value='${ passwordlessSms.untrustedData.authParams.loginHint }' disabled/>
+        <input type='tel' id='phone' value='${ passwordlessSms.untrustedData.getAuthParams()?.loginHint }' disabled/>
         <label>Enter OTP</label>
         <input type='text' id='otp' value='' placeholder='Enter OTP' />
   
@@ -51,7 +51,7 @@ export async function render() {
 
     $continueButton.addEventListener('click', () => {
       const options = {
-        username: passwordlessSms.untrustedData.authParams.loginHint as string,
+        username: passwordlessSms.untrustedData.getAuthParams()?.loginHint as string,
         otp: $otp.value
       }
   
@@ -60,7 +60,7 @@ export async function render() {
 
     $resend.addEventListener('click', (e) => {
       e.preventDefault();
-      passwordlessSms.continueWithResendOtp({ username: passwordlessSms.untrustedData.authParams.loginHint as string });
+      passwordlessSms.continueWithResendOtp({ username: passwordlessSms.untrustedData.getAuthParams()?.loginHint as string });
     });
   }
 
@@ -69,7 +69,7 @@ export async function render() {
     const $errorContainer = $prompt.querySelector('.error-container') as HTMLElement;
     $errorContainer.classList.remove('hidden');
 
-    passwordlessSms.transaction.errors.forEach((error) => {
+    passwordlessSms.transaction.getErrors()?.forEach((error) => {
       const $error = document.createElement('p');
       $error.textContent = error.message;
       $errorContainer.appendChild($error);

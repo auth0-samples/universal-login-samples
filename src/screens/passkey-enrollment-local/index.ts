@@ -50,7 +50,7 @@ export async function render() {
   // Show errors
   const $errorContainer = $prompt.querySelector('.error-container') as HTMLElement;
   if(passkeyEnrollmentLocal.transaction.hasErrors) {
-    passkeyEnrollmentLocal.transaction.errors.forEach((error) => {
+    passkeyEnrollmentLocal.transaction.getErrors()?.forEach((error) => {
       const $error = document.createElement('p');
       $error.textContent = error.message;
       $errorContainer.appendChild($error);
