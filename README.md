@@ -10,9 +10,10 @@ Universal Login offers a streamlined experience for users and does not require t
 
 Before you start, make sure you have the following:
 
-1. A custom domain set up for your Auth0 tenant.
-2. Configure the tenant to use the Identifier First Authentication Profile.
-3. A React quickstart application configured to run with your custom domain.
+1. An Auth0 staging or development tenant with an active [custom domain](https://auth0.com/docs/customize/custom-domains).
+2. Configure the auth0 tenant to use the [Identifier First Authentication Profile](https://auth0.com/docs/authenticate/login/auth0-universal-login/identifier-first).
+3. A [React quickstart](https://github.com/auth0-samples/auth0-react-samples/tree/master/Sample-01) application configured to run with your custom domain.
+4. Configure [Application metadata](https://auth0.com/docs/get-started/applications/application-settings) to run quickstart.
 
 ## Getting Started
 
