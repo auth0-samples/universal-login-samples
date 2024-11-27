@@ -4,6 +4,8 @@
 This is a sample application to help you build a customized login screen for Auth0 login using React, TypeScript, and Vite.
 Universal Login offers a streamlined experience for users and does not require the use of JavaScript for customization.
 
+<img width="956" alt="Screenshot 2024-11-27 at 6 43 07 PM" src="https://github.com/user-attachments/assets/c9c65f79-fe28-41e5-a5b0-83d85d7ae837">
+
 ## Prerequisites
 
 Before you start, make sure you have the following:
