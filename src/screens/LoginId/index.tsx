@@ -29,12 +29,12 @@ const LoginIdScreen: React.FC = () => {
   return (
     <div className="prompt-container">
       <div className="logo-container">
-        <img src="http://localhost:5173/assets/images/logo.png" alt="Logo" />
+        <img src="YOUR_LOGO_URL" alt="Custom Logo" />
       </div>
 
       <div className="title-container">
-        <h1>{loginId.screen.texts?.title}</h1>
-        <p>{loginId.screen.texts?.description}</p>
+        <h1>{loginId.screen.getScreenTexts()?.title}</h1>
+        <p>{loginId.screen.getScreenTexts()?.description}</p>
       </div>
 
       <div className="input-container">
@@ -52,7 +52,7 @@ const LoginIdScreen: React.FC = () => {
 
         {loginId.screen.hasCaptcha && (
           <div className="captcha-container">
-            <img src={loginId.screen.captchaImage} alt="Captcha" />
+            <img src={loginId.screen.captchaImage ?? ""} alt="Captcha" />
             <label>Enter the captcha</label>
             <input
               type="text"
@@ -69,7 +69,7 @@ const LoginIdScreen: React.FC = () => {
       </div>
 
       <div className="federated-login-container">
-        {loginId.transaction.alternateConnections?.map((connection) => (
+        {loginId.transaction.getAlternateConnections()?.map((connection) => (
           <Button
             key={connection.name}
             onClick={() => handleFederatedLogin(connection.name)}
@@ -83,18 +83,22 @@ const LoginIdScreen: React.FC = () => {
         <Button onClick={handlePasskeyLogin}>Continue with Passkey</Button>
       </div>
 
-      <div className="links">
-        {loginId.screen.signupLink && (
-          <a href={loginId.screen.signupLink}>Sign Up</a>
-        )}
-        {loginId.screen.passwordResetLink && (
-          <a href={loginId.screen.passwordResetLink}>Forgot Password?</a>
-        )}
-      </div>
+      {loginId.screen.hasScreenLinks && (
+        <div className="links">
+          {loginId.screen.signupLink && (
+            <a href={loginId.screen.signupLink ?? ""}>Sign Up</a>
+          )}
+          {loginId.screen.passwordResetLink && (
+            <a href={loginId.screen.passwordResetLink ?? ""}>
+              Forgot Password?
+            </a>
+          )}
+        </div>
+      )}
 
-      {loginId.transaction.errors?.length > 0 && (
+      {loginId.transaction.hasErrors && loginId.transaction.getErrors() && (
         <div className="error-container">
-          {loginId.transaction.errors.map((error, index) => (
+          {loginId.transaction.getErrors()?.map((error, index) => (
             <p key={index}>{error?.message}</p>
           ))}
         </div>

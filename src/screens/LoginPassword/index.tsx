@@ -13,7 +13,7 @@ const LoginPasswordScreen: React.FC = () => {
     const captcha = captchaRef.current?.value || "";
 
     const options = {
-      username: loginPassword.untrustedData.authParams?.loginHint || "",
+      username: loginPassword.untrustedData.getAuthParams()?.loginHint || "",
       password,
       captcha,
     };
@@ -24,7 +24,7 @@ const LoginPasswordScreen: React.FC = () => {
   return (
     <div className="prompt-container">
       <div className="logo-container">
-        <img src="YOUR_LOGO_URL" alt="Auth0 Logo" />
+        <img src="YOUR_LOGO_URL" alt="Custom Logo" />
       </div>
 
       <div className="input-container">
@@ -32,7 +32,7 @@ const LoginPasswordScreen: React.FC = () => {
         <input
           type="text"
           id="username"
-          value={loginPassword.untrustedData.authParams?.loginHint || ""}
+          value={loginPassword.untrustedData.getAuthParams()?.loginHint || ""}
           placeholder="Enter your username"
           disabled
         />
@@ -46,7 +46,7 @@ const LoginPasswordScreen: React.FC = () => {
 
         {loginPassword.screen.hasCaptcha && (
           <div className="captcha-container">
-            <img src={loginPassword.screen.captchaImage} alt="Captcha" />
+            <img src={loginPassword.screen.captchaImage ?? ""} alt="Captcha" />
             <label>Enter the captcha</label>
             <input
               type="text"
@@ -63,16 +63,24 @@ const LoginPasswordScreen: React.FC = () => {
           </button>
         </div>
 
-        <div className="links-container">
-          <a href={loginPassword.screen.signupLink}>Sign Up</a>
-          <a href={loginPassword.screen.resetPasswordLink}>Reset Password</a>
-        </div>
+        {loginPassword.screen.hasScreenLinks && (
+          <div className="links">
+            {loginPassword.screen.signupLink && (
+              <a href={loginPassword.screen.signupLink}>Sign Up</a>
+            )}
+            {loginPassword.screen.resetPasswordLink && (
+              <a href={loginPassword.screen.resetPasswordLink}>
+                Reset Password
+              </a>
+            )}
+          </div>
+        )}
       </div>
 
       {loginPassword.transaction.hasErrors &&
-        loginPassword.transaction.errors.length > 0 && (
+        loginPassword.transaction.getErrors() && (
           <div className="error-container">
-            {loginPassword.transaction.errors.map((error, index) => (
+            {loginPassword.transaction.getErrors()?.map((error, index) => (
               <p key={index}>{error?.message}</p>
             ))}
           </div>
