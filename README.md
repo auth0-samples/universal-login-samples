@@ -75,17 +75,17 @@ import React, { useState } from "react";
 import LoginIdInstance from "ul-javascript";
 
 const LoginIdScreen: React.FC = () => {
-  const [loginId] = useState(() => new LoginIdInstance()); //lazy initialization
+  const [loginIdManager] = useState(() => new LoginIdInstance()); //lazy initialization
 
-  const handleContinue = () => {
+  const handleLogin = () => {
     //Logic for continue
-    loginId.continueWithUsername({username:"", captcha: ""})
+    loginIdManager.login({username:"", captcha: ""})
   }
 
   return (
     <div>
       {/* Render the login ID screen content */}
-      <button onclick={handleContinue}>Continue<button>
+      <button onclick={handleLogin}>Continue<button>
     </div>
   );
 };

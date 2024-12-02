@@ -3,7 +3,7 @@ import LoginPasswordInstance from "ul-javascript/login-password";
 import "../../styles/screens/login-password.scss";
 
 const LoginPasswordScreen: React.FC = () => {
-  const [loginPassword] = useState(() => new LoginPasswordInstance());
+  const [loginPasswordManager] = useState(() => new LoginPasswordInstance());
 
   const passwordRef = useRef<HTMLInputElement>(null);
   const captchaRef = useRef<HTMLInputElement>(null);
@@ -13,12 +13,13 @@ const LoginPasswordScreen: React.FC = () => {
     const captcha = captchaRef.current?.value || "";
 
     const options = {
-      username: loginPassword.untrustedData.getAuthParams()?.loginHint || "",
+      username:
+        loginPasswordManager.untrustedData.getAuthParams()?.loginHint || "",
       password,
       captcha,
     };
 
-    loginPassword.continueWithPassword(options);
+    loginPasswordManager.continueWithPassword(options);
   };
 
   return (
@@ -32,7 +33,9 @@ const LoginPasswordScreen: React.FC = () => {
         <input
           type="text"
           id="username"
-          value={loginPassword.untrustedData.getAuthParams()?.loginHint || ""}
+          value={
+            loginPasswordManager.untrustedData.getAuthParams()?.loginHint || ""
+          }
           placeholder="Enter your username"
           disabled
         />
@@ -44,9 +47,12 @@ const LoginPasswordScreen: React.FC = () => {
           placeholder="Enter your password"
         />
 
-        {loginPassword.screen.hasCaptcha && (
+        {loginPasswordManager.screen.hasCaptcha && (
           <div className="captcha-container">
-            <img src={loginPassword.screen.captchaImage ?? ""} alt="Captcha" />
+            <img
+              src={loginPasswordManager.screen.captchaImage ?? ""}
+              alt="Captcha"
+            />
             <label>Enter the captcha</label>
             <input
               type="text"
@@ -63,13 +69,13 @@ const LoginPasswordScreen: React.FC = () => {
           </button>
         </div>
 
-        {loginPassword.screen.hasScreenLinks && (
+        {loginPasswordManager.screen.hasScreenLinks && (
           <div className="links">
-            {loginPassword.screen.signupLink && (
-              <a href={loginPassword.screen.signupLink}>Sign Up</a>
+            {loginPasswordManager.screen.signupLink && (
+              <a href={loginPasswordManager.screen.signupLink}>Sign Up</a>
             )}
-            {loginPassword.screen.resetPasswordLink && (
-              <a href={loginPassword.screen.resetPasswordLink}>
+            {loginPasswordManager.screen.resetPasswordLink && (
+              <a href={loginPasswordManager.screen.resetPasswordLink}>
                 Reset Password
               </a>
             )}
@@ -77,12 +83,14 @@ const LoginPasswordScreen: React.FC = () => {
         )}
       </div>
 
-      {loginPassword.transaction.hasErrors &&
-        loginPassword.transaction.getErrors() && (
+      {loginPasswordManager.transaction.hasErrors &&
+        loginPasswordManager.transaction.getErrors() && (
           <div className="error-container">
-            {loginPassword.transaction.getErrors()?.map((error, index) => (
-              <p key={index}>{error?.message}</p>
-            ))}
+            {loginPasswordManager.transaction
+              .getErrors()
+              ?.map((error, index) => (
+                <p key={index}>{error?.message}</p>
+              ))}
           </div>
         )}
     </div>

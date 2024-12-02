@@ -4,26 +4,26 @@ import Button from "../../components/Button";
 import "../../styles/screens/login-id.scss";
 
 const LoginIdScreen: React.FC = () => {
-  const [loginId] = useState(() => new LoginIdInstance());
+  const [loginIdManager] = useState(() => new LoginIdInstance());
   const usernameRef = useRef<HTMLInputElement>(null);
   const captchaRef = useRef<HTMLInputElement>(null);
 
-  const handleContinue = (): void => {
+  const handleLogin = (): void => {
     const username = usernameRef.current?.value ?? "";
     const captcha = captchaRef.current?.value ?? "";
     const options = {
       username,
-      captcha: loginId.screen.hasCaptcha ? captcha : "",
+      captcha: loginIdManager.screen.hasCaptcha ? captcha : "",
     };
-    loginId.continueWithUsername(options);
+    loginIdManager.login(options);
   };
 
-  const handleFederatedLogin = (connectionName: string) => {
-    loginId.continueWithFederatedLogin({ connection: connectionName });
+  const handleSocialConnectionLogin = (connectionName: string) => {
+    loginIdManager.socialLogin({ connection: connectionName });
   };
 
   const handlePasskeyLogin = () => {
-    loginId.continueWithPasskey({});
+    loginIdManager.passkeyLogin();
   };
 
   return (
@@ -33,14 +33,14 @@ const LoginIdScreen: React.FC = () => {
       </div>
 
       <div className="title-container">
-        <h1>{loginId.screen.getScreenTexts()?.title}</h1>
-        <p>{loginId.screen.getScreenTexts()?.description}</p>
+        <h1>{loginIdManager.screen.getScreenTexts()?.title}</h1>
+        <p>{loginIdManager.screen.getScreenTexts()?.description}</p>
       </div>
 
       <div className="input-container">
         <button className="pick-country-code hidden" id="pick-country-code">
-          Pick country code - {loginId.transaction.countryCode}: +
-          {loginId.transaction.countryPrefix}
+          Pick country code - {loginIdManager.transaction.countryCode}: +
+          {loginIdManager.transaction.countryPrefix}
         </button>
         <label>Enter your email</label>
         <input
@@ -50,9 +50,9 @@ const LoginIdScreen: React.FC = () => {
           placeholder="Enter your email"
         />
 
-        {loginId.screen.hasCaptcha && (
+        {loginIdManager.screen.hasCaptcha && (
           <div className="captcha-container">
-            <img src={loginId.screen.captchaImage ?? ""} alt="Captcha" />
+            <img src={loginIdManager.screen.captchaImage ?? ""} alt="Captcha" />
             <label>Enter the captcha</label>
             <input
               type="text"
@@ -64,45 +64,48 @@ const LoginIdScreen: React.FC = () => {
         )}
 
         <div className="button-container">
-          <Button onClick={handleContinue}>Continue</Button>
+          <Button onClick={handleLogin}>Continue</Button>
         </div>
       </div>
 
       <div className="federated-login-container">
-        {loginId.transaction.getAlternateConnections()?.map((connection) => (
-          <Button
-            key={connection.name}
-            onClick={() => handleFederatedLogin(connection.name)}
-          >
-            Continue with {connection.name}
-          </Button>
-        ))}
+        {loginIdManager.transaction
+          .getAlternateConnections()
+          ?.map((connection) => (
+            <Button
+              key={connection.name}
+              onClick={() => handleSocialConnectionLogin(connection.name)}
+            >
+              Continue with {connection.name}
+            </Button>
+          ))}
       </div>
 
       <div className="passkey-container">
         <Button onClick={handlePasskeyLogin}>Continue with Passkey</Button>
       </div>
 
-      {loginId.screen.hasScreenLinks && (
+      {loginIdManager.screen.hasScreenLinks && (
         <div className="links">
-          {loginId.screen.signupLink && (
-            <a href={loginId.screen.signupLink ?? ""}>Sign Up</a>
+          {loginIdManager.screen.signupLink && (
+            <a href={loginIdManager.screen.signupLink ?? ""}>Sign Up</a>
           )}
-          {loginId.screen.passwordResetLink && (
-            <a href={loginId.screen.passwordResetLink ?? ""}>
+          {loginIdManager.screen.passwordResetLink && (
+            <a href={loginIdManager.screen.passwordResetLink ?? ""}>
               Forgot Password?
             </a>
           )}
         </div>
       )}
 
-      {loginId.transaction.hasErrors && loginId.transaction.getErrors() && (
-        <div className="error-container">
-          {loginId.transaction.getErrors()?.map((error, index) => (
-            <p key={index}>{error?.message}</p>
-          ))}
-        </div>
-      )}
+      {loginIdManager.transaction.hasErrors &&
+        loginIdManager.transaction.getErrors() && (
+          <div className="error-container">
+            {loginIdManager.transaction.getErrors()?.map((error, index) => (
+              <p key={index}>{error?.message}</p>
+            ))}
+          </div>
+        )}
     </div>
   );
 };
