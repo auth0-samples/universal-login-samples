@@ -1,98 +1,38 @@
-import React, { useState, useRef } from "react";
-import LoginPasswordInstance from "@auth0/auth0-acul-js/login-password";
+import React from "react";
+import { useLoginPasswordManager } from "./hooks/useLoginPasswordManager";
+import { Logo } from "../../components/Logo";
+import { LoginForm } from "./components/LoginForm";
+import { Links } from "./components/Links";
+import { ErrorMessages } from "./components/ErrorMessages";
 import "../../styles/screens/login-password.scss";
 
 const LoginPasswordScreen: React.FC = () => {
-  const [loginPasswordManager] = useState(() => new LoginPasswordInstance());
+  const {
+    username,
+    isCaptchaAvailable,
+    captchaImage,
+    screenLinks,
+    signupLink,
+    resetPasswordLink,
+    errors,
+    login
+  } = useLoginPasswordManager();
 
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const captchaRef = useRef<HTMLInputElement>(null);
-
-  const handleContinue = () => {
-    const password = passwordRef.current?.value || "";
-    const captcha = captchaRef.current?.value || "";
-
-    const options = {
-      username:
-        loginPasswordManager.untrustedData.getAuthParams()?.loginHint || "",
-      password,
-      captcha,
-    };
-
-    loginPasswordManager.login(options);
+  const handleSubmit = (password: string, captcha: string) => {
+    login({ username, password, captcha });
   };
 
   return (
     <div className="prompt-container">
-      <div className="logo-container">
-        <img src="YOUR_LOGO_URL" alt="Custom Logo" />
-      </div>
-
-      <div className="input-container">
-        <label>Enter your username</label>
-        <input
-          type="text"
-          id="username"
-          value={
-            loginPasswordManager.untrustedData.getAuthParams()?.loginHint || ""
-          }
-          placeholder="Enter your username"
-          disabled
-        />
-        <label>Enter your password</label>
-        <input
-          type="password"
-          id="password"
-          ref={passwordRef}
-          placeholder="Enter your password"
-        />
-
-        {loginPasswordManager.screen.isCaptchaAvailable&& (
-          <div className="captcha-container">
-            <img
-              src={loginPasswordManager.screen.captchaImage ?? ""}
-              alt="Captcha"
-            />
-            <label>Enter the captcha</label>
-            <input
-              type="text"
-              id="captcha"
-              ref={captchaRef}
-              placeholder="Enter the captcha"
-            />
-          </div>
-        )}
-
-        <div className="button-container">
-          <button id="continue" onClick={handleContinue}>
-            Continue
-          </button>
-        </div>
-
-        {loginPasswordManager.screen.getScreenLinks() && (
-          <div className="links">
-            {loginPasswordManager.screen.signupLink && (
-              <a href={loginPasswordManager.screen.signupLink}>Sign Up</a>
-            )}
-            {loginPasswordManager.screen.resetPasswordLink && (
-              <a href={loginPasswordManager.screen.resetPasswordLink}>
-                Reset Password
-              </a>
-            )}
-          </div>
-        )}
-      </div>
-
-      {loginPasswordManager.transaction.hasErrors &&
-        loginPasswordManager.transaction.getErrors() && (
-          <div className="error-container">
-            {loginPasswordManager.transaction
-              .getErrors()
-              ?.map((error, index) => (
-                <p key={index}>{error?.message}</p>
-              ))}
-          </div>
-        )}
+      <Logo />
+      <LoginForm
+        username={username}
+        isCaptchaAvailable={isCaptchaAvailable}
+        captchaImage={captchaImage!}
+        onSubmit={handleSubmit}
+      />
+      {screenLinks && <Links signupLink={signupLink!} resetPasswordLink={resetPasswordLink!} />}
+      {errors && <ErrorMessages errors={errors} />}
     </div>
   );
 };

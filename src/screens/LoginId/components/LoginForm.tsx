@@ -1,4 +1,4 @@
-import  Button  from '../../../components/Button/index';
+import  Button  from '../../../components/Button';
 interface LoginFormProps {
   usernameRef: React.RefObject<HTMLInputElement>;
   captchaRef: React.RefObject<HTMLInputElement>;

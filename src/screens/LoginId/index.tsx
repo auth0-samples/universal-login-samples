@@ -1,7 +1,7 @@
 import React from "react";
 import { useLoginIdManager } from './hooks/useLoginIdManager';
 import { useLoginForm } from './hooks/useLoginForm';
-import { Logo } from './components/Logo';
+import { Logo } from "../../components/Logo";
 import { Title } from './components/Title';
 import { LoginForm } from './components/LoginForm';
 import { SocialLogin } from './components/SocialLogin';
