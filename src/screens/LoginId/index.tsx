@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
-import LoginIdInstance from "ul-javascript/login-id";
+import LoginIdInstance from "auth0-acul-js/login-id";
 import Button from "../../components/Button";
-import "../../styles/screens/login-id.scss";
+// import "../../styles/screens/login-id.scss";
 
 const LoginIdScreen: React.FC = () => {
   const [loginIdManager] = useState(() => new LoginIdInstance());
@@ -13,7 +13,7 @@ const LoginIdScreen: React.FC = () => {
     const captcha = captchaRef.current?.value ?? "";
     const options = {
       username,
-      captcha: loginIdManager.screen.hasCaptcha ? captcha : "",
+      captcha: loginIdManager.screen.isCaptchaAvailable? captcha : "",
     };
     loginIdManager.login(options);
   };
@@ -50,7 +50,7 @@ const LoginIdScreen: React.FC = () => {
           placeholder="Enter your email"
         />
 
-        {loginIdManager.screen.hasCaptcha && (
+        {loginIdManager.screen.isCaptchaAvailable && (
           <div className="captcha-container">
             <img src={loginIdManager.screen.captchaImage ?? ""} alt="Captcha" />
             <label>Enter the captcha</label>
@@ -85,13 +85,13 @@ const LoginIdScreen: React.FC = () => {
         <Button onClick={handlePasskeyLogin}>Continue with Passkey</Button>
       </div>
 
-      {loginIdManager.screen.hasScreenLinks && (
+      {loginIdManager.screen.getScreenLinks() && (
         <div className="links">
           {loginIdManager.screen.signupLink && (
             <a href={loginIdManager.screen.signupLink ?? ""}>Sign Up</a>
           )}
-          {loginIdManager.screen.passwordResetLink && (
-            <a href={loginIdManager.screen.passwordResetLink ?? ""}>
+          {loginIdManager.screen.resetPasswordLink && (
+            <a href={loginIdManager.screen.resetPasswordLink ?? ""}>
               Forgot Password?
             </a>
           )}

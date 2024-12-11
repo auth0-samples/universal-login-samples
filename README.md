@@ -1,10 +1,10 @@
 
-# Universal Login Sample App
+# Universal Login React Sample App
 
 This is a sample application to help you build a customized login screen for Auth0 login using React, TypeScript, and Vite.
 Universal Login offers a streamlined experience for users and does not require the use of JavaScript for customization.
 
-<img width="956" alt="Screenshot 2024-11-27 at 6 43 07 PM" src="https://github.com/user-attachments/assets/c9c65f79-fe28-41e5-a5b0-83d85d7ae837">
+<img width="956" alt="Advanced customised universal login" src="https://github.com/user-attachments/assets/c9c65f79-fe28-41e5-a5b0-83d85d7ae837">
 
 ## Prerequisites
 
@@ -27,8 +27,15 @@ cd <repository-directory>
 ```
 
 ### 2. Install Dependencies
+```typescript
+//Update SDK dependecy in package.json to local ACUL JS SDK path
+"devDependencies": {
+     ...
+     "auth0-acul-js": "file:../universal-login/packages/auth0-acul-js",
+  }
+```
 
-```sh
+```
 npm install
 ```
 
