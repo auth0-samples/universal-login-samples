@@ -1,4 +1,5 @@
-@import '../base';
+@use '../base' as *;
+@use '../mixins' as *;
 
 .login-id-container {
   max-height: 100vh;

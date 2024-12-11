@@ -15,4 +15,11 @@ export default defineConfig({
     },
     cssCodeSplit: false, // Disable CSS code-splitting to bundle CSS in one file
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        quietDeps: true, // Disable "Dependency is not used" warning
+      },
+    },
+  },
 });

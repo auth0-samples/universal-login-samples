@@ -1,111 +1,55 @@
-import React, { useRef, useState } from "react";
-import LoginIdInstance from "ul-javascript/login-id";
-import Button from "../../components/Button";
-import "../../styles/screens/login-id.scss";
+import React from "react";
+import { useLoginIdManager } from './hooks/useLoginIdManager';
+import { useLoginForm } from './hooks/useLoginForm';
+import { Logo } from './components/Logo';
+import { Title } from './components/Title';
+import { LoginForm } from './components/LoginForm';
+import { SocialLogin } from './components/SocialLogin';
+import { PasskeyButton } from './components/PasskeyButton';
+import { Links } from './components/Links';
+import { ErrorMessages } from './components/ErrorMessages';
 
 const LoginIdScreen: React.FC = () => {
-  const [loginIdManager] = useState(() => new LoginIdInstance());
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const captchaRef = useRef<HTMLInputElement>(null);
+  const { loginIdManager, handleLogin, handleSocialConnectionLogin, handlePasskeyLogin } = useLoginIdManager();
+  const { usernameRef, captchaRef, getFormValues } = useLoginForm();
 
-  const handleLogin = (): void => {
-    const username = usernameRef.current?.value ?? "";
-    const captcha = captchaRef.current?.value ?? "";
-    const options = {
-      username,
-      captcha: loginIdManager.screen.hasCaptcha ? captcha : "",
-    };
-    loginIdManager.login(options);
-  };
-
-  const handleSocialConnectionLogin = (connectionName: string) => {
-    loginIdManager.socialLogin({ connection: connectionName });
-  };
-
-  const handlePasskeyLogin = () => {
-    loginIdManager.passkeyLogin();
+  const onLoginClick = () => {
+    const { username, captcha } = getFormValues();
+    handleLogin(username, captcha);
   };
 
   return (
     <div className="prompt-container">
-      <div className="logo-container">
-        <img src="YOUR_LOGO_URL" alt="Custom Logo" />
-      </div>
+      <Logo />
+      <Title screenTexts={loginIdManager.screen.getScreenTexts()!} />
+      
+      <LoginForm
+        usernameRef={usernameRef}
+        captchaRef={captchaRef}
+        isCaptchaAvailable={loginIdManager.screen.isCaptchaAvailable}
+        captchaImage={loginIdManager.screen.captchaImage!}
+        countryCode={loginIdManager.transaction.countryCode!}
+        countryPrefix={loginIdManager.transaction.countryPrefix!}
+        onLoginClick={onLoginClick}
+      />
 
-      <div className="title-container">
-        <h1>{loginIdManager.screen.getScreenTexts()?.title}</h1>
-        <p>{loginIdManager.screen.getScreenTexts()?.description}</p>
-      </div>
+      <SocialLogin
+        connections={loginIdManager.transaction.getAlternateConnections()!}
+        onSocialLogin={handleSocialConnectionLogin}
+      />
 
-      <div className="input-container">
-        <button className="pick-country-code hidden" id="pick-country-code">
-          Pick country code - {loginIdManager.transaction.countryCode}: +
-          {loginIdManager.transaction.countryPrefix}
-        </button>
-        <label>Enter your email</label>
-        <input
-          type="text"
-          id="username"
-          ref={usernameRef}
-          placeholder="Enter your email"
+      <PasskeyButton onPasskeyLogin={handlePasskeyLogin} />
+
+      {loginIdManager.screen.getScreenLinks() && (
+        <Links
+          signupLink={loginIdManager.screen.signupLink!}
+          resetPasswordLink={loginIdManager.screen.resetPasswordLink!}
         />
-
-        {loginIdManager.screen.hasCaptcha && (
-          <div className="captcha-container">
-            <img src={loginIdManager.screen.captchaImage ?? ""} alt="Captcha" />
-            <label>Enter the captcha</label>
-            <input
-              type="text"
-              id="captcha"
-              ref={captchaRef}
-              placeholder="Enter the captcha"
-            />
-          </div>
-        )}
-
-        <div className="button-container">
-          <Button onClick={handleLogin}>Continue</Button>
-        </div>
-      </div>
-
-      <div className="federated-login-container">
-        {loginIdManager.transaction
-          .getAlternateConnections()
-          ?.map((connection) => (
-            <Button
-              key={connection.name}
-              onClick={() => handleSocialConnectionLogin(connection.name)}
-            >
-              Continue with {connection.name}
-            </Button>
-          ))}
-      </div>
-
-      <div className="passkey-container">
-        <Button onClick={handlePasskeyLogin}>Continue with Passkey</Button>
-      </div>
-
-      {loginIdManager.screen.hasScreenLinks && (
-        <div className="links">
-          {loginIdManager.screen.signupLink && (
-            <a href={loginIdManager.screen.signupLink ?? ""}>Sign Up</a>
-          )}
-          {loginIdManager.screen.passwordResetLink && (
-            <a href={loginIdManager.screen.passwordResetLink ?? ""}>
-              Forgot Password?
-            </a>
-          )}
-        </div>
       )}
 
-      {loginIdManager.transaction.hasErrors &&
-        loginIdManager.transaction.getErrors() && (
-          <div className="error-container">
-            {loginIdManager.transaction.getErrors()?.map((error, index) => (
-              <p key={index}>{error?.message}</p>
-            ))}
-          </div>
-        )}
+      {loginIdManager.transaction.hasErrors && loginIdManager.transaction.getErrors() && (
+        <ErrorMessages errors={loginIdManager.transaction.getErrors()!} />
+      )}
     </div>
   );
 };

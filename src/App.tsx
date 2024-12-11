@@ -1,5 +1,5 @@
 import React, { useEffect, Suspense } from "react";
-import { currentScreen } from "ul-javascript";
+import { getCurrentScreen } from "@auth0/auth0-acul-js";
 
 const LoginIdScreen = React.lazy(() => import("./screens/LoginId"));
 const LoginPasswordScreen = React.lazy(() => import("./screens/LoginPassword"));
@@ -7,8 +7,8 @@ const LoginPasswordScreen = React.lazy(() => import("./screens/LoginPassword"));
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
   useEffect(() => {
-    const current = currentScreen();
-    setScreen(current);
+    const current = getCurrentScreen();
+    setScreen(current!);
   }, []);
 
   const renderScreen = () => {

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import LoginPasswordInstance from "ul-javascript/login-password";
+import LoginPasswordInstance from "@auth0/auth0-acul-js/login-password";
 import "../../styles/screens/login-password.scss";
 
 const LoginPasswordScreen: React.FC = () => {
@@ -19,7 +19,7 @@ const LoginPasswordScreen: React.FC = () => {
       captcha,
     };
 
-    loginPasswordManager.continueWithPassword(options);
+    loginPasswordManager.login(options);
   };
 
   return (
@@ -47,7 +47,7 @@ const LoginPasswordScreen: React.FC = () => {
           placeholder="Enter your password"
         />
 
-        {loginPasswordManager.screen.hasCaptcha && (
+        {loginPasswordManager.screen.isCaptchaAvailable&& (
           <div className="captcha-container">
             <img
               src={loginPasswordManager.screen.captchaImage ?? ""}
@@ -69,7 +69,7 @@ const LoginPasswordScreen: React.FC = () => {
           </button>
         </div>
 
-        {loginPasswordManager.screen.hasScreenLinks && (
+        {loginPasswordManager.screen.getScreenLinks() && (
           <div className="links">
             {loginPasswordManager.screen.signupLink && (
               <a href={loginPasswordManager.screen.signupLink}>Sign Up</a>
