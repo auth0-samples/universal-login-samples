@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@auth0/auth0-acul-js": "^0.0.1-beta.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-error-boundary": "^4.1.2"
@@ -26,7 +27,6 @@
     "sass-embedded": "1.80.0",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.11.0",
-    "ul-javascript": "file:../../sdk/universal-login/packages/ul-javascript",
     "vite": "^5.4.10"
   }
 }
