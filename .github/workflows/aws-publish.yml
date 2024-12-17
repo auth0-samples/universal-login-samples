@@ -28,8 +28,8 @@ jobs:
       - name: Build package
         run: npm run build
       # Step 5: Zip the build output
-      - name: Create deployment package
-        run: zip -r build.zip ./build
+      # - name: Create deployment package
+      #   run: zip -r build.zip ./build
       # Step 6: Configure AWS credentials via OIDC
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -39,4 +39,4 @@ jobs:
       # Step 7: Upload to S3
       - name: Upload to S3
         run: |
-          aws s3 cp ./build.zip s3://universal-login-sample-app/build.zip --acl public-read
+          aws s3 cp ./dist s3://universal-login-sample-app --acl public-read
