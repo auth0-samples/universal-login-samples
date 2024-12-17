@@ -1,0 +1,18 @@
+@use '../base' as *;
+@use '../mixins' as *;
+
+.login-id-container {
+  max-height: 100vh;
+  overflow: auto;
+}
+
+.alternate-connections {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  
+    button {
+      @include federated-button;
+    }
+}
