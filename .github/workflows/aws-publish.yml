@@ -27,6 +27,8 @@ jobs:
       # Step 4: Build the project
       - name: Build package
         run: npm run build
+      - name: List all files
+        run: ls -la
       # Step 5: Zip the build output
       # - name: Create deployment package
       #   run: zip -r build.zip ./build
@@ -39,4 +41,4 @@ jobs:
       # Step 7: Upload to S3
       - name: Upload to S3
         run: |
-          aws s3 cp ./dist s3://universal-login-sample-app --acl public-read
+          aws s3 cp ./dist s3://universal-login-sample-app/ --recursive --acl public-read
