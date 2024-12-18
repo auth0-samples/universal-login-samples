@@ -1,9 +1,10 @@
 name: Build and Deploy to AWS S3
 on:
-  pull_request:
+  push:
     branches:
       - master  # Trigger on PRs targeting 'master' branch
   workflow_dispatch:
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -14,6 +15,7 @@ jobs:
       # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v4
+
       # Step 2: Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -21,24 +23,24 @@ jobs:
           node-version: 18
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
+
       # Step 3: Install dependencies
       - name: Install dependencies
         run: npm ci --include=dev
+
       # Step 4: Build the project
       - name: Build package
         run: npm run build
-      - name: List all files
-        run: ls -la
-      # Step 5: Zip the build output
-      # - name: Create deployment package
-      #   run: zip -r build.zip ./build
-      # Step 6: Configure AWS credentials via OIDC
+
+      # Step 5: Configure AWS credentials via OIDC
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::913524902005:role/GA_UL_Sample_App
+          role-to-assume: ${{ secrets.AWS_S3_ARN }}
           aws-region: ap-southeast-2
-      # Step 7: Upload to S3
+          mask-aws-account-id: true
+
+      # Step 6: Upload to S3
       - name: Upload to S3
         run: |
           aws s3 cp ./dist s3://universal-login-sample-app/ --recursive
