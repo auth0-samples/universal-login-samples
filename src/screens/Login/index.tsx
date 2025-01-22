@@ -1,21 +1,20 @@
 import React from "react";
-import { useLoginIdManager } from './hooks/useLoginIdManager';
+import { useLoginManager } from './hooks/useLoginManager';
 import { useLoginForm } from './hooks/useLoginForm';
 import { Logo } from "../../components/Logo";
 import { Title } from './components/Title';
 import { LoginForm } from './components/LoginForm';
 import { SocialLogin } from './components/SocialLogin';
-import { PasskeyButton } from './components/PasskeyButton';
 import { Links } from './components/Links';
 import { ErrorMessages } from './components/ErrorMessages';
 
-const LoginIdScreen: React.FC = () => {
-  const { loginIdManager, handleLogin, handleSocialConnectionLogin, handlePasskeyLogin } = useLoginIdManager();
-  const { usernameRef, captchaRef, getFormValues } = useLoginForm();
+const LoginScreen: React.FC = () => {
+  const { loginIdManager, handleLogin, handleSocialConnectionLogin } = useLoginManager();
+  const { usernameRef, passwordRef, captchaRef, getFormValues } = useLoginForm();
 
   const onLoginClick = () => {
-    const { username, captcha } = getFormValues();
-    handleLogin(username, captcha);
+    const { username, password, captcha } = getFormValues();
+    handleLogin(username, password, captcha);
   };
 
   return (
@@ -25,6 +24,7 @@ const LoginIdScreen: React.FC = () => {
       
       <LoginForm
         usernameRef={usernameRef}
+        passwordRef={passwordRef}
         captchaRef={captchaRef}
         isCaptchaAvailable={loginIdManager.screen.isCaptchaAvailable}
         captchaImage={loginIdManager.screen.captchaImage!}
@@ -37,8 +37,6 @@ const LoginIdScreen: React.FC = () => {
         connections={loginIdManager.transaction.alternateConnections!}
         onSocialLogin={handleSocialConnectionLogin}
       />
-
-      <PasskeyButton onPasskeyLogin={handlePasskeyLogin} />
 
       {loginIdManager.screen.links && (
         <Links
@@ -54,4 +52,4 @@ const LoginIdScreen: React.FC = () => {
   );
 };
 
-export default LoginIdScreen;
+export default LoginScreen;
