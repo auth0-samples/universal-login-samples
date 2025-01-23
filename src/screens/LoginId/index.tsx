@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoginIdManager } from './hooks/useLoginIdManager';
+import { useLoginManager } from './hooks/useLoginManager';
 import { useLoginForm } from './hooks/useLoginForm';
 import { Logo } from "../../components/Logo";
 import { Title } from './components/Title';
@@ -10,7 +10,7 @@ import { Links } from './components/Links';
 import { ErrorMessages } from './components/ErrorMessages';
 
 const LoginIdScreen: React.FC = () => {
-  const { loginIdManager, handleLogin, handleSocialConnectionLogin, handlePasskeyLogin } = useLoginIdManager();
+  const { loginManager, handleLogin, handleSocialConnectionLogin, handlePasskeyLogin } = useLoginManager();
   const { usernameRef, captchaRef, getFormValues } = useLoginForm();
 
   const onLoginClick = () => {
@@ -21,34 +21,34 @@ const LoginIdScreen: React.FC = () => {
   return (
     <div className="prompt-container">
       <Logo />
-      <Title screenTexts={loginIdManager.screen.texts!} />
+      <Title screenTexts={loginManager.screen.texts!} />
       
       <LoginForm
         usernameRef={usernameRef}
         captchaRef={captchaRef}
-        isCaptchaAvailable={loginIdManager.screen.isCaptchaAvailable}
-        captchaImage={loginIdManager.screen.captchaImage!}
-        countryCode={loginIdManager.transaction.countryCode!}
-        countryPrefix={loginIdManager.transaction.countryPrefix!}
+        isCaptchaAvailable={loginManager.screen.isCaptchaAvailable}
+        captchaImage={loginManager.screen.captchaImage!}
+        countryCode={loginManager.transaction.countryCode!}
+        countryPrefix={loginManager.transaction.countryPrefix!}
         onLoginClick={onLoginClick}
       />
 
       <SocialLogin
-        connections={loginIdManager.transaction.alternateConnections!}
+        connections={loginManager.transaction.alternateConnections!}
         onSocialLogin={handleSocialConnectionLogin}
       />
 
       <PasskeyButton onPasskeyLogin={handlePasskeyLogin} />
 
-      {loginIdManager.screen.links && (
+      {loginManager.screen.links && (
         <Links
-          signupLink={loginIdManager.screen.signupLink!}
-          resetPasswordLink={loginIdManager.screen.resetPasswordLink!}
+          signupLink={loginManager.screen.signupLink!}
+          resetPasswordLink={loginManager.screen.resetPasswordLink!}
         />
       )}
 
-      {loginIdManager.transaction.hasErrors && loginIdManager.transaction.errors && (
-        <ErrorMessages errors={loginIdManager.transaction.errors!} />
+      {loginManager.transaction.hasErrors && loginManager.transaction.errors && (
+        <ErrorMessages errors={loginManager.transaction.errors!} />
       )}
     </div>
   );

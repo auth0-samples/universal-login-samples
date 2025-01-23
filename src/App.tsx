@@ -4,6 +4,7 @@ import { getCurrentScreen } from "@auth0/auth0-acul-js";
 const LoginIdScreen = React.lazy(() => import("./screens/LoginId"));
 const LoginPasswordScreen = React.lazy(() => import("./screens/LoginPassword"));
 const Login = React.lazy(() => import("./screens/Login"));
+const Signup = React.lazy(() => import("./screens/Signup"));
 
 
 const App: React.FC = () => {
@@ -21,6 +22,8 @@ const App: React.FC = () => {
         return <LoginPasswordScreen />;
       case "login":
         return <Login />; 
+      case "signup":
+        return <Signup />;
       default:
         return <>No screen rendered</>;
     }
