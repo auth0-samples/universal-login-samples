@@ -7,6 +7,7 @@ const Login = React.lazy(() => import("./screens/Login"));
 const Signup = React.lazy(() => import("./screens/Signup"));
 const ResetPasswordRequest = React.lazy(() => import("./screens/ResetPasswordRequest"));
 const ResetPasswordEmail = React.lazy(() => import("./screens/ResetPasswordEmail"));
+const ResetPassword = React.lazy(() => import("./screens/ResetPassword"));
 
 
 const App: React.FC = () => {
@@ -30,6 +31,8 @@ const App: React.FC = () => {
         return <ResetPasswordRequest />;
       case "reset-password-email":
         return <ResetPasswordEmail />;
+      case "reset-password":
+        return <ResetPassword />;
       default:
         return <>No screen rendered</>;
     }

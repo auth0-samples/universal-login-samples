@@ -1,7 +1,7 @@
 import  Button  from '../../../components/Button';
 interface LoginFormProps {
-  usernameRef: React.RefObject<HTMLInputElement>;
-  passwordRef: React.RefObject<HTMLInputElement>;
+  newPasswordRef: React.RefObject<HTMLInputElement>;
+  confirmPasswordRef: React.RefObject<HTMLInputElement>;
   captchaRef: React.RefObject<HTMLInputElement>;
   isCaptchaAvailable: boolean;
   captchaImage?: string;
@@ -11,31 +11,26 @@ interface LoginFormProps {
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({
-  usernameRef,
-  passwordRef,
+  newPasswordRef,
+  confirmPasswordRef,
   captchaRef,
   isCaptchaAvailable,
   captchaImage,
-  countryCode,
-  countryPrefix,
   onLoginClick,
 }) => (
   <div className="input-container">
-    <button className="pick-country-code hidden" id="pick-country-code">
-      Pick country code - {countryCode}: +{countryPrefix}
-    </button>
-    <label>Enter your email</label>
+    <label>Enter your new password</label>
     <input
-      type="text"
-      id="username"
-      ref={usernameRef}
+      type="password"
+      id="newPassword"
+      ref={newPasswordRef}
       placeholder="Enter your email"
     />
-    <label>Enter your password</label>
+    <label>Confirm your new password</label>
     <input
       type="password"
       id="password"
-      ref={passwordRef}
+      ref={confirmPasswordRef}
       placeholder="Enter your password"
     />
 
