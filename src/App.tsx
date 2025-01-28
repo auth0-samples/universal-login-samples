@@ -8,7 +8,8 @@ const Signup = React.lazy(() => import("./screens/Signup"));
 const ResetPasswordRequest = React.lazy(() => import("./screens/ResetPasswordRequest"));
 const ResetPasswordEmail = React.lazy(() => import("./screens/ResetPasswordEmail"));
 const ResetPassword = React.lazy(() => import("./screens/ResetPassword"));
-
+const ResetPasswordError = React.lazy(() => import("./screens/ResetPasswordError"));
+const ResetPasswordSuccess = React.lazy(() => import("./screens/ResetPasswordSuccess"));
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
@@ -33,6 +34,10 @@ const App: React.FC = () => {
         return <ResetPasswordEmail />;
       case "reset-password":
         return <ResetPassword />;
+      case "reset-password-error":
+        return <ResetPasswordError />;
+      case "reset-password-success":
+        return <ResetPasswordSuccess />;
       default:
         return <>No screen rendered</>;
     }
