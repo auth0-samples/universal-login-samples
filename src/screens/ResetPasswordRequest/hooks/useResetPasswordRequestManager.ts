@@ -12,7 +12,7 @@ export const useResetPasswordRequestManager = () => {
     const payload: ResetPasswordRequestOptions = {
       username: options.username
     }
-    resetPasswordRequestManager.continueWithIdentifier(payload);
+    resetPasswordRequestManager.resetPassword(payload);
   };
 
   const backToLogin = () => {
