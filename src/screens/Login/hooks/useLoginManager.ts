@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import LoginIdInstance from "@auth0/auth0-acul-js/login-id";
+import LoginInstance from "@auth0/auth0-acul-js/login";
+import { withWindowDebug } from "../../../utils";
 
-export const useLoginIdManager = () => {
-  const [loginIdManager] = useState(() => new LoginIdInstance());
+export const useLoginManager = () => {
+  const [loginIdManager] = useState(() => new LoginInstance());
+  withWindowDebug(loginIdManager, 'login')
 
-  const handleLogin = (username: string, captcha: string): void => {
+  const handleLogin = (username: string, password: string, captcha: string): void => {
     const options = {
       username,
+      password,
       captcha: loginIdManager.screen.isCaptchaAvailable ? captcha : "",
     };
     loginIdManager.login(options);
@@ -16,15 +19,10 @@ export const useLoginIdManager = () => {
     loginIdManager.socialLogin({ connection: connectionName });
   };
 
-  const handlePasskeyLogin = () => {
-    loginIdManager.passkeyLogin();
-  };
-
   return {
     loginIdManager,
     handleLogin,
-    handleSocialConnectionLogin,
-    handlePasskeyLogin,
+    handleSocialConnectionLogin
   };
 };
 

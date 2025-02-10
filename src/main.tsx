@@ -7,7 +7,6 @@ const rootElement = document.createElement("div");
 rootElement.id = "root";
 
 document.body.appendChild(rootElement);
-document.body.style.overflow = "hidden";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
