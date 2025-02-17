@@ -1,5 +1,6 @@
 import React, { useEffect, Suspense } from "react";
 import { getCurrentScreen } from "@auth0/auth0-acul-js";
+import MfaBeginEnrollOptionsScreen from "./screens/mfa-begin-enroll-options";
 
 const LoginIdScreen = React.lazy(() => import("./screens/LoginId"));
 const LoginPasswordScreen = React.lazy(() => import("./screens/LoginPassword"));
@@ -38,6 +39,8 @@ const App: React.FC = () => {
         return <ResetPasswordError />;
       case "reset-password-success":
         return <ResetPasswordSuccess />;
+      case "mfa-begin-enroll-options":
+        return <MfaBeginEnrollOptionsScreen />
       default:
         return <>No screen rendered</>;
     }
