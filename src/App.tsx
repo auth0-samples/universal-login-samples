@@ -15,6 +15,7 @@ const MfaBeginEnrollOptionsScreen = React.lazy(() => import("./screens/mfa-begin
 const MfaPushWelcomeScreen = React.lazy(() => import("./screens/mfa-push-welcome"));
 const MFASmsEnrollmentScreen = React.lazy(() => import("./screens/mfa-sms-enrollment"));
 const MfaCountryCodesScreen = React.lazy(() => import("./screens/mfa-country-codes"));
+const MfaPushEnrollmentQrScreen = React.lazy(() => import("./screens/mfa-push-enrollment-qr"));
 
 
 const App: React.FC = () => {
@@ -54,6 +55,8 @@ const App: React.FC = () => {
         return <MfaPushWelcomeScreen />;
       case "mfa-country-codes":
         return <MfaCountryCodesScreen />;
+      case "mfa-push-enrollment-qr":
+        return <MfaPushEnrollmentQrScreen />
       default:
         return <>No screen rendered</>;
     }
