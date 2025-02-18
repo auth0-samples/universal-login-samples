@@ -1,6 +1,6 @@
 name: Build and Deploy to AWS S3
 on:
-  push:
+  pull_request:
     branches:
       - master  # Trigger on PRs targeting 'master' branch
     types:
