@@ -12,6 +12,7 @@ const ResetPassword = React.lazy(() => import("./screens/ResetPassword"));
 const ResetPasswordError = React.lazy(() => import("./screens/ResetPasswordError"));
 const ResetPasswordSuccess = React.lazy(() => import("./screens/ResetPasswordSuccess"));
 const MfaSmsChallengeScreen = React.lazy(() => import("./screens/mfa-sms-challenge"));
+const MFASmsEnrollmentScreen = React.lazy(() => import("./screens/mfa-sms-enrollment"));
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
@@ -43,7 +44,9 @@ const App: React.FC = () => {
       case "mfa-begin-enroll-options":
         return <MfaBeginEnrollOptionsScreen />
       case "mfa-sms-challenge":
-        return <MfaSmsChallengeScreen />
+        return <MfaSmsChallengeScreen />;
+      case "mfa-sms-enrollment":
+        return <MFASmsEnrollmentScreen />;
       default:
         return <>No screen rendered</>;
     }
