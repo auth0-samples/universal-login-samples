@@ -17,6 +17,7 @@ const MFASmsEnrollmentScreen = React.lazy(() => import("./screens/mfa-sms-enroll
 const MfaCountryCodesScreen = React.lazy(() => import("./screens/mfa-country-codes"));
 const MfaPushEnrollmentQrScreen = React.lazy(() => import("./screens/mfa-push-enrollment-qr"));
 const MFASmsListScreen = React.lazy(() => import("./screens/mfa-sms-list"));
+const MfaEmailChallengeScreen = React.lazy(() => import("./screens/mfa-email-challenge"));
 
 
 const App: React.FC = () => {
@@ -57,9 +58,11 @@ const App: React.FC = () => {
       case "mfa-country-codes":
         return <MfaCountryCodesScreen />;
       case "mfa-push-enrollment-qr":
-        return <MfaPushEnrollmentQrScreen />
+        return <MfaPushEnrollmentQrScreen />;
       case "mfa-sms-list":
-        return <MFASmsListScreen />
+        return <MFASmsListScreen />;
+      case "mfa-email-challenge":
+        return <MfaEmailChallengeScreen />;
       default:
         return <>No screen rendered</>;
     }
