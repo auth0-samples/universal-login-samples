@@ -89,7 +89,7 @@ const MfaSmsChallengeScreen = () => {
                 checked={rememberDevice}
                 onChange={(e) => setRememberDevice(e.target.checked)}
               />
-              <label htmlFor="rememberDevice" className="ml-2 block text-sm text-gray-900">
+              <label htmlFor="rememberDevice" className="ml-2 block text-sm text-gray-900" title="If enabled this screen will not be prompted again for this browser">
                 Remember this device
               </label>
             </div>
@@ -121,7 +121,7 @@ const MfaSmsChallengeScreen = () => {
               onClick={handleTryAnotherMethod}
               className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mt-2"
             >
-              Try Another Method
+              Try Another Method 
             </button>
             <button
               onClick={handleGetACall}
