@@ -149,8 +149,7 @@ jobs:
           curl -sSfL https://raw.githubusercontent.com/auth0/auth0-cli/main/install.sh | sh -s -- -b .
           # Move it to /usr/local/bin for system-wide access
           sudo mv ./auth0 /usr/local/bin/
-          # Verify installation
-          auth0 version
+
 
       - name: Update Management API using Auth0 CLI
         run: |
