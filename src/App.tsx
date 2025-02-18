@@ -1,6 +1,7 @@
 import React, { useEffect, Suspense } from "react";
 import { getCurrentScreen } from "@auth0/auth0-acul-js";
 import MfaBeginEnrollOptionsScreen from "./screens/mfa-begin-enroll-options";
+import MfaPushWelcomeScreen from "./screens/mfa-push-welcome";
 
 const LoginIdScreen = React.lazy(() => import("./screens/LoginId"));
 const LoginPasswordScreen = React.lazy(() => import("./screens/LoginPassword"));
@@ -47,6 +48,8 @@ const App: React.FC = () => {
         return <MfaSmsChallengeScreen />;
       case "mfa-sms-enrollment":
         return <MFASmsEnrollmentScreen />;
+      case "mfa-push-welcome":
+        return <MfaPushWelcomeScreen />;
       default:
         return <>No screen rendered</>;
     }
