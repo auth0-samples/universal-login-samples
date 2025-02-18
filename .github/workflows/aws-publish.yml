@@ -64,44 +64,84 @@ jobs:
           echo "Created test folders with copied build files:"
           ls -R dist/
 
+      # - name: Generate settings JSON files dynamically
+      #   run: |
+      #     for screen_folder in dist/*; do
+      #       if [ -d "$screen_folder" ]; then
+      #         screen_name=$(basename "$screen_folder")
+      #         cat > "$screen_name-settings.json"  << 'EOF'
+      #         {
+      #           "rendering_mode": "advanced",
+      #           "context_configuration": [
+      #             "screen.texts",
+      #             "screen.hasCaptcha",
+      #             "screen.captchaImage"
+      #           ],
+      #           "head_tags": [
+      #             {
+      #               "tag": "script",
+      #               "attributes": {
+      #                 "src": "\$CDN_URL/$screen_name/index.js",
+      #                 "integrity": "sha384-\$jsHash",
+      #                 "crossorigin": "anonymous"
+      #               }
+      #             },
+      #             {
+      #               "tag": "link",
+      #               "attributes": {
+      #                 "href": "\$CDN_URL/$screen_name/index.css",
+      #                 "rel": "stylesheet",
+      #                 "integrity": "sha384-\$cssHash",
+      #                 "crossorigin": "anonymous"
+      #               }
+      #             }
+      #           ]
+      #         }
+      #         EOF
+      #         echo "Generated settings file: $screen_name-settings.json"
+      #       fi
+      #     done
+      - name: Install jq (if not available)
+        run: sudo apt-get install jq -y
       - name: Generate settings JSON files dynamically
         run: |
           for screen_folder in dist/*; do
             if [ -d "$screen_folder" ]; then
               screen_name=$(basename "$screen_folder")
-              cat > "$screen_name-settings.json"  << 'EOF'
-              {
-                "rendering_mode": "advanced",
-                "context_configuration": [
-                  "screen.texts",
-                  "screen.hasCaptcha",
-                  "screen.captchaImage"
-                ],
-                "head_tags": [
-                  {
-                    "tag": "script",
-                    "attributes": {
-                      "src": "\$CDN_URL/$screen_name/index.js",
-                      "integrity": "sha384-\$jsHash",
-                      "crossorigin": "anonymous"
-                    }
-                  },
-                  {
-                    "tag": "link",
-                    "attributes": {
-                      "href": "\$CDN_URL/$screen_name/index.css",
-                      "rel": "stylesheet",
-                      "integrity": "sha384-\$cssHash",
-                      "crossorigin": "anonymous"
-                    }
-                  }
-                ]
-              }
-              EOF
+              jq -n --arg screen_name "$screen_name" \
+                    --arg cdn_url "${{ secrets.CDN_URL }}" \
+                    --arg js_hash "$jsHash" \
+                    --arg css_hash "$cssHash" \
+                    '{
+                      "rendering_mode": "advanced",
+                      "context_configuration": [
+                        "screen.texts",
+                        "screen.hasCaptcha",
+                        "screen.captchaImage"
+                      ],
+                      "head_tags": [
+                        {
+                          "tag": "script",
+                          "attributes": {
+                            "src": ($cdn_url + "/" + $screen_name + "/index.js"),
+                            "integrity": ("sha384-" + $js_hash),
+                            "crossorigin": "anonymous"
+                          }
+                        },
+                        {
+                          "tag": "link",
+                          "attributes": {
+                            "href": ($cdn_url + "/" + $screen_name + "/index.css"),
+                            "rel": "stylesheet",
+                            "integrity": ("sha384-" + $css_hash),
+                            "crossorigin": "anonymous"
+                          }
+                        }
+                      ]
+                    }' > "$screen_name-settings.json"
               echo "Generated settings file: $screen_name-settings.json"
             fi
           done
-
       - name: Update Management API using Auth0 CLI
         run: |
           for screen_folder in dist/*; do
