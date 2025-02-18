@@ -44,3 +44,67 @@ jobs:
       - name: Upload to S3
         run: |
           aws s3 cp ./dist s3://universal-login-sample-app/ --recursive
+
+      - name: Manually create test folders under dist/ (for testing only)
+        run: |
+          mkdir -p dist/loginid
+          mkdir -p dist/login
+          # Copy the existing built files into these folders
+          cp dist/index.js dist/loginid/index.js
+          cp dist/index.css dist/loginid/index.css
+          cp dist/index.html dist/loginid/index.html
+          cp dist/*.png dist/loginid/
+          cp dist/index.js dist/login/index.js
+          cp dist/index.css dist/login/index.css
+          cp dist/index.html dist/login/index.html
+          cp dist/*.png dist/login/
+          echo "Created test folders with copied build files:"
+          ls -R dist/
+
+      - name: Generate settings JSON files dynamically
+        run: |
+          for screen_folder in dist/*; do
+            if [ -d "$screen_folder" ]; then
+              screen_name=$(basename "$screen_folder")
+              cat <<EOF > "$screen_name-settings.json"
+              {
+                "rendering_mode": "advanced",
+                "context_configuration": [
+                  "screen.texts",
+                  "screen.hasCaptcha",
+                  "screen.captchaImage"
+                ],
+                "head_tags": [
+                  {
+                    "tag": "script",
+                    "attributes": {
+                      "src": "\$CDN_URL/$screen_name/index.js",
+                      "integrity": "sha384-\$jsHash",
+                      "crossorigin": "anonymous"
+                    }
+                  },
+                  {
+                    "tag": "link",
+                    "attributes": {
+                      "href": "\$CDN_URL/$screen_name/index.css",
+                      "rel": "stylesheet",
+                      "integrity": "sha384-\$cssHash",
+                      "crossorigin": "anonymous"
+                    }
+                  }
+                ]
+              }
+              EOF
+              echo "Generated settings file: $screen_name-settings.json"
+            fi
+          done
+
+      - name: Update Management API using Auth0 CLI
+        run: |
+          for screen_folder in dist/*; do
+            if [ -d "$screen_folder" ]; then
+              screen_name=$(basename "$screen_folder")
+              auth0 ui customize --rendering-mode advanced --prompt login-id --screen $screen_name --settings-file "./$screen_name-settings.json"
+              echo "Updated Auth0 UI for screen: $screen_name"
+            fi
+          done
