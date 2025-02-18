@@ -4,7 +4,8 @@ on:
     branches:
       - master  # Trigger on PRs targeting 'master' branch
     types:
-      - opened
+      - open
+      - synchronize
   workflow_dispatch:
 
 jobs:
