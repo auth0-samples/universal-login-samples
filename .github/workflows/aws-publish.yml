@@ -69,7 +69,7 @@ jobs:
           for screen_folder in dist/*; do
             if [ -d "$screen_folder" ]; then
               screen_name=$(basename "$screen_folder")
-              cat > "$screen_name-settings.json"
+              cat > "$screen_name-settings.json"  << 'EOF'
               {
                 "rendering_mode": "advanced",
                 "context_configuration": [
@@ -97,6 +97,7 @@ jobs:
                   }
                 ]
               }
+              EOF
               echo "Generated settings file: $screen_name-settings.json"
             fi
           done
