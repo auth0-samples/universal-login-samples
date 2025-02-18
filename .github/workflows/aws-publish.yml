@@ -140,14 +140,19 @@ jobs:
                       ]
                     }' > "$screen_name-settings.json"
               echo "Generated settings file: $screen_name-settings.json"
+              cat "$screen_name-settings.json"
             fi
           done
+      - name: Install Auth0 CLI via npm
+        run: |
+          npm install -g auth0
+          auth0 version  # Verify installation
       - name: Update Management API using Auth0 CLI
         run: |
           for screen_folder in dist/*; do
             if [ -d "$screen_folder" ]; then
               screen_name=$(basename "$screen_folder")
-              auth0 ui customize --rendering-mode advanced --prompt login-id --screen $screen_name --settings-file "./$screen_name-settings.json"
+              auth0 ul customize --rendering-mode advanced --prompt login-id --screen $screen_name --settings-file "./$screen_name-settings.json"
               echo "Updated Auth0 UI for screen: $screen_name"
             fi
           done
