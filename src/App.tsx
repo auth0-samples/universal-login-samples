@@ -1,7 +1,5 @@
 import React, { useEffect, Suspense } from "react";
 import { getCurrentScreen } from "@auth0/auth0-acul-js";
-import MfaBeginEnrollOptionsScreen from "./screens/mfa-begin-enroll-options";
-import MfaPushWelcomeScreen from "./screens/mfa-push-welcome";
 
 const LoginIdScreen = React.lazy(() => import("./screens/LoginId"));
 const LoginPasswordScreen = React.lazy(() => import("./screens/LoginPassword"));
@@ -13,7 +11,10 @@ const ResetPassword = React.lazy(() => import("./screens/ResetPassword"));
 const ResetPasswordError = React.lazy(() => import("./screens/ResetPasswordError"));
 const ResetPasswordSuccess = React.lazy(() => import("./screens/ResetPasswordSuccess"));
 const MfaSmsChallengeScreen = React.lazy(() => import("./screens/mfa-sms-challenge"));
+const MfaBeginEnrollOptionsScreen = React.lazy(() => import("./screens/mfa-begin-enroll-options"));
+const MfaPushWelcomeScreen = React.lazy(() => import("./screens/mfa-push-welcome"));
 const MFASmsEnrollmentScreen = React.lazy(() => import("./screens/mfa-sms-enrollment"));
+
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
