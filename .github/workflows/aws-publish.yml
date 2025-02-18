@@ -143,10 +143,11 @@ jobs:
               cat "$screen_name-settings.json"
             fi
           done
-      - name: Install Auth0 CLI via npm
+      - name: Install Auth0 CLI using Homebrew
         run: |
-          npm install -g auth0
+          brew install auth0
           auth0 version  # Verify installation
+
       - name: Update Management API using Auth0 CLI
         run: |
           for screen_folder in dist/*; do
