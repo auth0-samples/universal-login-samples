@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master  # Trigger on PRs targeting 'master' branch
+    types:
+      - opened
   workflow_dispatch:
 
 jobs:
@@ -33,17 +35,17 @@ jobs:
         run: npm run build
 
       # Step 5: Configure AWS credentials via OIDC
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_S3_ARN }}
-          aws-region: ap-southeast-2
-          mask-aws-account-id: true
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     role-to-assume: ${{ secrets.AWS_S3_ARN }}
+      #     aws-region: ap-southeast-2
+      #     mask-aws-account-id: true
 
-      # Step 6: Upload to S3
-      - name: Upload to S3
-        run: |
-          aws s3 cp ./dist s3://universal-login-sample-app/ --recursive
+      # # Step 6: Upload to S3
+      # - name: Upload to S3
+      #   run: |
+      #     aws s3 cp ./dist s3://universal-login-sample-app/ --recursive
 
       - name: Manually create test folders under dist/ (for testing only)
         run: |
