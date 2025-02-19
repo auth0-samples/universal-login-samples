@@ -64,45 +64,9 @@ jobs:
           echo "Created test folders with copied build files:"
           ls -R dist/
 
-      # - name: Generate settings JSON files dynamically
-      #   run: |
-      #     for screen_folder in dist/*; do
-      #       if [ -d "$screen_folder" ]; then
-      #         screen_name=$(basename "$screen_folder")
-      #         cat > "$screen_name-settings.json"  << 'EOF'
-      #         {
-      #           "rendering_mode": "advanced",
-      #           "context_configuration": [
-      #             "screen.texts",
-      #             "screen.hasCaptcha",
-      #             "screen.captchaImage"
-      #           ],
-      #           "head_tags": [
-      #             {
-      #               "tag": "script",
-      #               "attributes": {
-      #                 "src": "\$CDN_URL/$screen_name/index.js",
-      #                 "integrity": "sha384-\$jsHash",
-      #                 "crossorigin": "anonymous"
-      #               }
-      #             },
-      #             {
-      #               "tag": "link",
-      #               "attributes": {
-      #                 "href": "\$CDN_URL/$screen_name/index.css",
-      #                 "rel": "stylesheet",
-      #                 "integrity": "sha384-\$cssHash",
-      #                 "crossorigin": "anonymous"
-      #               }
-      #             }
-      #           ]
-      #         }
-      #         EOF
-      #         echo "Generated settings file: $screen_name-settings.json"
-      #       fi
-      #     done
       - name: Install jq (if not available)
         run: sudo apt-get install jq -y
+        
       - name: Generate settings JSON files dynamically
         run: |
           for screen_folder in dist/*; do
@@ -142,6 +106,7 @@ jobs:
               cat "$screen_name-settings.json"
             fi
           done
+
       - name: Install Auth0 CLI
         run: |
           # Download and install Auth0 CLI
@@ -157,7 +122,6 @@ jobs:
             --client-secret ${{ secrets.AUTH0_CLIENT_SECRET }}
           auth0 domains list
 
-
       - name: Update Management API using Auth0 CLI
         run: |
           for screen_folder in dist/*; do
@@ -171,4 +135,4 @@ jobs:
       - name: Logout The Tenant
         run: |
           auth0 logout \
-            --domain ${{ secrets.AUTH0_DOMAIN }}
+            ${{ secrets.AUTH0_DOMAIN }}
