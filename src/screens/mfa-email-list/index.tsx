@@ -1,22 +1,23 @@
 import React from 'react';
-import MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
+import MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list';
 
-const MFASmsListScreen: React.FC = () => {
-  const mfaSmsList = new MfaSmsList();
-  (window as any)["mfaSmsList"] = mfaSmsList;
-  const { user } = mfaSmsList;
+const MfaEmailListScreen: React.FC = () => {
+  const mfaEmailList = new MfaEmailList();
+  const { user } = mfaEmailList;
 
-  const handleSelectPhoneNumber = async (index: number) => {
+  const handleSelectEmail = async (index: number) => {
     try {
-      await mfaSmsList.selectPhoneNumber({index});
+      await mfaEmailList.selectMfaEmail({
+        index: index,
+      });
     } catch (error) {
-      console.error('Failed to select phone number:', error);
+      console.error('Failed to select email:', error);
     }
   };
 
-  const handleBackAction = async () => {
+  const handleGoBack = async () => {
     try {
-      await mfaSmsList.backAction();
+      await mfaEmailList.goBack();
     } catch (error) {
       console.error('Failed to go back:', error);
     }
@@ -25,27 +26,27 @@ const MFASmsListScreen: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 className="text-2xl font-bold mb-4">Select a Phone Number</h2>
+        <h2 className="text-2xl font-bold mb-4">Select an Email Address</h2>
         {
-          user.enrolledPhoneNumbers ? (
+          user.enrolledEmails ? (
             <ul className="mb-4">
-              {user.enrolledPhoneNumbers?.map((phoneNumber, index) => (
+              {user.enrolledEmails.map((email, index) => (
                 <li key={index} className="py-2">
                   <button
-                    onClick={() => handleSelectPhoneNumber(index)}
+                    onClick={() => handleSelectEmail(index)}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                   >
-                    {phoneNumber}
+                    {email}
                   </button>
                 </li>
               ))}
             </ul>
           ) : (
-            <p>No phone numbers enrolled.</p>
+            <p>No email addresses enrolled.</p>
           )
         }
         <button
-          onClick={handleBackAction}
+          onClick={handleGoBack}
           className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
         >
           Back
@@ -55,4 +56,4 @@ const MFASmsListScreen: React.FC = () => {
   );
 };
 
-export default MFASmsListScreen;
+export default MfaEmailListScreen;
