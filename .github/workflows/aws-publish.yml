@@ -115,9 +115,8 @@ jobs:
                     '{
                       "rendering_mode": "advanced",
                       "context_configuration": [
-                        "screen.texts",
-                        "screen.hasCaptcha",
-                        "screen.captchaImage"
+                        "branding.settings",
+                        "branding.themes.default",
                       ],
                       "head_tags": [
                         {
