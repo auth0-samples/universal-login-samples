@@ -124,7 +124,7 @@ jobs:
                           "tag": "script",
                           "attributes": {
                             "src": ($cdn_url + "/" + $screen_name + "/index.js"),
-                            "integrity": ("sha384-" + $js_hash),
+                            "integrity": [("sha384-" + $js_hash)],
                             "crossorigin": "anonymous"
                           }
                         },
@@ -133,7 +133,7 @@ jobs:
                           "attributes": {
                             "href": ($cdn_url + "/" + $screen_name + "/index.css"),
                             "rel": "stylesheet",
-                            "integrity": ("sha384-" + $css_hash),
+                            "integrity": [("sha384-" + $css_hash)],
                             "crossorigin": "anonymous"
                           }
                         }
