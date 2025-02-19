@@ -116,7 +116,7 @@ jobs:
                       "rendering_mode": "advanced",
                       "context_configuration": [
                         "branding.settings",
-                        "branding.themes.default",
+                        "branding.themes.default"
                       ],
                       "head_tags": [
                         {
