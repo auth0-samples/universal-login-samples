@@ -21,6 +21,7 @@ const MfaEmailChallengeScreen = React.lazy(() => import("./screens/mfa-email-cha
 const MfaDetectBrowserCapabilitiesScreen = React.lazy(() => import("./screens/mfa-detect-browser-capabilities"));
 const MfaLoginOptionsScreen = React.lazy(() => import("./screens/mfa-login-options"));
 const MfaEmailListScreen = React.lazy(() => import("./screens/mfa-email-list"));
+const MfaPushChallengePushScreen = React.lazy(() => import("./screens/mfa-push-challenge-push"));
 
 
 const App: React.FC = () => {
@@ -72,6 +73,8 @@ const App: React.FC = () => {
         return <MfaLoginOptionsScreen />;
       case "mfa-email-list":
         return <MfaEmailListScreen />;
+      case "mfa-push-challenge-push":
+        return <MfaPushChallengePushScreen />;
       default:
         return <>No screen rendered</>;
     }
