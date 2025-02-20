@@ -66,7 +66,7 @@ jobs:
 
       - name: Install jq (if not available)
         run: sudo apt-get install jq -y
-        
+
       - name: Generate settings JSON files dynamically
         run: |
           for screen_folder in dist/*; do
@@ -120,7 +120,6 @@ jobs:
             --domain ${{ secrets.AUTH0_DOMAIN }} \
             --client-id ${{ secrets.AUTH0_CLIENT_ID }} \
             --client-secret ${{ secrets.AUTH0_CLIENT_SECRET }}
-          auth0 domains list
 
       - name: Update Management API using Auth0 CLI
         run: |
@@ -131,8 +130,3 @@ jobs:
               echo "Updated Auth0 UI for screen: $screen_name"
             fi
           done
-
-      - name: Logout The Tenant
-        run: |
-          auth0 logout \
-            ${{ secrets.AUTH0_DOMAIN }}
