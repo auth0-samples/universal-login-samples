@@ -10,6 +10,21 @@ const ResetPasswordEmail = React.lazy(() => import("./screens/ResetPasswordEmail
 const ResetPassword = React.lazy(() => import("./screens/ResetPassword"));
 const ResetPasswordError = React.lazy(() => import("./screens/ResetPasswordError"));
 const ResetPasswordSuccess = React.lazy(() => import("./screens/ResetPasswordSuccess"));
+const MfaSmsChallengeScreen = React.lazy(() => import("./screens/mfa-sms-challenge"));
+const MfaBeginEnrollOptionsScreen = React.lazy(() => import("./screens/mfa-begin-enroll-options"));
+const MfaPushWelcomeScreen = React.lazy(() => import("./screens/mfa-push-welcome"));
+const MFASmsEnrollmentScreen = React.lazy(() => import("./screens/mfa-sms-enrollment"));
+const MfaCountryCodesScreen = React.lazy(() => import("./screens/mfa-country-codes"));
+const MfaPushEnrollmentQrScreen = React.lazy(() => import("./screens/mfa-push-enrollment-qr"));
+const MFASmsListScreen = React.lazy(() => import("./screens/mfa-sms-list"));
+const MfaEmailChallengeScreen = React.lazy(() => import("./screens/mfa-email-challenge"));
+const MfaDetectBrowserCapabilitiesScreen = React.lazy(() => import("./screens/mfa-detect-browser-capabilities"));
+const MfaLoginOptionsScreen = React.lazy(() => import("./screens/mfa-login-options"));
+const MfaEmailListScreen = React.lazy(() => import("./screens/mfa-email-list"));
+const MfaPushChallengePushScreen = React.lazy(() => import("./screens/mfa-push-challenge-push"));
+const MfaEnrollResultScreen = React.lazy(() => import("./screens/mfa-enroll-result"));
+const MfaPushListScreen = React.lazy(() => import("./screens/mfa-push-list"));
+
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
@@ -38,6 +53,34 @@ const App: React.FC = () => {
         return <ResetPasswordError />;
       case "reset-password-success":
         return <ResetPasswordSuccess />;
+      case "mfa-begin-enroll-options":
+        return <MfaBeginEnrollOptionsScreen />
+      case "mfa-sms-challenge":
+        return <MfaSmsChallengeScreen />;
+      case "mfa-sms-enrollment":
+        return <MFASmsEnrollmentScreen />;
+      case "mfa-push-welcome":
+        return <MfaPushWelcomeScreen />;
+      case "mfa-country-codes":
+        return <MfaCountryCodesScreen />;
+      case "mfa-push-enrollment-qr":
+        return <MfaPushEnrollmentQrScreen />;
+      case "mfa-sms-list":
+        return <MFASmsListScreen />;
+      case "mfa-email-challenge":
+        return <MfaEmailChallengeScreen />;
+      case "mfa-detect-browser-capabilities":
+        return <MfaDetectBrowserCapabilitiesScreen />;
+      case "mfa-login-options":
+        return <MfaLoginOptionsScreen />;
+      case "mfa-email-list":
+        return <MfaEmailListScreen />;
+      case "mfa-push-challenge-push":
+        return <MfaPushChallengePushScreen />;
+      case "mfa-enroll-result":
+        return <MfaEnrollResultScreen />;
+      case "mfa-push-list":
+        return <MfaPushListScreen />;
       default:
         return <>No screen rendered</>;
     }
