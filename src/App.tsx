@@ -24,6 +24,11 @@ const MfaEmailListScreen = React.lazy(() => import("./screens/mfa-email-list"));
 const MfaPushChallengePushScreen = React.lazy(() => import("./screens/mfa-push-challenge-push"));
 const MfaEnrollResultScreen = React.lazy(() => import("./screens/mfa-enroll-result"));
 const MfaPushListScreen = React.lazy(() => import("./screens/mfa-push-list"));
+const MfaOtpChallengeScreen = React.lazy(() => import("./screens/mfa-otp-challenge"));
+const MfaOtpEnrollmentQrScreen = React.lazy(() => import("./screens/mfa-otp-enrollment-qr"));
+const ResetPasswordMfaEmailChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-email-challenge"));
+const ResetPasswordMfaPushChallengePushScreen = React.lazy(() => import("./screens/reset-password-mfa-push-challenge-push"));
+const ResetPasswordMfaSmsChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-sms-challenge"));
 
 
 const App: React.FC = () => {
@@ -81,6 +86,16 @@ const App: React.FC = () => {
         return <MfaEnrollResultScreen />;
       case "mfa-push-list":
         return <MfaPushListScreen />;
+      case "mfa-otp-challenge":
+        return <MfaOtpChallengeScreen />;
+      case "mfa-otp-enrollment-qr":
+        return <MfaOtpEnrollmentQrScreen />;
+      case "reset-password-mfa-email-challenge":
+        return <ResetPasswordMfaEmailChallengeScreen />;
+      case "reset-password-mfa-push-challenge-push":
+        return <ResetPasswordMfaPushChallengePushScreen />;
+      case "reset-password-mfa-sms-challenge":
+        return <ResetPasswordMfaSmsChallengeScreen />;
       default:
         return <>No screen rendered</>;
     }

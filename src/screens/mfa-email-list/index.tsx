@@ -1,5 +1,5 @@
 import React from 'react';
-import MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list';
+import MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list'
 
 const MfaEmailListScreen: React.FC = () => {
   const mfaEmailList = new MfaEmailList();
