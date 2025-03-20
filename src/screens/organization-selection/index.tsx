@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import OrganizationSelection from '@auth0/auth0-acul-js/organization-selection';
 
 const OrganizationSelectionScreen = () => {
   const [organizationName, setOrganizationName] = useState('');
   const organizationSelectionManager = new OrganizationSelection();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await organizationSelectionManager.continueWithOrganizationName({

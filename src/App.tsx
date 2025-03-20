@@ -32,6 +32,7 @@ const ResetPasswordMfaPushChallengePushScreen = React.lazy(() => import("./scree
 const ResetPasswordMfaSmsChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-sms-challenge"));
 const ResetPasswordMfaOtpChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-otp-challenge"));
 const OrganizationSelectionScreen = React.lazy(() => import("./screens/organization-selection"));
+const OrganizationPickerScreen = React.lazy(() => import("./screens/organization-picker"));
 
 
 const App: React.FC = () => {
@@ -105,6 +106,8 @@ const App: React.FC = () => {
         return <ResetPasswordMfaOtpChallengeScreen />;
       case "organization-selection":
         return <OrganizationSelectionScreen />;
+      case "organization-picker":
+        return <OrganizationPickerScreen />;
       default:
         return <>No screen rendered</>;
     }
