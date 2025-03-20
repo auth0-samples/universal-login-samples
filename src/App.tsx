@@ -34,6 +34,7 @@ const ResetPasswordMfaOtpChallengeScreen = React.lazy(() => import("./screens/re
 const OrganizationSelectionScreen = React.lazy(() => import("./screens/organization-selection"));
 const OrganizationPickerScreen = React.lazy(() => import("./screens/organization-picker"));
 const AcceptInvitationScreen = React.lazy(() => import("./screens/accept-invitation"));
+const CustomizedConsentScreen = React.lazy(() => import("./screens/customized-consent"));
 
 
 const App: React.FC = () => {
@@ -111,6 +112,8 @@ const App: React.FC = () => {
         return <OrganizationPickerScreen />;
       case "accept-invitation":
         return <AcceptInvitationScreen />;
+      case "customized-consent":
+        return <CustomizedConsentScreen />;
       default:
         return <>No screen rendered</>;
     }
