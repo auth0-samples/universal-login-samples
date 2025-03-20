@@ -26,11 +26,11 @@ const CustomizedConsentScreen: React.FC = () => {
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <h2 className="text-2xl font-bold mb-4">Consent to the following scopes:</h2>
         {
-          screen.data?.scopes && Object.entries(screen.data.scopes).map(([scope, description]) => (
+          screen.data?.scopes && Object.entries(screen.data.scopes as Record<string, string[]>).map(([scope, description]) => (
             <div key={scope} className="mb-4">
               <h3 className="text-xl font-semibold">{scope}</h3>
               <ul>
-                {description.map((desc, index) => (
+                {description.map((desc: string, index: number) => (
                   <li key={index} className="text-gray-700">{desc}</li>
                 ))}
               </ul>
