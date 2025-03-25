@@ -29,10 +29,10 @@ const MFASmsListScreen: React.FC = () => {
         {
           user.enrolledPhoneNumbers ? (
             <ul className="mb-4">
-              {user.enrolledPhoneNumbers?.map((phoneNumber, index) => (
-                <li key={index} className="py-2">
+              {user.enrolledPhoneNumbers?.map(({phoneNumber, id}) => (
+                <li key={id} className="py-2">
                   <button
-                    onClick={() => handleSelectPhoneNumber(index)}
+                    onClick={() => handleSelectPhoneNumber(id)}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                   >
                     {phoneNumber}
