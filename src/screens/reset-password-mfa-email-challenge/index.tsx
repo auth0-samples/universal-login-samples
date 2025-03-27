@@ -4,46 +4,27 @@ import ResetPasswordMfaEmailChallenge from '@auth0/auth0-acul-js/reset-password-
 const ResetPasswordMfaEmailChallengeScreen: React.FC = () => {
   const [code, setCode] = useState('');
   const [rememberDevice, setRememberDevice] = useState(false);
-  const [error, setError] = useState('');
 
   const resetPasswordMfaEmailChallenge = new ResetPasswordMfaEmailChallenge();
-  const { screen } = resetPasswordMfaEmailChallenge;
+  const { screen, transaction } = resetPasswordMfaEmailChallenge;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-
-    try {
-      await resetPasswordMfaEmailChallenge.continue({
-        code,
-        rememberDevice,
-      });
-    } catch (err) {
-      setError('Failed to verify code. Please try again.');
-      console.error(err);
-    }
+    await resetPasswordMfaEmailChallenge.continue({
+      code
+    });
   };
 
   const handleResendCode = async () => {
-    try {
-      await resetPasswordMfaEmailChallenge.resendCode();
-    } catch (err) {
-      setError('Failed to resend code. Please try again.');
-      console.error(err);
-    }
+    await resetPasswordMfaEmailChallenge.resendCode();
   };
 
   const handleTryAnotherMethod = async () => {
-    try {
-      await resetPasswordMfaEmailChallenge.tryAnotherMethod();
-    } catch (err) {
-      setError('Failed to try another method. Please try again.');
-      console.error(err);
-    }
+    await resetPasswordMfaEmailChallenge.tryAnotherMethod();
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 flex flex-col py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Verify Your Email
@@ -71,6 +52,15 @@ const ResetPasswordMfaEmailChallengeScreen: React.FC = () => {
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
+              {transaction?.errors?.length && (
+                <div className="mt-2 mb-4">
+                  {transaction?.errors.map((err, index) => (
+                    <p key={index} className="text-red-500">
+                      {err.message}
+                    </p>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="flex items-center">
@@ -86,12 +76,6 @@ const ResetPasswordMfaEmailChallengeScreen: React.FC = () => {
                 Remember this device
               </label>
             </div>
-
-            {error && (
-              <div className="text-red-600 text-sm">
-                {error}
-              </div>
-            )}
 
             <div>
               <button
