@@ -1,5 +1,5 @@
 import React from 'react';
-import MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list';
+import MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list'
 
 const MfaEmailListScreen: React.FC = () => {
   const mfaEmailList = new MfaEmailList();
@@ -30,10 +30,10 @@ const MfaEmailListScreen: React.FC = () => {
         {
           user.enrolledEmails ? (
             <ul className="mb-4">
-              {user.enrolledEmails.map((email, index) => (
-                <li key={index} className="py-2">
+              {user.enrolledEmails.map(({email, id}) => (
+                <li key={id} className="py-2">
                   <button
-                    onClick={() => handleSelectEmail(index)}
+                    onClick={() => handleSelectEmail(id)}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                   >
                     {email}

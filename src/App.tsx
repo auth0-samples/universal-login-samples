@@ -24,6 +24,17 @@ const MfaEmailListScreen = React.lazy(() => import("./screens/mfa-email-list"));
 const MfaPushChallengePushScreen = React.lazy(() => import("./screens/mfa-push-challenge-push"));
 const MfaEnrollResultScreen = React.lazy(() => import("./screens/mfa-enroll-result"));
 const MfaPushListScreen = React.lazy(() => import("./screens/mfa-push-list"));
+const MfaOtpChallengeScreen = React.lazy(() => import("./screens/mfa-otp-challenge"));
+const MfaOtpEnrollmentQrScreen = React.lazy(() => import("./screens/mfa-otp-enrollment-qr"));
+const MfaOtpEnrollmentCodeScreen = React.lazy(() => import("./screens/mfa-otp-enrollment-code"));
+const ResetPasswordMfaEmailChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-email-challenge"));
+const ResetPasswordMfaPushChallengePushScreen = React.lazy(() => import("./screens/reset-password-mfa-push-challenge-push"));
+const ResetPasswordMfaSmsChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-sms-challenge"));
+const ResetPasswordMfaOtpChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-otp-challenge"));
+const OrganizationSelectionScreen = React.lazy(() => import("./screens/organization-selection"));
+const OrganizationPickerScreen = React.lazy(() => import("./screens/organization-picker"));
+const AcceptInvitationScreen = React.lazy(() => import("./screens/accept-invitation"));
+// const CustomizedConsentScreen = React.lazy(() => import("./screens/customized-consent"));
 
 
 const App: React.FC = () => {
@@ -81,6 +92,28 @@ const App: React.FC = () => {
         return <MfaEnrollResultScreen />;
       case "mfa-push-list":
         return <MfaPushListScreen />;
+      case "mfa-otp-challenge":
+        return <MfaOtpChallengeScreen />;
+      case "mfa-otp-enrollment-qr":
+        return <MfaOtpEnrollmentQrScreen />;
+      case "mfa-otp-enrollment-code":
+        return <MfaOtpEnrollmentCodeScreen />;
+      case "reset-password-mfa-email-challenge":
+        return <ResetPasswordMfaEmailChallengeScreen />;
+      case "reset-password-mfa-push-challenge-push":
+        return <ResetPasswordMfaPushChallengePushScreen />;
+      case "reset-password-mfa-sms-challenge":
+        return <ResetPasswordMfaSmsChallengeScreen />;
+      case "reset-password-mfa-otp-challenge":
+        return <ResetPasswordMfaOtpChallengeScreen />;
+      case "organization-selection":
+        return <OrganizationSelectionScreen />;
+      case "organization-picker":
+        return <OrganizationPickerScreen />;
+      case "accept-invitation":
+        return <AcceptInvitationScreen />;
+      // case "customized-consent":
+      //   return <CustomizedConsentScreen />;
       default:
         return <>No screen rendered</>;
     }

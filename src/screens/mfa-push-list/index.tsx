@@ -30,12 +30,12 @@ const MfaPushListScreen: React.FC = () => {
         {
           enrolledDevices && enrolledDevices.length > 0 ? (
             <ul className="mb-4">
-              {enrolledDevices.map((device, index) => (
-                <li key={index} className="mb-2">
+              {enrolledDevices.map(({device, id}) => (
+                <li key={id} className="mb-2">
                   <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     type="button"
-                    onClick={() => handleSelectDevice(index)}
+                    onClick={() => handleSelectDevice(id)}
                   >
                     {device}
                   </button>
