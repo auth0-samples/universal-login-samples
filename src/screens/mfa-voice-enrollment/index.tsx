@@ -49,7 +49,7 @@ const MfaVoiceEnrollmentScreen: React.FC = () => {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
-          {errors?.length > 0 && (
+          {errors?.length && (
             <div className="mt-2 space-y-1">
               {errors.map((error, idx) => (
                 <p key={idx} className="text-red-600 text-sm">
