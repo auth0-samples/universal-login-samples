@@ -36,6 +36,7 @@ const OrganizationPickerScreen = React.lazy(() => import("./screens/organization
 const AcceptInvitationScreen = React.lazy(() => import("./screens/accept-invitation"));
 // const CustomizedConsentScreen = React.lazy(() => import("./screens/customized-consent"));
 const MfaPhoneEnrollmentScreen = React.lazy(() => import("./screens/mfa-phone-enrollment"));
+const MfaVoiceEnrollmentScreen = React.lazy(() => import("./screens/mfa-voice-enrollment"));
 
 
 const App: React.FC = () => {
@@ -117,6 +118,8 @@ const App: React.FC = () => {
       //   return <CustomizedConsentScreen />;
       case "mfa-phone-enrollment":
         return <MfaPhoneEnrollmentScreen />;
+      case "mfa-voice-enrollment":
+        return <MfaVoiceEnrollmentScreen />;
       default:
         return <>No screen rendered</>;
     }
