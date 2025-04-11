@@ -38,6 +38,8 @@ const AcceptInvitationScreen = React.lazy(() => import("./screens/accept-invitat
 const MfaPhoneEnrollmentScreen = React.lazy(() => import("./screens/mfa-phone-enrollment"));
 const MfaVoiceEnrollmentScreen = React.lazy(() => import("./screens/mfa-voice-enrollment"));
 const MfaRecoveryCodeChallengeScreen = React.lazy(() => import("./screens/mfa-recovery-code-challenge"));
+const DeviceCodeActivationAllowedScreen = React.lazy(() => import("./screens/device-code-activation-allowed"));
+const DeviceCodeActivationDeniedScreen = React.lazy(() => import("./screens/device-code-activation-denied"));
 
 
 const App: React.FC = () => {
@@ -123,6 +125,10 @@ const App: React.FC = () => {
         return <MfaVoiceEnrollmentScreen />;
       case "mfa-recovery-code-challenge":
         return <MfaRecoveryCodeChallengeScreen />;
+      case "device-code-activation-allowed":
+        return <DeviceCodeActivationAllowedScreen />;
+      case "device-code-activation-denied":
+        return <DeviceCodeActivationDeniedScreen />;
       default:
         return <>No screen rendered</>;
     }
