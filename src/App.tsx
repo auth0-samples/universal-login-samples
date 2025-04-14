@@ -1,9 +1,10 @@
 import React, { useEffect, Suspense } from "react";
 import { getCurrentScreen } from "@auth0/auth0-acul-js";
 
-const LoginIdScreen = React.lazy(() => import("./screens/LoginId"));
+// const LoginIdScreen = React.lazy(() => import("./screens/LoginId"));
 const LoginPasswordScreen = React.lazy(() => import("./screens/LoginPassword"));
 const Login = React.lazy(() => import("./screens/Login"));
+const LoginIdScreen = React.lazy(() => import("./screens/login-id"));
 const Signup = React.lazy(() => import("./screens/Signup"));
 const ResetPasswordRequest = React.lazy(() => import("./screens/ResetPasswordRequest"));
 const ResetPasswordEmail = React.lazy(() => import("./screens/ResetPasswordEmail"));
