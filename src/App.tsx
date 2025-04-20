@@ -42,6 +42,9 @@ const DeviceCodeActivationAllowedScreen = React.lazy(() => import("./screens/dev
 const DeviceCodeActivationDeniedScreen = React.lazy(() => import("./screens/device-code-activation-denied"));
 const DeviceCodeActivationScreen = React.lazy(() => import("./screens/device-code-activation"));
 const MfaVoiceChallengeScreen = React.lazy(() => import("./screens/mfa-voice-challenge"))
+const ResetPasswordMfaRecoveryCodeChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-recovery-code-challenge"));
+const ResetPasswordMfaVoiceChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-voice-challenge"));
+
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
@@ -134,6 +137,10 @@ const App: React.FC = () => {
         return <DeviceCodeActivationScreen />;
       case "mfa-voice-challenge":
         return <MfaVoiceChallengeScreen />;
+      case "reset-password-mfa-recovery-code-challenge":
+        return <ResetPasswordMfaRecoveryCodeChallengeScreen />;
+      case "reset-password-mfa-voice-challenge":
+        return <ResetPasswordMfaVoiceChallengeScreen />;
       default:
         return <>No screen rendered</>;
     }
