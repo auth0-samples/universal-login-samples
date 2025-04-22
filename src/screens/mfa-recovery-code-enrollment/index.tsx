@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MfaRecoveryCodeEnrollment from '@auth0/auth0-acul-js/mfa-recovery-code-enrollment';
 
 const MfaRecoveryCodeEnrollmentScreen: React.FC = () => {
@@ -6,9 +6,11 @@ const MfaRecoveryCodeEnrollmentScreen: React.FC = () => {
   const { screen, transaction } = mfaRecoveryCodeEnrollment;
   const texts = screen?.texts ?? {};
 
+  const [isCodeCopied, setIsCodeCopied] = useState(false);
+
   const handleContinue = async () => {
     try {
-      await mfaRecoveryCodeEnrollment.continue();
+      await mfaRecoveryCodeEnrollment.continue({ isCodeCopied });
     } catch (error) {
       console.error('Failed to continue:', error);
     }
@@ -29,6 +31,16 @@ const MfaRecoveryCodeEnrollmentScreen: React.FC = () => {
           {screen?.data?.textCode ?? '******-******'}
         </p>
 
+        <label className="mb-4 flex items-center space-x-2 text-sm text-gray-700">
+          <input
+            type="checkbox"
+            checked={isCodeCopied}
+            onChange={(e) => setIsCodeCopied(e.target.checked)}
+            className="form-checkbox h-4 w-4 text-blue-600"
+          />
+          <span>I have saved the recovery code</span>
+        </label>
+
         {transaction?.errors?.length && (
           <div className="mb-4 space-y-1">
             {transaction.errors.map((err, index) => (
@@ -43,6 +55,7 @@ const MfaRecoveryCodeEnrollmentScreen: React.FC = () => {
           className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button"
           onClick={handleContinue}
+          disabled={!isCodeCopied}
         >
           {texts.buttonText ?? 'I have saved the code'}
         </button>
