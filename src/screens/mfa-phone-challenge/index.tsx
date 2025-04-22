@@ -46,7 +46,7 @@ const MfaPhoneChallengeScreen: React.FC = () => {
   // Extract texts for UI elements, providing default fallbacks
   const texts = screen?.texts ?? {};
   const title = texts.title ?? 'Verify Your Identity';
-  const description = texts.description ?? `How would you like to get the verification code sent to ${screen.data?.phone_number ?? 'your phone'}?`;
+  const description = texts.description ?? `How would you like to get the verification code sent to ${screen.data?.phoneNumber ?? 'your phone'}?`;
   const smsButtonText = texts.smsButtonText ?? 'Send code via SMS';
   const voiceButtonText = texts.voiceButtonText ?? 'Send code via Voice Call';
   const tryAnotherMethodText = texts.pickAuthenticatorText ?? 'Try Another Method';
