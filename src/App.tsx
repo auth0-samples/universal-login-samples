@@ -48,6 +48,7 @@ const RedeemTicketScreen = React.lazy(() => import("./screens/redeem-ticket"));
 const DeviceCodeConfirmationScreen = React.lazy(() => import("./screens/device-code-confirmation"));
 const MfaPhoneChallengeScreen = React.lazy(() => import("./screens/mfa-phone-challenge"));
 const MfaRecoveryCodeEnrollmentScreen = React.lazy(() => import("./screens/mfa-recovery-code-enrollment"));
+const ResetPasswordMfaPhoneChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-phone-challenge"));
 
 
 const App: React.FC = () => {
@@ -153,6 +154,8 @@ const App: React.FC = () => {
         return <MfaPhoneChallengeScreen />;
       case "mfa-recovery-code-enrollment":
         return <MfaRecoveryCodeEnrollmentScreen />;
+      case "reset-password-mfa-phone-challenge":
+        return <ResetPasswordMfaPhoneChallengeScreen />;
       default:
         return <>No screen rendered</>;
     }
