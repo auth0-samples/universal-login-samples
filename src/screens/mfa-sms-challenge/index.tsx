@@ -5,7 +5,7 @@ const MfaSmsChallengeScreen = () => {
   const mfaSmsChallenge = new MfaSmsChallenge();
   const [code, setCode] = useState("");
   const [rememberDevice, setRememberDevice] = useState(false);
-  const { phoneNumber, showRememberDevice } = mfaSmsChallenge.screen.data || {};
+  const { phoneNumber, showRememberDevice, showLinkVoice } = mfaSmsChallenge.screen.data || {};
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -135,12 +135,14 @@ const MfaSmsChallengeScreen = () => {
             >
               Try Another Method
             </button>
-            <button
-              onClick={handleGetACall}
-              className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mt-2"
-            >
-              Get a Call
-            </button>
+            {showLinkVoice && (
+              <button
+                onClick={handleGetACall}
+                className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mt-2"
+              >
+                Get a Call
+              </button>
+            )}
           </div>
         </div>
       </div>
