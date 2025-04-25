@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
 
 const MfaSmsChallengeScreen = () => {
@@ -6,8 +6,17 @@ const MfaSmsChallengeScreen = () => {
   const [code, setCode] = useState('');
   const [rememberDevice, setRememberDevice] = useState(false);
   const { phoneNumber, showRememberDevice, showLinkVoice } = mfaSmsChallenge.screen.data || {};
+  
+  // Initialize form values from untrustedData
+  useEffect(() => {
+    // Use untrustedData to prepopulate form fields if available
+    const savedFormData = mfaSmsChallenge.untrustedData.submittedFormData;
+    if (savedFormData?.rememberDevice !== undefined) {
+      setRememberDevice(savedFormData.rememberDevice);
+    }
+  }, []);
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
       await mfaSmsChallenge.continueMfaSmsChallenge({

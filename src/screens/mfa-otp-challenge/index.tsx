@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MfaOtpChallenge from '@auth0/auth0-acul-js/mfa-otp-challenge';
 
 const MfaOtpChallengeScreen: React.FC = () => {
@@ -11,6 +11,15 @@ const MfaOtpChallengeScreen: React.FC = () => {
     screen: { texts, data },
     transaction,
   } = mfaOtpChallenge;
+
+  // Initialize form values from untrustedData
+  useEffect(() => {
+    // Use untrustedData to prepopulate form fields if available
+    const savedFormData = mfaOtpChallenge.untrustedData.submittedFormData;
+    if (savedFormData?.rememberDevice !== undefined) {
+      setRememberBrowser(savedFormData?.rememberDevice);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
