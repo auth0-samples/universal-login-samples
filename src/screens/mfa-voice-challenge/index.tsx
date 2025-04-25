@@ -1,5 +1,5 @@
-import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
-import MfaVoiceChallenge from "@auth0/auth0-acul-js/mfa-voice-challenge";
+import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import MfaVoiceChallenge from '@auth0/auth0-acul-js/mfa-voice-challenge';
 
 /**
  * MFA Voice Challenge Screen Component
@@ -9,13 +9,13 @@ import MfaVoiceChallenge from "@auth0/auth0-acul-js/mfa-voice-challenge";
  */
 const MfaVoiceChallengeScreen: React.FC = () => {
   // State for form inputs
-  const [code, setCode] = useState<string>("");
+  const [code, setCode] = useState<string>('');
   const [rememberBrowser, setRememberBrowser] = useState<boolean>(false);
 
   // UI state
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [showRememberDevice, setShowRememberDevice] = useState<boolean>(false);
   const [showLinkSms, setShowLinkSms] = useState<boolean>(false);
 
@@ -51,7 +51,7 @@ const MfaVoiceChallengeScreen: React.FC = () => {
         rememberBrowser,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to verify code");
+      setError(err instanceof Error ? err.message : 'Failed to verify code');
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +68,7 @@ const MfaVoiceChallengeScreen: React.FC = () => {
       await mfaVoiceChallenge.resendCode();
       // Could set a success message here if needed
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to resend code");
+      setError(err instanceof Error ? err.message : 'Failed to resend code');
     } finally {
       setIsLoading(false);
     }
@@ -98,7 +98,7 @@ const MfaVoiceChallengeScreen: React.FC = () => {
     try {
       await mfaVoiceChallenge.switchToSms();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to switch to SMS");
+      setError(err instanceof Error ? err.message : 'Failed to switch to SMS');
       setIsLoading(false);
     }
   };
@@ -114,7 +114,7 @@ const MfaVoiceChallengeScreen: React.FC = () => {
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to navigate to phone selection"
+          : 'Failed to navigate to phone selection'
       );
       setIsLoading(false);
     }
@@ -131,7 +131,7 @@ const MfaVoiceChallengeScreen: React.FC = () => {
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to navigate to method selection"
+          : 'Failed to navigate to method selection'
       );
       setIsLoading(false);
     }
@@ -146,7 +146,7 @@ const MfaVoiceChallengeScreen: React.FC = () => {
         <p className="mt-2 text-center text-sm text-gray-600">
           {phoneNumber ? (
             <>
-              We've called <span className="font-medium">{phoneNumber}</span>{" "}
+              We've called <span className="font-medium">{phoneNumber}</span>{' '}
               with your verification code.
             </>
           ) : (
@@ -218,11 +218,11 @@ const MfaVoiceChallengeScreen: React.FC = () => {
                 className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
                   ${
                     isLoading
-                      ? "bg-blue-400 cursor-not-allowed"
-                      : "bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      ? 'bg-blue-400 cursor-not-allowed'
+                      : 'bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
                   }`}
               >
-                {isLoading ? "Verifying..." : "Verify"}
+                {isLoading ? 'Verifying...' : 'Verify'}
               </button>
             </div>
           </form>

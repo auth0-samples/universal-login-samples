@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import MfaEmailChallenge from "@auth0/auth0-acul-js/mfa-email-challenge";
+import React, { useState } from 'react';
+import MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
 
 const MfaEmailChallengeScreen: React.FC = () => {
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState('');
   const [rememberDevice, setRememberDevice] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const mfaEmailChallenge = new MfaEmailChallenge();
   const { screen } = mfaEmailChallenge;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError('');
 
     try {
       await mfaEmailChallenge.continue({
@@ -19,7 +19,7 @@ const MfaEmailChallengeScreen: React.FC = () => {
         rememberDevice,
       });
     } catch (err) {
-      setError("Failed to verify code. Please try again.");
+      setError('Failed to verify code. Please try again.');
     }
   };
 
@@ -27,14 +27,14 @@ const MfaEmailChallengeScreen: React.FC = () => {
     try {
       await mfaEmailChallenge.resendCode();
     } catch (err) {
-      setError("Failed to resend code. Please try again.");
+      setError('Failed to resend code. Please try again.');
     }
   };
   const handlePickEmail = async () => {
     try {
       await mfaEmailChallenge.pickEmail();
     } catch (err) {
-      setError("Failed pick email. Please try again.");
+      setError('Failed pick email. Please try again.');
     }
   };
 
@@ -42,7 +42,7 @@ const MfaEmailChallengeScreen: React.FC = () => {
     try {
       await mfaEmailChallenge.tryAnotherMethod();
     } catch (err) {
-      setError("Failed to try another method. Please try again.");
+      setError('Failed to try another method. Please try again.');
     }
   };
 
