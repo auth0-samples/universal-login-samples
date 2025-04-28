@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
 
 const MfaEmailChallengeScreen: React.FC = () => {
@@ -8,6 +8,15 @@ const MfaEmailChallengeScreen: React.FC = () => {
 
   const mfaEmailChallenge = new MfaEmailChallenge();
   const { screen } = mfaEmailChallenge;
+  
+  // Initialize form values from untrustedData
+  useEffect(() => {
+    // Use untrustedData to prepopulate form fields if available
+    const savedFormData = mfaEmailChallenge.untrustedData.submittedFormData;
+    if (savedFormData?.rememberDevice !== undefined) {
+      setRememberDevice(savedFormData.rememberDevice);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
