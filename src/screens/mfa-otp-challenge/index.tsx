@@ -3,7 +3,7 @@ import MfaOtpChallenge from '@auth0/auth0-acul-js/mfa-otp-challenge';
 
 const MfaOtpChallengeScreen: React.FC = () => {
   const [code, setCode] = useState('');
-  const [rememberBrowser, setRememberBrowser] = useState(false);
+  const [rememberDevice, setRememberDevice] = useState(false);
   const [error, setError] = useState('');
 
   const mfaOtpChallenge = new MfaOtpChallenge();
@@ -17,7 +17,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
     // Use untrustedData to prepopulate form fields if available
     const savedFormData = mfaOtpChallenge.untrustedData.submittedFormData;
     if (savedFormData?.rememberDevice !== undefined) {
-      setRememberBrowser(savedFormData?.rememberDevice);
+      setRememberDevice(savedFormData.rememberDevice);
     }
   }, []);
 
@@ -28,7 +28,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
     try {
       await mfaOtpChallenge.continue({
         code,
-        rememberBrowser,
+        rememberDevice,
       });
     } catch (err) {
       setError('Failed to verify code. Please try again.');
@@ -94,15 +94,15 @@ const MfaOtpChallengeScreen: React.FC = () => {
             {data?.showRememberDevice && (
               <div className="flex items-center">
                 <input
-                  id="rememberBrowser"
-                  name="rememberBrowser"
+                  id="rememberDevice"
+                  name="rememberDevice"
                   type="checkbox"
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  checked={rememberBrowser}
-                  onChange={(e) => setRememberBrowser(e.target.checked)}
+                  checked={rememberDevice}
+                  onChange={(e) => setRememberDevice(e.target.checked)}
                 />
                 <label
-                  htmlFor="rememberBrowser"
+                  htmlFor="rememberDevice"
                   className="ml-2 block text-sm text-gray-900"
                 >
                   {texts?.rememberMeText ?? 'Remember this browser for 30 days'}

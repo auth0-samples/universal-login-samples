@@ -21,7 +21,7 @@ const MfaSmsChallengeScreen = () => {
     try {
       await mfaSmsChallenge.continueMfaSmsChallenge({
         code,
-        rememberBrowser: rememberDevice,
+        rememberDevice,
       });
     } catch (error) {
       console.error('MFA SMS Challenge failed:', error);
