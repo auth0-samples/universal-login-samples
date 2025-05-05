@@ -35,6 +35,21 @@ const OrganizationSelectionScreen = React.lazy(() => import("./screens/organizat
 const OrganizationPickerScreen = React.lazy(() => import("./screens/organization-picker"));
 const AcceptInvitationScreen = React.lazy(() => import("./screens/accept-invitation"));
 // const CustomizedConsentScreen = React.lazy(() => import("./screens/customized-consent"));
+const MfaPhoneEnrollmentScreen = React.lazy(() => import("./screens/mfa-phone-enrollment"));
+const MfaVoiceEnrollmentScreen = React.lazy(() => import("./screens/mfa-voice-enrollment"));
+const MfaRecoveryCodeChallengeScreen = React.lazy(() => import("./screens/mfa-recovery-code-challenge"));
+const DeviceCodeActivationAllowedScreen = React.lazy(() => import("./screens/device-code-activation-allowed"));
+const DeviceCodeActivationDeniedScreen = React.lazy(() => import("./screens/device-code-activation-denied"));
+const DeviceCodeActivationScreen = React.lazy(() => import("./screens/device-code-activation"));
+const MfaVoiceChallengeScreen = React.lazy(() => import("./screens/mfa-voice-challenge"))
+const ResetPasswordMfaRecoveryCodeChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-recovery-code-challenge"));
+const ResetPasswordMfaVoiceChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-voice-challenge"));
+const RedeemTicketScreen = React.lazy(() => import("./screens/redeem-ticket"));
+const DeviceCodeConfirmationScreen = React.lazy(() => import("./screens/device-code-confirmation"));
+const MfaPhoneChallengeScreen = React.lazy(() => import("./screens/mfa-phone-challenge"));
+const MfaRecoveryCodeEnrollmentScreen = React.lazy(() => import("./screens/mfa-recovery-code-enrollment"));
+const ResetPasswordMfaPhoneChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-phone-challenge"));
+const PasskeyEnrollmentScreen = React.lazy(() => import("./screens/passkey-enrollment"));
 
 
 const App: React.FC = () => {
@@ -114,6 +129,36 @@ const App: React.FC = () => {
         return <AcceptInvitationScreen />;
       // case "customized-consent":
       //   return <CustomizedConsentScreen />;
+      case "mfa-phone-enrollment":
+        return <MfaPhoneEnrollmentScreen />;
+      case "mfa-voice-enrollment":
+        return <MfaVoiceEnrollmentScreen />;
+      case "mfa-recovery-code-challenge":
+        return <MfaRecoveryCodeChallengeScreen />;
+      case "device-code-activation-allowed":
+        return <DeviceCodeActivationAllowedScreen />;
+      case "device-code-activation-denied":
+        return <DeviceCodeActivationDeniedScreen />;
+      case "device-code-activation":
+        return <DeviceCodeActivationScreen />;
+      case "mfa-voice-challenge":
+        return <MfaVoiceChallengeScreen />;
+      case "reset-password-mfa-recovery-code-challenge":
+        return <ResetPasswordMfaRecoveryCodeChallengeScreen />;
+      case "reset-password-mfa-voice-challenge":
+        return <ResetPasswordMfaVoiceChallengeScreen />;
+      case "redeem-ticket":
+        return <RedeemTicketScreen />;
+      case "device-code-confirmation":
+        return <DeviceCodeConfirmationScreen />;
+      case "mfa-phone-challenge":
+        return <MfaPhoneChallengeScreen />;
+      case "mfa-recovery-code-enrollment":
+        return <MfaRecoveryCodeEnrollmentScreen />;
+      case "reset-password-mfa-phone-challenge":
+        return <ResetPasswordMfaPhoneChallengeScreen />;
+      case "passkey-enrollment":
+        return <PasskeyEnrollmentScreen />;
       default:
         return <>No screen rendered</>;
     }
