@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
 
 const MfaEmailChallengeScreen: React.FC = () => {
@@ -8,6 +8,15 @@ const MfaEmailChallengeScreen: React.FC = () => {
 
   const mfaEmailChallenge = new MfaEmailChallenge();
   const { screen } = mfaEmailChallenge;
+  
+  // Initialize form values from untrustedData
+  useEffect(() => {
+    // Use untrustedData to prepopulate form fields if available
+    const savedFormData = mfaEmailChallenge.untrustedData.submittedFormData;
+    if (savedFormData?.rememberDevice !== undefined) {
+      setRememberDevice(savedFormData.rememberDevice);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,7 +70,10 @@ const MfaEmailChallengeScreen: React.FC = () => {
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="code" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="code"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Code
               </label>
               <div className="mt-1">
@@ -77,28 +89,29 @@ const MfaEmailChallengeScreen: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center">
-              <input
-                id="rememberDevice"
-                name="rememberDevice"
-                type="checkbox"
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                checked={rememberDevice}
-                onChange={(e) => setRememberDevice(e.target.checked)}
-              />
-              <label htmlFor="rememberDevice" className="ml-2 block text-sm text-gray-900">
-                Remember this device
-              </label>
-            </div>
-
-            {error && (
-              <div className="text-red-600 text-sm">
-                {error}
+            {screen.data?.showRememberDevice && (
+              <div className="flex items-center">
+                <input
+                  id="rememberDevice"
+                  name="rememberDevice"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  checked={rememberDevice}
+                  onChange={(e) => setRememberDevice(e.target.checked)}
+                />
+                <label
+                  htmlFor="rememberDevice"
+                  className="ml-2 block text-sm text-gray-900"
+                >
+                  Remember this device
+                </label>
               </div>
             )}
 
+            {error && <div className="text-red-600 text-sm">{error}</div>}
+
             <div>
-            <button
+              <button
                 type="submit"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >

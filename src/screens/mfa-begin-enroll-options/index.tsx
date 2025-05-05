@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import MfaBeginEnrollOptions, { type FactorType } from '@auth0/auth0-acul-js/mfa-begin-enroll-options';
+import MfaBeginEnrollOptions, { type MfaEnrollFactorType } from '@auth0/auth0-acul-js/mfa-begin-enroll-options';
 
 /** Enum for Factor Types */
 enum FactorTypeEnum {
@@ -16,7 +16,7 @@ const MfaBeginEnrollOptionsScreen: React.FC = () => {
   const { tenant, screen: { texts } } = mfaBeginEnrollOptions;
 
   /** Dynamically map factor IDs to display names */
-  const factorDisplayNames: Record<FactorTypeEnum, string> = {
+  const factorDisplayNames: Record<MfaEnrollFactorType, string> = {
     [FactorTypeEnum.PUSH_NOTIFICATION]: texts?.authenticatorNamesPushNotification ?? 'Push Notification (Auth0 Guardian)',
     [FactorTypeEnum.OTP]: texts?.authenticatorNamesOTP ?? 'One-Time Password (Google Authenticator)',
     [FactorTypeEnum.SMS]: texts?.authenticatorNamesSMS ?? 'SMS',
@@ -26,10 +26,10 @@ const MfaBeginEnrollOptionsScreen: React.FC = () => {
   };
 
   /** Handles user selection of an MFA factor */
-  const handleFactorSelection = useCallback(async (factor: FactorTypeEnum) => {
+  const handleFactorSelection = useCallback(async (factor: MfaEnrollFactorType) => {
     try {
       await mfaBeginEnrollOptions.enroll({
-        action: factor as FactorType
+        action: factor as MfaEnrollFactorType
       });
     } catch (error) {
       console.error(`Error enrolling factor [${factor}]:`, error);
@@ -51,7 +51,7 @@ const MfaBeginEnrollOptionsScreen: React.FC = () => {
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <div className="space-y-4">
             {tenant.enabledFactors?.map((factor) => {
-              const factorEnum = factor as FactorTypeEnum;
+              const factorEnum = factor as MfaEnrollFactorType;
               return (
                 <button
                   key={factor}
