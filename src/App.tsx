@@ -53,6 +53,7 @@ const PasskeyEnrollmentScreen = React.lazy(() => import("./screens/passkey-enrol
 const MfaRecoveryCodeChallengeNewCodeScreen = React.lazy(() => import("./screens/mfa-recovery-code-challenge-new-code"));
 const LogoutScreen = React.lazy(() => import("./screens/logout"));
 const LogoutAbortedScreen = React.lazy(() => import("./screens/logout-aborted"));
+const LogoutCompleteScreen = React.lazy(() => import("./screens/logout-complete"));
 
 
 const App: React.FC = () => {
@@ -168,6 +169,8 @@ const App: React.FC = () => {
         return <LogoutScreen />;
       case "logout-aborted":
         return <LogoutAbortedScreen />;
+      case "logout-complete":
+        return <LogoutCompleteScreen />;
       default:
         return <>No screen rendered</>;
     }
