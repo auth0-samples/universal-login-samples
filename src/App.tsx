@@ -51,6 +51,7 @@ const MfaRecoveryCodeEnrollmentScreen = React.lazy(() => import("./screens/mfa-r
 const ResetPasswordMfaPhoneChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-phone-challenge"));
 const PasskeyEnrollmentScreen = React.lazy(() => import("./screens/passkey-enrollment"));
 const MfaRecoveryCodeChallengeNewCodeScreen = React.lazy(() => import("./screens/mfa-recovery-code-challenge-new-code"));
+const ConsentScreen = React.lazy(() => import("./screens/consent"));
 
 
 const App: React.FC = () => {
@@ -162,6 +163,8 @@ const App: React.FC = () => {
         return <PasskeyEnrollmentScreen />;
       case "mfa-recovery-code-challenge-new-code":
         return <MfaRecoveryCodeChallengeNewCodeScreen />;
+      case "consent":
+        return <ConsentScreen />;
       default:
         return <>No screen rendered</>;
     }
