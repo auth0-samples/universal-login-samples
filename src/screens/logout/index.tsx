@@ -18,7 +18,7 @@ const LogoutScreen: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col px-4 py-12">
+    <div className="min-h-screen bg-gray-100 flex flex-col px-4">
       <div className="mx-auto w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8">
         <h1 className="text-2xl font-bold mb-4 text-center">
           {texts.title ?? 'Logout'}
