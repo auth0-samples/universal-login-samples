@@ -52,6 +52,10 @@ const ResetPasswordMfaPhoneChallengeScreen = React.lazy(() => import("./screens/
 const PasskeyEnrollmentScreen = React.lazy(() => import("./screens/passkey-enrollment"));
 const MfaRecoveryCodeChallengeNewCodeScreen = React.lazy(() => import("./screens/mfa-recovery-code-challenge-new-code"));
 const EmailOTPChallengeScreen = React.lazy(() => import("./screens/email-otp-challenge"));
+const LogoutScreen = React.lazy(() => import("./screens/logout"));
+const LogoutAbortedScreen = React.lazy(() => import("./screens/logout-aborted"));
+const LogoutCompleteScreen = React.lazy(() => import("./screens/logout-complete"));
+
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
@@ -163,7 +167,13 @@ const App: React.FC = () => {
       case "mfa-recovery-code-challenge-new-code":
         return <MfaRecoveryCodeChallengeNewCodeScreen />;
       case "email-otp-challenge":
-          return <EmailOTPChallengeScreen />;
+        return <EmailOTPChallengeScreen />;
+      case "logout":
+        return <LogoutScreen />;
+      case "logout-aborted":
+        return <LogoutAbortedScreen />;
+      case "logout-complete":
+        return <LogoutCompleteScreen />;
       default:
         return <>No screen rendered</>;
     }
