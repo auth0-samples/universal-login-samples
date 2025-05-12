@@ -54,7 +54,8 @@ const MfaRecoveryCodeChallengeNewCodeScreen = React.lazy(() => import("./screens
 const LogoutScreen = React.lazy(() => import("./screens/logout"));
 const LogoutAbortedScreen = React.lazy(() => import("./screens/logout-aborted"));
 const LogoutCompleteScreen = React.lazy(() => import("./screens/logout-complete"));
-
+const EmailVerificationResultScreen = React.lazy(() => import("./screens/email-verification-result"));
+const LoginEmailVerificationScreen = React.lazy(() => import("./screens/login-email-verification"));
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
@@ -171,6 +172,10 @@ const App: React.FC = () => {
         return <LogoutAbortedScreen />;
       case "logout-complete":
         return <LogoutCompleteScreen />;
+      case "email-verification-result":
+        return <EmailVerificationResultScreen />;
+      case "login-email-verification":
+        return <LoginEmailVerificationScreen />;
       default:
         return <>No screen rendered</>;
     }
