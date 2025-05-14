@@ -56,6 +56,9 @@ const LogoutAbortedScreen = React.lazy(() => import("./screens/logout-aborted"))
 const LogoutCompleteScreen = React.lazy(() => import("./screens/logout-complete"));
 const EmailVerificationResultScreen = React.lazy(() => import("./screens/email-verification-result"));
 const LoginEmailVerificationScreen = React.lazy(() => import("./screens/login-email-verification"));
+const MfaWebAuthnErrorScreen = React.lazy(() => import("./screens/mfa-webauthn-error"));
+const MfaWebAuthnPlatformEnrollmentScreen = React.lazy(() => import("./screens/mfa-webauthn-platform-enrollment"));
+const MfaWebAuthnNotAvailableErrorScreen = React.lazy(() => import("./screens/mfa-webauthn-not-available-error"))
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
@@ -176,6 +179,12 @@ const App: React.FC = () => {
         return <EmailVerificationResultScreen />;
       case "login-email-verification":
         return <LoginEmailVerificationScreen />;
+      case "mfa-webauthn-error":
+        return <MfaWebAuthnErrorScreen />;
+      case "mfa-webauthn-platform-enrollment":
+        return <MfaWebAuthnPlatformEnrollmentScreen />;
+      case "mfa-webauthn-not-available-error":
+        return <MfaWebAuthnNotAvailableErrorScreen />
       default:
         return <>No screen rendered</>;
     }
