@@ -61,6 +61,7 @@ const MfaWebAuthnPlatformEnrollmentScreen = React.lazy(() => import("./screens/m
 const MfaWebAuthnNotAvailableErrorScreen = React.lazy(() => import("./screens/mfa-webauthn-not-available-error"))
 const MfaWebAuthnRoamingEnrollment = React.lazy(() => import("./screens/mfa-webauthn-roaming-enrollment"))
 const MfaWebAuthnRoamingChallengeScreen = React.lazy(() => import("./screens/mfa-webauthn-roaming-challenge"));
+const MfaWebAuthnPlatformChallengeScreen = React.lazy(() => import("./screens/mfa-webauthn-platform-challenge"));
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
@@ -191,6 +192,8 @@ const App: React.FC = () => {
         return <MfaWebAuthnRoamingEnrollment />
       case "mfa-webauthn-roaming-challenge":
         return <MfaWebAuthnRoamingChallengeScreen />
+      case "mfa-webauthn-platform-challenge":
+        return <MfaWebAuthnPlatformChallengeScreen />
       default:
         return <>No screen rendered</>;
     }
