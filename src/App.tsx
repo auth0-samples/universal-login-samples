@@ -51,8 +51,19 @@ const MfaRecoveryCodeEnrollmentScreen = React.lazy(() => import("./screens/mfa-r
 const ResetPasswordMfaPhoneChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-phone-challenge"));
 const PasskeyEnrollmentScreen = React.lazy(() => import("./screens/passkey-enrollment"));
 const MfaRecoveryCodeChallengeNewCodeScreen = React.lazy(() => import("./screens/mfa-recovery-code-challenge-new-code"));
+const LogoutScreen = React.lazy(() => import("./screens/logout"));
+const LogoutAbortedScreen = React.lazy(() => import("./screens/logout-aborted"));
+const LogoutCompleteScreen = React.lazy(() => import("./screens/logout-complete"));
+const EmailVerificationResultScreen = React.lazy(() => import("./screens/email-verification-result"));
+const LoginEmailVerificationScreen = React.lazy(() => import("./screens/login-email-verification"));
+const MfaWebAuthnErrorScreen = React.lazy(() => import("./screens/mfa-webauthn-error"));
+const MfaWebAuthnPlatformEnrollmentScreen = React.lazy(() => import("./screens/mfa-webauthn-platform-enrollment"));
+const MfaWebAuthnNotAvailableErrorScreen = React.lazy(() => import("./screens/mfa-webauthn-not-available-error"))
+const MfaWebAuthnRoamingEnrollment = React.lazy(() => import("./screens/mfa-webauthn-roaming-enrollment"))
+const MfaWebAuthnRoamingChallengeScreen = React.lazy(() => import("./screens/mfa-webauthn-roaming-challenge"));
+const MfaWebAuthnPlatformChallengeScreen = React.lazy(() => import("./screens/mfa-webauthn-platform-challenge"));
+const MfaWebAuthnEnrollmentSuccessScreen = React.lazy(() => import("./screens/mfa-webauthn-enrollment-success"))
 const ConsentScreen = React.lazy(() => import("./screens/consent"));
-
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
@@ -163,6 +174,30 @@ const App: React.FC = () => {
         return <PasskeyEnrollmentScreen />;
       case "mfa-recovery-code-challenge-new-code":
         return <MfaRecoveryCodeChallengeNewCodeScreen />;
+      case "logout":
+        return <LogoutScreen />;
+      case "logout-aborted":
+        return <LogoutAbortedScreen />;
+      case "logout-complete":
+        return <LogoutCompleteScreen />;
+      case "email-verification-result":
+        return <EmailVerificationResultScreen />;
+      case "login-email-verification":
+        return <LoginEmailVerificationScreen />;
+      case "mfa-webauthn-error":
+        return <MfaWebAuthnErrorScreen />;
+      case "mfa-webauthn-platform-enrollment":
+        return <MfaWebAuthnPlatformEnrollmentScreen />;
+      case "mfa-webauthn-not-available-error":
+        return <MfaWebAuthnNotAvailableErrorScreen />
+      case "mfa-webauthn-roaming-enrollment": 
+        return <MfaWebAuthnRoamingEnrollment />
+      case "mfa-webauthn-roaming-challenge":
+        return <MfaWebAuthnRoamingChallengeScreen />
+      case "mfa-webauthn-platform-challenge":
+        return <MfaWebAuthnPlatformChallengeScreen />
+      case "mfa-webauthn-enrollment-success": 
+        return <MfaWebAuthnEnrollmentSuccessScreen />
       case "consent":
         return <ConsentScreen />;
       default:
