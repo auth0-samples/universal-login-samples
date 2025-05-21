@@ -64,6 +64,7 @@ const MfaWebAuthnRoamingChallengeScreen = React.lazy(() => import("./screens/mfa
 const MfaWebAuthnPlatformChallengeScreen = React.lazy(() => import("./screens/mfa-webauthn-platform-challenge"));
 const MfaWebAuthnEnrollmentSuccessScreen = React.lazy(() => import("./screens/mfa-webauthn-enrollment-success"))
 const ConsentScreen = React.lazy(() => import("./screens/consent"));
+const ResetPasswordMfaWebAuthnPlatformChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-webauthn-platform-challenge"));
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
@@ -200,6 +201,8 @@ const App: React.FC = () => {
         return <MfaWebAuthnEnrollmentSuccessScreen />
       case "consent":
         return <ConsentScreen />;
+      case "reset-password-mfa-webauthn-platform-challenge":
+        return <ResetPasswordMfaWebAuthnPlatformChallengeScreen />;
       default:
         return <>No screen rendered</>;
     }
