@@ -62,7 +62,8 @@ const MfaWebAuthnNotAvailableErrorScreen = React.lazy(() => import("./screens/mf
 const MfaWebAuthnRoamingEnrollment = React.lazy(() => import("./screens/mfa-webauthn-roaming-enrollment"))
 const MfaWebAuthnRoamingChallengeScreen = React.lazy(() => import("./screens/mfa-webauthn-roaming-challenge"));
 const MfaWebAuthnPlatformChallengeScreen = React.lazy(() => import("./screens/mfa-webauthn-platform-challenge"));
-const MfaWebAuthnEnrollmentSuccessScreen = React.lazy(() => import("./screens/mfa-webauthn-enrollment-success"))
+const MfaWebAuthnEnrollmentSuccessScreen = React.lazy(() => import("./screens/mfa-webauthn-enrollment-success"));
+const MfaWebAuthnChangeKeyNicknameScreen = React.lazy(() => import("./screens/mfa-webauthn-change-key-nickname"));
 const ConsentScreen = React.lazy(() => import("./screens/consent"));
 const ResetPasswordMfaWebAuthnPlatformChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-webauthn-platform-challenge"));
 
@@ -199,10 +200,12 @@ const App: React.FC = () => {
         return <MfaWebAuthnPlatformChallengeScreen />
       case "mfa-webauthn-enrollment-success": 
         return <MfaWebAuthnEnrollmentSuccessScreen />
-      case "consent":
-        return <ConsentScreen />;
       case "reset-password-mfa-webauthn-platform-challenge":
         return <ResetPasswordMfaWebAuthnPlatformChallengeScreen />;
+      case "consent":
+        return <ConsentScreen />;
+      case "mfa-webauthn-change-key-nickname":
+        return <MfaWebAuthnChangeKeyNicknameScreen />
       default:
         return <>No screen rendered</>;
     }
