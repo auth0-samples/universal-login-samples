@@ -51,6 +51,7 @@ const MfaRecoveryCodeEnrollmentScreen = React.lazy(() => import("./screens/mfa-r
 const ResetPasswordMfaPhoneChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-phone-challenge"));
 const PasskeyEnrollmentScreen = React.lazy(() => import("./screens/passkey-enrollment"));
 const MfaRecoveryCodeChallengeNewCodeScreen = React.lazy(() => import("./screens/mfa-recovery-code-challenge-new-code"));
+const EmailOTPChallengeScreen = React.lazy(() => import("./screens/email-otp-challenge"));
 const LogoutScreen = React.lazy(() => import("./screens/logout"));
 const LogoutAbortedScreen = React.lazy(() => import("./screens/logout-aborted"));
 const LogoutCompleteScreen = React.lazy(() => import("./screens/logout-complete"));
@@ -176,6 +177,8 @@ const App: React.FC = () => {
         return <PasskeyEnrollmentScreen />;
       case "mfa-recovery-code-challenge-new-code":
         return <MfaRecoveryCodeChallengeNewCodeScreen />;
+      case "email-otp-challenge":
+        return <EmailOTPChallengeScreen />;
       case "logout":
         return <LogoutScreen />;
       case "logout-aborted":
@@ -210,7 +213,6 @@ const App: React.FC = () => {
         return <>No screen rendered</>;
     }
   };
-
   return <Suspense fallback={<div>Loading...</div>}>{renderScreen()}</Suspense>;
 };
 
