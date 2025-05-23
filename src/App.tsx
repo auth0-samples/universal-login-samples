@@ -51,7 +51,7 @@ const MfaRecoveryCodeEnrollmentScreen = React.lazy(() => import("./screens/mfa-r
 const ResetPasswordMfaPhoneChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-phone-challenge"));
 const PasskeyEnrollmentScreen = React.lazy(() => import("./screens/passkey-enrollment"));
 const MfaRecoveryCodeChallengeNewCodeScreen = React.lazy(() => import("./screens/mfa-recovery-code-challenge-new-code"));
-const EmailOTPChallengeScreen = React.lazy(() => import("./screens/email-otp-challenge"));
+// const EmailOTPChallengeScreen = React.lazy(() => import("./screens/email-otp-challenge"));
 const LogoutScreen = React.lazy(() => import("./screens/logout"));
 const LogoutAbortedScreen = React.lazy(() => import("./screens/logout-aborted"));
 const LogoutCompleteScreen = React.lazy(() => import("./screens/logout-complete"));
@@ -59,13 +59,15 @@ const EmailVerificationResultScreen = React.lazy(() => import("./screens/email-v
 const LoginEmailVerificationScreen = React.lazy(() => import("./screens/login-email-verification"));
 const MfaWebAuthnErrorScreen = React.lazy(() => import("./screens/mfa-webauthn-error"));
 const MfaWebAuthnPlatformEnrollmentScreen = React.lazy(() => import("./screens/mfa-webauthn-platform-enrollment"));
-const MfaWebAuthnNotAvailableErrorScreen = React.lazy(() => import("./screens/mfa-webauthn-not-available-error"))
+// const MfaWebAuthnNotAvailableErrorScreen = React.lazy(() => import("./screens/mfa-webauthn-not-available-error"))
 const MfaWebAuthnRoamingEnrollment = React.lazy(() => import("./screens/mfa-webauthn-roaming-enrollment"))
 const MfaWebAuthnRoamingChallengeScreen = React.lazy(() => import("./screens/mfa-webauthn-roaming-challenge"));
 const MfaWebAuthnPlatformChallengeScreen = React.lazy(() => import("./screens/mfa-webauthn-platform-challenge"));
 const MfaWebAuthnEnrollmentSuccessScreen = React.lazy(() => import("./screens/mfa-webauthn-enrollment-success"));
 const MfaWebAuthnChangeKeyNicknameScreen = React.lazy(() => import("./screens/mfa-webauthn-change-key-nickname"));
 const ResetPasswordMfaWebAuthnRoamingChallengeComponent = React.lazy(() => import("./screens/reset-password-mfa-webauthn-roaming-challenge"));
+// const ConsentScreen = React.lazy(() => import("./screens/consent"));
+const ResetPasswordMfaWebAuthnPlatformChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-webauthn-platform-challenge"));
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
@@ -176,8 +178,8 @@ const App: React.FC = () => {
         return <PasskeyEnrollmentScreen />;
       case "mfa-recovery-code-challenge-new-code":
         return <MfaRecoveryCodeChallengeNewCodeScreen />;
-      case "email-otp-challenge":
-        return <EmailOTPChallengeScreen />;
+      // case "email-otp-challenge":
+      //   return <EmailOTPChallengeScreen />;
       case "logout":
         return <LogoutScreen />;
       case "logout-aborted":
@@ -192,8 +194,8 @@ const App: React.FC = () => {
         return <MfaWebAuthnErrorScreen />;
       case "mfa-webauthn-platform-enrollment":
         return <MfaWebAuthnPlatformEnrollmentScreen />;
-      case "mfa-webauthn-not-available-error":
-        return <MfaWebAuthnNotAvailableErrorScreen />
+      // case "mfa-webauthn-not-available-error":
+      //   return <MfaWebAuthnNotAvailableErrorScreen />
       case "mfa-webauthn-roaming-enrollment": 
         return <MfaWebAuthnRoamingEnrollment />
       case "mfa-webauthn-roaming-challenge":
@@ -202,6 +204,10 @@ const App: React.FC = () => {
         return <MfaWebAuthnPlatformChallengeScreen />
       case "mfa-webauthn-enrollment-success": 
         return <MfaWebAuthnEnrollmentSuccessScreen />
+      case "reset-password-mfa-webauthn-platform-challenge":
+        return <ResetPasswordMfaWebAuthnPlatformChallengeScreen />;
+      // case "consent":
+      //   return <ConsentScreen />;
       case "mfa-webauthn-change-key-nickname":
         return <MfaWebAuthnChangeKeyNicknameScreen />
       case "reset-password-mfa-webauthn-roaming-challenge":
@@ -210,6 +216,7 @@ const App: React.FC = () => {
         return <>No screen rendered</>;
     }
   };
+
   return <Suspense fallback={<div>Loading...</div>}>{renderScreen()}</Suspense>;
 };
 
