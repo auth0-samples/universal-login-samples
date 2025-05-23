@@ -8,6 +8,7 @@ const MfaWebAuthnChangeKeyNicknameComponent: React.FC = () => {
   const sdk = useMemo(() => new MfaWebAuthnChangeKeyNickname(), []);
 
   const { client, screen, transaction } = sdk;
+
   const currentNickname = screen.data?.nickname ?? 'Unknown Key';
   const texts = screen.texts ?? {};
 
@@ -39,7 +40,7 @@ const MfaWebAuthnChangeKeyNicknameComponent: React.FC = () => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-6">
           <div>
             <label htmlFor="current-nickname" className="block text-sm font-medium text-gray-700">
               {texts.currentNicknameLabel ?? 'Current Nickname'}
@@ -88,7 +89,7 @@ const MfaWebAuthnChangeKeyNicknameComponent: React.FC = () => {
           )}
 
           <button
-            type="submit"
+            onClick={handleSubmit}
             className="w-full flex justify-center items-center px-4 py-2.5 border border-transparent 
                        rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 
                        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 
@@ -96,7 +97,7 @@ const MfaWebAuthnChangeKeyNicknameComponent: React.FC = () => {
           >
             Save Nickname
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );
