@@ -25,8 +25,7 @@ const SignupIdScreen: React.FC = () => {
         phone,
       });
       setSuccess(true);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
+    } catch {
       setError('Signup failed. Please try again later.');
     }
   };
