@@ -9,6 +9,7 @@ const SignupId = React.lazy(() => import("./screens/signup-id"));
 const SignupPassword = React.lazy(() => import("./screens/signup-password"));
 const ResetPasswordRequest = React.lazy(() => import("./screens/ResetPasswordRequest"));
 const LoginPasswordlessEmailCodeScreen = React.lazy(() => import("./screens/login-passwordless-email-code"));
+const LoginPasswordlessSmsOtpScreen = React.lazy(() => import("./screens/login-passwordless-sms-otp"));
 const ResetPasswordEmail = React.lazy(() => import("./screens/ResetPasswordEmail"));
 const ResetPassword = React.lazy(() => import("./screens/ResetPassword"));
 const ResetPasswordError = React.lazy(() => import("./screens/ResetPasswordError"));
@@ -91,6 +92,8 @@ const App: React.FC = () => {
         return <Login />;
       case "login-passwordless-email-code":
         return <LoginPasswordlessEmailCodeScreen />;
+      case "login-passwordless-sms-otp":
+        return <LoginPasswordlessSmsOtpScreen />;
       case "signup":
         return <Signup />;
       case "signup-id":
