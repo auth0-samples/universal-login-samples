@@ -54,12 +54,14 @@ const MfaPhoneChallengeScreen = React.lazy(() => import("./screens/mfa-phone-cha
 const MfaRecoveryCodeEnrollmentScreen = React.lazy(() => import("./screens/mfa-recovery-code-enrollment"));
 const ResetPasswordMfaPhoneChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-phone-challenge"));
 const PasskeyEnrollmentScreen = React.lazy(() => import("./screens/passkey-enrollment"));
+const PasskeyEnrollmentLocalScreen = React.lazy(() => import("./screens/passkey-enrollment-local"));
 const MfaRecoveryCodeChallengeNewCodeScreen = React.lazy(() => import("./screens/mfa-recovery-code-challenge-new-code"));
 // const EmailOTPChallengeScreen = React.lazy(() => import("./screens/email-otp-challenge"));
 const LogoutScreen = React.lazy(() => import("./screens/logout"));
 const LogoutAbortedScreen = React.lazy(() => import("./screens/logout-aborted"));
 const LogoutCompleteScreen = React.lazy(() => import("./screens/logout-complete"));
 const EmailVerificationResultScreen = React.lazy(() => import("./screens/email-verification-result"));
+const EmailIdentifierChallengeScreen = React.lazy(() => import("./screens/email-identifier-challenge"));
 const LoginEmailVerificationScreen = React.lazy(() => import("./screens/login-email-verification"));
 const MfaWebAuthnErrorScreen = React.lazy(() => import("./screens/mfa-webauthn-error"));
 const MfaWebAuthnPlatformEnrollmentScreen = React.lazy(() => import("./screens/mfa-webauthn-platform-enrollment"));
@@ -69,6 +71,9 @@ const MfaWebAuthnRoamingChallengeScreen = React.lazy(() => import("./screens/mfa
 const MfaWebAuthnPlatformChallengeScreen = React.lazy(() => import("./screens/mfa-webauthn-platform-challenge"));
 const MfaWebAuthnEnrollmentSuccessScreen = React.lazy(() => import("./screens/mfa-webauthn-enrollment-success"));
 const MfaWebAuthnChangeKeyNicknameScreen = React.lazy(() => import("./screens/mfa-webauthn-change-key-nickname"));
+const PhoneIdentifierChallengeScreen = React.lazy(() => import("./screens/phone-identifier-challenge"));
+const PhoneIdentifierEnrollmentScreen = React.lazy(() => import("./screens/phone-identifier-enrollment"));
+const InterstitialCaptchaScreen = React.lazy(() => import("./screens/intertitial-captcha"));
 // const ResetPasswordMfaWebAuthnRoamingChallengeComponent = React.lazy(() => import("./screens/reset-password-mfa-webauthn-roaming-challenge"));
 // const ConsentScreen = React.lazy(() => import("./screens/consent"));
 // const ConsentScreen = React.lazy(() => import("./screens/consent"));
@@ -94,6 +99,8 @@ const App: React.FC = () => {
         return <LoginPasswordlessEmailCodeScreen />;
       case "login-passwordless-sms-otp":
         return <LoginPasswordlessSmsOtpScreen />;
+      case "email-identifier-challenge":
+        return <EmailIdentifierChallengeScreen />;
       case "signup":
         return <Signup />;
       case "signup-id":
@@ -102,6 +109,8 @@ const App: React.FC = () => {
         return <SignupPassword />;
       case "reset-password-request":
         return <ResetPasswordRequest />;
+      case "intertitial-captcha":
+        return <InterstitialCaptchaScreen />;
       case "reset-password-email":
         return <ResetPasswordEmail />;
       case "reset-password":
@@ -156,6 +165,10 @@ const App: React.FC = () => {
         return <OrganizationSelectionScreen />;
       case "organization-picker":
         return <OrganizationPickerScreen />;
+      case "phone-identifier-challenge":
+        return <PhoneIdentifierChallengeScreen />;
+      case "phone-identifier-enrollment":
+        return <PhoneIdentifierEnrollmentScreen />;
       case "accept-invitation":
         return <AcceptInvitationScreen />;
       // case "customized-consent":
@@ -190,6 +203,8 @@ const App: React.FC = () => {
         return <ResetPasswordMfaPhoneChallengeScreen />;
       case "passkey-enrollment":
         return <PasskeyEnrollmentScreen />;
+      case "passkey-enrollment-local":
+        return <PasskeyEnrollmentLocalScreen />;
       case "mfa-recovery-code-challenge-new-code":
         return <MfaRecoveryCodeChallengeNewCodeScreen />;
       // case "email-otp-challenge":
