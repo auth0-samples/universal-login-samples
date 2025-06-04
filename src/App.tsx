@@ -76,7 +76,7 @@ const PhoneIdentifierEnrollmentScreen = React.lazy(() => import("./screens/phone
 const InterstitialCaptchaScreen = React.lazy(() => import("./screens/intertitial-captcha"));
 // const ResetPasswordMfaWebAuthnRoamingChallengeComponent = React.lazy(() => import("./screens/reset-password-mfa-webauthn-roaming-challenge"));
 // const ConsentScreen = React.lazy(() => import("./screens/consent"));
-// const ConsentScreen = React.lazy(() => import("./screens/consent"));
+const ConsentScreen = React.lazy(() => import("./screens/consent"));
 const ResetPasswordMfaWebAuthnRoamingChallengeComponent = React.lazy(() => import("./screens/reset-password-mfa-webauthn-roaming-challenge"));
 const ResetPasswordMfaWebAuthnPlatformChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-webauthn-platform-challenge"));
 
@@ -235,8 +235,8 @@ const App: React.FC = () => {
         return <MfaWebAuthnEnrollmentSuccessScreen />
       case "reset-password-mfa-webauthn-platform-challenge":
         return <ResetPasswordMfaWebAuthnPlatformChallengeScreen />;
-      // case "consent":
-      //   return <ConsentScreen />;
+      case "consent":
+        return <ConsentScreen />;
       case "mfa-webauthn-change-key-nickname":
         return <MfaWebAuthnChangeKeyNicknameScreen />
       case "reset-password-mfa-webauthn-roaming-challenge":
