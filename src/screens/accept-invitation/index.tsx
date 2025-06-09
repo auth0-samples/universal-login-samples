@@ -2,7 +2,7 @@ import React from 'react';
 import AcceptInvitation from '@auth0/auth0-acul-js/accept-invitation';
 
 const AcceptInvitationScreen: React.FC = () => {
-  const acceptInvitationManager = new AcceptInvitation();
+  const acceptInvitationManager = new AcceptInvitation(); //test aws
   const { screen, transaction } = acceptInvitationManager;
 
   const handleAcceptInvitation = async () => {
