@@ -12,6 +12,17 @@ jobs:
       id-token: write  # Required for OIDC
       contents: read   # Required to fetch repo contents
     steps:
+      # Step 0: Cache node_modules and Vite cache
+      - name: Cache node_modules and Vite cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            **/.vite
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,9 +39,12 @@ jobs:
       - name: Install dependencies
         run: npm ci --include=dev
 
+      - name: Echo before build
+        run: echo "Starting build step..."
+
       # Step 4: Build the project
       - name: Build package
-        run: npm run build
+        run: NODE_OPTIONS="--max_old_space_size=4096" npm run build
 
       # Step 5: Configure AWS credentials via OIDC
       - name: Configure AWS credentials
