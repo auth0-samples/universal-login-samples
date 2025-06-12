@@ -1,19 +1,19 @@
-import  Button  from '../../../components/Button';
+import Button from '../../../components/Button';
 interface Connection {
   name: string;
 }
 
-interface SocialLoginProps {
+interface FederatedLoginProps {
   connections?: Connection[];
-  onSocialLogin: (name: string) => void;
+  onFederatedLogin: (name: string) => void;
 }
 
-export const SocialLogin: React.FC<SocialLoginProps> = ({ connections, onSocialLogin }) => (
+export const FederatedLogin: React.FC<FederatedLoginProps> = ({ connections, onFederatedLogin }) => (
   <div className="federated-login-container">
     {connections?.map((connection) => (
       <Button
         key={connection.name}
-        onClick={() => onSocialLogin(connection.name)}
+        onClick={() => onFederatedLogin(connection.name)}
       >
         Continue with {connection.name}
       </Button>
