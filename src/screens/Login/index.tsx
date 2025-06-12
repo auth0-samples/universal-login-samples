@@ -4,7 +4,7 @@ import { useLoginForm } from './hooks/useLoginForm';
 import { Logo } from "../../components/Logo";
 import { Title } from './components/Title';
 import { LoginForm } from './components/LoginForm';
-import { SocialLogin } from './components/SocialLogin';
+import { FederatedLogin } from './components/FederatedLogin';
 import { Links } from './components/Links';
 import { ErrorMessages } from './components/ErrorMessages';
 
@@ -21,7 +21,7 @@ const LoginScreen: React.FC = () => {
     <div className="prompt-container">
       <Logo />
       <Title screenTexts={loginIdManager.screen.texts!} />
-      
+
       <LoginForm
         usernameRef={usernameRef}
         passwordRef={passwordRef}
@@ -33,9 +33,9 @@ const LoginScreen: React.FC = () => {
         onLoginClick={onLoginClick}
       />
 
-      <SocialLogin
+      <FederatedLogin
         connections={loginIdManager.transaction.alternateConnections!}
-        onSocialLogin={handleSocialConnectionLogin}
+        onFederatedLogin={handleSocialConnectionLogin}
       />
 
       {loginIdManager.screen.links && (
