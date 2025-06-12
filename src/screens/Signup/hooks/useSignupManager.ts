@@ -4,9 +4,9 @@ import { withWindowDebug } from "../../../utils";
 
 export const useSignupManager = () => {
   const [signupManager] = useState(() => new LoginInstance());
-    withWindowDebug(signupManager, 'signup')
+  withWindowDebug(signupManager, 'signup')
 
-  const handleSignup = (username: string, email: string, phoneNumber: string,  password: string, captcha: string): void => {
+  const handleSignup = (username: string, email: string, phoneNumber: string, password: string, captcha: string): void => {
     const options = {
       username,
       email,
@@ -18,7 +18,7 @@ export const useSignupManager = () => {
   };
 
   const handleSocialSignup = (connectionName: string) => {
-    signupManager.socialSignup({ connection: connectionName });
+    signupManager.federatedSignup({ connection: connectionName });
   };
 
   return {
