@@ -15,7 +15,7 @@ export const FederatedLogin: React.FC<FederatedLoginProps> = ({ connections, onF
         key={connection.name}
         onClick={() => onFederatedLogin(connection.name)}
       >
-        Continue withmm {connection.name}
+        Continue with {connection.name}
       </Button>
     ))}
   </div>
