@@ -1,11 +1,18 @@
-const BruteForceProtectionUnblockFailureScreen = () => {
+import React from 'react';
+import BruteForceProtectionUnblockFailure from '@auth0/auth0-acul-js/brute-force-protection-unblock-failure';
+
+const BruteForceProtectionUnblockFailureScreen: React.FC = () => {
+  const bruteForceProtectionUnblockFailure = new BruteForceProtectionUnblockFailure();
+  const { screen } = bruteForceProtectionUnblockFailure;
+  const errorType = screen.data?.errorType;
+
   return (
-    <div className="w-[100vw] flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
-        <h2 className="text-2xl font-bold mb-6">Brute Force Protection Unblock Failure Screen</h2>
-        <div className="mb-4">
-          <p>The account has been blocked due to too many failed attempts.</p>
-        </div>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h2 className="text-2xl font-bold mb-6">Brute Force Protection</h2>
+        <p className="text-gray-700 text-base">
+          {errorType ? `Error Type: ${errorType}` : 'Unknown Error'}
+        </p>
       </div>
     </div>
   );
