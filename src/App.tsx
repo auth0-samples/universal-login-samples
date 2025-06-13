@@ -1,6 +1,5 @@
 import React, { useEffect, Suspense } from "react";
 import { getCurrentScreen } from "@auth0/auth0-acul-js";
-
 const LoginIdScreen = React.lazy(() => import("./screens/LoginId"));
 const LoginPasswordScreen = React.lazy(() => import("./screens/LoginPassword"));
 const Login = React.lazy(() => import("./screens/Login"));
@@ -77,6 +76,9 @@ const InterstitialCaptchaScreen = React.lazy(() => import("./screens/intertitial
 // const ResetPasswordMfaWebAuthnRoamingChallengeComponent = React.lazy(() => import("./screens/reset-password-mfa-webauthn-roaming-challenge"));
 // const ConsentScreen = React.lazy(() => import("./screens/consent"));
 const ConsentScreen = React.lazy(() => import("./screens/consent"));
+const BruteForceProtectionUnblock = React.lazy(() => import("./screens/brute-force-protection-unblock"));
+const BruteForceProtectionUnblockSuccess = React.lazy(() => import("./screens/brute-force-protection-unblock-success"));
+const BruteForceProtectionUnblockFailure = React.lazy(() => import("./screens/brute-force-protection-unblock-failure"));
 const ResetPasswordMfaWebAuthnRoamingChallengeComponent = React.lazy(() => import("./screens/reset-password-mfa-webauthn-roaming-challenge"));
 const ResetPasswordMfaWebAuthnPlatformChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-webauthn-platform-challenge"));
 
@@ -237,6 +239,12 @@ const App: React.FC = () => {
         return <ResetPasswordMfaWebAuthnPlatformChallengeScreen />;
       case "consent":
         return <ConsentScreen />;
+      case "brute-force-protection-unblock":
+        return <BruteForceProtectionUnblock/>
+      case "brute-force-protection-unblock-success":
+        return <BruteForceProtectionUnblockSuccess/>
+      case "brute-force-protection-unblock-failure":
+        return <BruteForceProtectionUnblockFailure/>
       case "mfa-webauthn-change-key-nickname":
         return <MfaWebAuthnChangeKeyNicknameScreen />
       case "reset-password-mfa-webauthn-roaming-challenge":
