@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import LoginInstance from "@auth0/auth0-acul-js/login";
 import { withWindowDebug } from "../../../utils";
+import { getError } from '@auth0/auth0-acul-js';
 
 export const useLoginManager = () => {
   const [loginIdManager] = useState(() => new LoginInstance());
@@ -22,7 +23,8 @@ export const useLoginManager = () => {
   return {
     loginIdManager,
     handleLogin,
-    handleSocialConnectionLogin
+    handleSocialConnectionLogin,
+    getError
   };
 };
 

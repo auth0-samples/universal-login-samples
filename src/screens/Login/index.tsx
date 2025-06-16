@@ -9,8 +9,9 @@ import { Links } from './components/Links';
 import { ErrorMessages } from './components/ErrorMessages';
 
 const LoginScreen: React.FC = () => {
-  const { loginIdManager, handleLogin, handleSocialConnectionLogin } = useLoginManager();
+  const { loginIdManager, handleLogin, handleSocialConnectionLogin, getError } = useLoginManager();
   const { usernameRef, passwordRef, captchaRef, getFormValues } = useLoginForm();
+  const primaryErrors = getError();
 
   const onLoginClick = () => {
     const { username, password, captcha } = getFormValues();
@@ -46,7 +47,7 @@ const LoginScreen: React.FC = () => {
       )}
 
       {loginIdManager.transaction.hasErrors && loginIdManager.transaction.errors && (
-        <ErrorMessages errors={loginIdManager.transaction.errors!} />
+        <ErrorMessages errors={primaryErrors!} />
       )}
     </div>
   );
