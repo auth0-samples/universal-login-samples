@@ -9,9 +9,8 @@ import { Links } from './components/Links';
 import { ErrorMessages } from './components/ErrorMessages';
 
 const LoginScreen: React.FC = () => {
-  const { loginIdManager, handleLogin, handleSocialConnectionLogin, getError } = useLoginManager();
+  const { loginIdManager, handleLogin, handleSocialConnectionLogin, errors } = useLoginManager();
   const { usernameRef, passwordRef, captchaRef, getFormValues } = useLoginForm();
-  const errors = getError();
 
   const onLoginClick = () => {
     const { username, password, captcha } = getFormValues();
