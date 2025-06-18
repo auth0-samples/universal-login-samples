@@ -56,7 +56,7 @@ const ResetPasswordMfaPhoneChallengeScreen = React.lazy(() => import("./screens/
 const PasskeyEnrollmentScreen = React.lazy(() => import("./screens/passkey-enrollment"));
 const PasskeyEnrollmentLocalScreen = React.lazy(() => import("./screens/passkey-enrollment-local"));
 const MfaRecoveryCodeChallengeNewCodeScreen = React.lazy(() => import("./screens/mfa-recovery-code-challenge-new-code"));
-// const EmailOTPChallengeScreen = React.lazy(() => import("./screens/email-otp-challenge"));
+const EmailOTPChallengeScreen = React.lazy(() => import("./screens/email-otp-challenge"));
 const LogoutScreen = React.lazy(() => import("./screens/logout"));
 const LogoutAbortedScreen = React.lazy(() => import("./screens/logout-aborted"));
 const LogoutCompleteScreen = React.lazy(() => import("./screens/logout-complete"));
@@ -207,8 +207,8 @@ const App: React.FC = () => {
         return <PasskeyEnrollmentLocalScreen />;
       case "mfa-recovery-code-challenge-new-code":
         return <MfaRecoveryCodeChallengeNewCodeScreen />;
-      // case "email-otp-challenge":
-      //   return <EmailOTPChallengeScreen />;
+      case "email-otp-challenge":
+        return <EmailOTPChallengeScreen />;
       case "logout":
         return <LogoutScreen />;
       case "logout-aborted":
