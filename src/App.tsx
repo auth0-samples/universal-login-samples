@@ -64,7 +64,7 @@ const EmailIdentifierChallengeScreen = React.lazy(() => import("./screens/email-
 const LoginEmailVerificationScreen = React.lazy(() => import("./screens/login-email-verification"));
 const MfaWebAuthnErrorScreen = React.lazy(() => import("./screens/mfa-webauthn-error"));
 const MfaWebAuthnPlatformEnrollmentScreen = React.lazy(() => import("./screens/mfa-webauthn-platform-enrollment"));
-// const MfaWebAuthnNotAvailableErrorScreen = React.lazy(() => import("./screens/mfa-webauthn-not-available-error"))
+const MfaWebAuthnNotAvailableErrorScreen = React.lazy(() => import("./screens/mfa-webauthn-not-available-error"))
 const MfaWebAuthnRoamingEnrollment = React.lazy(() => import("./screens/mfa-webauthn-roaming-enrollment"))
 const MfaWebAuthnRoamingChallengeScreen = React.lazy(() => import("./screens/mfa-webauthn-roaming-challenge"));
 const MfaWebAuthnPlatformChallengeScreen = React.lazy(() => import("./screens/mfa-webauthn-platform-challenge"));
@@ -225,8 +225,8 @@ const App: React.FC = () => {
         return <MfaWebAuthnErrorScreen />;
       case "mfa-webauthn-platform-enrollment":
         return <MfaWebAuthnPlatformEnrollmentScreen />;
-      // case "mfa-webauthn-not-available-error":
-      //   return <MfaWebAuthnNotAvailableErrorScreen />
+      case "mfa-webauthn-not-available-error":
+        return <MfaWebAuthnNotAvailableErrorScreen />
       case "mfa-webauthn-roaming-enrollment": 
         return <MfaWebAuthnRoamingEnrollment />
       case "mfa-webauthn-roaming-challenge":
