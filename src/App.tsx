@@ -37,7 +37,7 @@ const ResetPasswordMfaOtpChallengeScreen = React.lazy(() => import("./screens/re
 const OrganizationSelectionScreen = React.lazy(() => import("./screens/organization-selection"));
 const OrganizationPickerScreen = React.lazy(() => import("./screens/organization-picker"));
 const AcceptInvitationScreen = React.lazy(() => import("./screens/accept-invitation"));
-// const CustomizedConsentScreen = React.lazy(() => import("./screens/customized-consent"));
+const CustomizedConsentScreen = React.lazy(() => import("./screens/customized-consent"));
 const MfaPhoneEnrollmentScreen = React.lazy(() => import("./screens/mfa-phone-enrollment"));
 const MfaVoiceEnrollmentScreen = React.lazy(() => import("./screens/mfa-voice-enrollment"));
 const MfaRecoveryCodeChallengeScreen = React.lazy(() => import("./screens/mfa-recovery-code-challenge"));
@@ -74,7 +74,6 @@ const PhoneIdentifierChallengeScreen = React.lazy(() => import("./screens/phone-
 const PhoneIdentifierEnrollmentScreen = React.lazy(() => import("./screens/phone-identifier-enrollment"));
 const InterstitialCaptchaScreen = React.lazy(() => import("./screens/intertitial-captcha"));
 // const ResetPasswordMfaWebAuthnRoamingChallengeComponent = React.lazy(() => import("./screens/reset-password-mfa-webauthn-roaming-challenge"));
-// const ConsentScreen = React.lazy(() => import("./screens/consent"));
 const ConsentScreen = React.lazy(() => import("./screens/consent"));
 const BruteForceProtectionUnblock = React.lazy(() => import("./screens/brute-force-protection-unblock"));
 const BruteForceProtectionUnblockSuccess = React.lazy(() => import("./screens/brute-force-protection-unblock-success"));
@@ -173,8 +172,8 @@ const App: React.FC = () => {
         return <PhoneIdentifierEnrollmentScreen />;
       case "accept-invitation":
         return <AcceptInvitationScreen />;
-      // case "customized-consent":
-      //   return <CustomizedConsentScreen />;
+      case "customized-consent":
+        return <CustomizedConsentScreen />;
       case "mfa-phone-enrollment":
         return <MfaPhoneEnrollmentScreen />;
       case "mfa-voice-enrollment":
