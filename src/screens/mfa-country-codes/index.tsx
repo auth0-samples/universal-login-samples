@@ -1,11 +1,6 @@
 import React from 'react';
 import MfaCountryCodes from '@auth0/auth0-acul-js/mfa-country-codes';
 
-interface PhonePrefix {
-  country: string;
-  country_code: string;
-  phone_prefix: string;
-}
 
 const MfaCountryCodesScreen: React.FC = () => {
   const mfaCountryCodes = new MfaCountryCodes();
