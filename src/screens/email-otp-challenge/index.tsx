@@ -7,7 +7,6 @@ const EmailOTPChallengeScreen: React.FC = () => {
   const [success, setSuccess] = useState(false);
 
   const emailOTPChallengeManager = new EmailOTPChallenge();
-  const { screen } = emailOTPChallengeManager;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
