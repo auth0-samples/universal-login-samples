@@ -4,12 +4,12 @@ import { useLoginForm } from './hooks/useLoginForm';
 import { Logo } from "../../components/Logo";
 import { Title } from './components/Title';
 import { LoginForm } from './components/LoginForm';
-import { SocialLogin } from './components/SocialLogin';
+import { FederatedLogin } from './components/FederatedLogin';
 import { Links } from './components/Links';
 import { ErrorMessages } from './components/ErrorMessages';
 
 const LoginScreen: React.FC = () => {
-  const { loginIdManager, handleLogin, handleSocialConnectionLogin } = useLoginManager();
+  const { loginIdManager, handleLogin, handleSocialConnectionLogin, errors } = useLoginManager();
   const { usernameRef, passwordRef, captchaRef, getFormValues } = useLoginForm();
 
   const onLoginClick = () => {
@@ -21,7 +21,7 @@ const LoginScreen: React.FC = () => {
     <div className="prompt-container">
       <Logo />
       <Title screenTexts={loginIdManager.screen.texts!} />
-      
+
       <LoginForm
         usernameRef={usernameRef}
         passwordRef={passwordRef}
@@ -33,9 +33,9 @@ const LoginScreen: React.FC = () => {
         onLoginClick={onLoginClick}
       />
 
-      <SocialLogin
+      <FederatedLogin
         connections={loginIdManager.transaction.alternateConnections!}
-        onSocialLogin={handleSocialConnectionLogin}
+        onFederatedLogin={handleSocialConnectionLogin}
       />
 
       {loginIdManager.screen.links && (
@@ -46,7 +46,7 @@ const LoginScreen: React.FC = () => {
       )}
 
       {loginIdManager.transaction.hasErrors && loginIdManager.transaction.errors && (
-        <ErrorMessages errors={loginIdManager.transaction.errors!} />
+        <ErrorMessages errors={errors!} />
       )}
     </div>
   );
