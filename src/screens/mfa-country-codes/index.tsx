@@ -1,15 +1,21 @@
 import React from 'react';
 import MfaCountryCodes from '@auth0/auth0-acul-js/mfa-country-codes';
 
+interface PhonePrefix {
+  country: string;
+  country_code: string;
+  phone_prefix: string;
+}
+
 const MfaCountryCodesScreen: React.FC = () => {
   const mfaCountryCodes = new MfaCountryCodes();
   const { screen } = mfaCountryCodes;
-  const { phone_prefixes } = screen.data || {};
+  const { phonePrefixes } = screen.data || {};
   const handleCountrySelect = async (countryCode: string, phonePrefix: string) => {
     try {
       await mfaCountryCodes.selectCountryCode({
-       country_code: countryCode,
-       phone_prefix: phonePrefix
+        countryCode: countryCode,
+        phonePrefix: phonePrefix
       });
     } catch (error) {
       console.error('Failed to select country code:', error);
@@ -35,7 +41,7 @@ const MfaCountryCodesScreen: React.FC = () => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <div className="space-y-4">
-            {phone_prefixes?.map((prefix, index) => (
+            {phonePrefixes?.map((prefix: PhonePrefix, index: number) => (
               <button
                 key={`${prefix.country_code}${index}`}
                 onClick={() => handleCountrySelect(prefix.country_code, prefix.phone_prefix)}
