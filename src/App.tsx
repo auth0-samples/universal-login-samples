@@ -37,7 +37,7 @@ const ResetPasswordMfaOtpChallengeScreen = React.lazy(() => import("./screens/re
 const OrganizationSelectionScreen = React.lazy(() => import("./screens/organization-selection"));
 const OrganizationPickerScreen = React.lazy(() => import("./screens/organization-picker"));
 const AcceptInvitationScreen = React.lazy(() => import("./screens/accept-invitation"));
-// const CustomizedConsentScreen = React.lazy(() => import("./screens/customized-consent"));
+const CustomizedConsentScreen = React.lazy(() => import("./screens/customized-consent"));
 const MfaPhoneEnrollmentScreen = React.lazy(() => import("./screens/mfa-phone-enrollment"));
 const MfaVoiceEnrollmentScreen = React.lazy(() => import("./screens/mfa-voice-enrollment"));
 const MfaRecoveryCodeChallengeScreen = React.lazy(() => import("./screens/mfa-recovery-code-challenge"));
@@ -74,11 +74,10 @@ const PhoneIdentifierChallengeScreen = React.lazy(() => import("./screens/phone-
 const PhoneIdentifierEnrollmentScreen = React.lazy(() => import("./screens/phone-identifier-enrollment"));
 const InterstitialCaptchaScreen = React.lazy(() => import("./screens/intertitial-captcha"));
 // const ResetPasswordMfaWebAuthnRoamingChallengeComponent = React.lazy(() => import("./screens/reset-password-mfa-webauthn-roaming-challenge"));
-// const ConsentScreen = React.lazy(() => import("./screens/consent"));
 const ConsentScreen = React.lazy(() => import("./screens/consent"));
-const BruteForceProtectionUnblock = React.lazy(() => import("./screens/brute-force-protection-unblock"));
-const BruteForceProtectionUnblockSuccess = React.lazy(() => import("./screens/brute-force-protection-unblock-success"));
-const BruteForceProtectionUnblockFailure = React.lazy(() => import("./screens/brute-force-protection-unblock-failure"));
+// const BruteForceProtectionUnblock = React.lazy(() => import("./screens/brute-force-protection-unblock"));
+// const BruteForceProtectionUnblockSuccess = React.lazy(() => import("./screens/brute-force-protection-unblock-success"));
+// const BruteForceProtectionUnblockFailure = React.lazy(() => import("./screens/brute-force-protection-unblock-failure"));
 const ResetPasswordMfaWebAuthnRoamingChallengeComponent = React.lazy(() => import("./screens/reset-password-mfa-webauthn-roaming-challenge"));
 const ResetPasswordMfaWebAuthnPlatformChallengeScreen = React.lazy(() => import("./screens/reset-password-mfa-webauthn-platform-challenge"));
 
@@ -106,7 +105,7 @@ const App: React.FC = () => {
       case "signup":
         return <Signup />;
       case "signup-id":
-        return < SignupId/>;
+        return < SignupId />;
       case "signup-password":
         return <SignupPassword />;
       case "reset-password-request":
@@ -173,8 +172,8 @@ const App: React.FC = () => {
         return <PhoneIdentifierEnrollmentScreen />;
       case "accept-invitation":
         return <AcceptInvitationScreen />;
-      // case "customized-consent":
-      //   return <CustomizedConsentScreen />;
+      case "customized-consent":
+        return <CustomizedConsentScreen />;
       case "mfa-phone-enrollment":
         return <MfaPhoneEnrollmentScreen />;
       case "mfa-voice-enrollment":
@@ -227,28 +226,28 @@ const App: React.FC = () => {
         return <MfaWebAuthnPlatformEnrollmentScreen />;
       case "mfa-webauthn-not-available-error":
         return <MfaWebAuthnNotAvailableErrorScreen />
-      case "mfa-webauthn-roaming-enrollment": 
+      case "mfa-webauthn-roaming-enrollment":
         return <MfaWebAuthnRoamingEnrollment />
       case "mfa-webauthn-roaming-challenge":
         return <MfaWebAuthnRoamingChallengeScreen />
       case "mfa-webauthn-platform-challenge":
         return <MfaWebAuthnPlatformChallengeScreen />
-      case "mfa-webauthn-enrollment-success": 
+      case "mfa-webauthn-enrollment-success":
         return <MfaWebAuthnEnrollmentSuccessScreen />
       case "reset-password-mfa-webauthn-platform-challenge":
         return <ResetPasswordMfaWebAuthnPlatformChallengeScreen />;
       case "consent":
         return <ConsentScreen />;
-      case "brute-force-protection-unblock":
-        return <BruteForceProtectionUnblock/>
-      case "brute-force-protection-unblock-success":
-        return <BruteForceProtectionUnblockSuccess/>
-      case "brute-force-protection-unblock-failure":
-        return <BruteForceProtectionUnblockFailure/>
+      // case "brute-force-protection-unblock":
+      //   return <BruteForceProtectionUnblock/>
+      // case "brute-force-protection-unblock-success":
+      //   return <BruteForceProtectionUnblockSuccess/>
+      // case "brute-force-protection-unblock-failure":
+      //   return <BruteForceProtectionUnblockFailure/>
       case "mfa-webauthn-change-key-nickname":
         return <MfaWebAuthnChangeKeyNicknameScreen />
       case "reset-password-mfa-webauthn-roaming-challenge":
-          return <ResetPasswordMfaWebAuthnRoamingChallengeComponent />;
+        return <ResetPasswordMfaWebAuthnRoamingChallengeComponent />;
       default:
         return <>No screen rendered</>;
     }
