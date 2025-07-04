@@ -9,7 +9,7 @@ const MfaRecoveryCodeChallengeScreen: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mfaRecoveryCodeChallenge.continue(code);
+    mfaRecoveryCodeChallenge.continue({ code });
   };
 
   const handleTryAnotherMethod = () => {
