@@ -115,7 +115,7 @@ const LoginIdScreen: React.FC = () => {
     <div>
       {/* Render the login ID screen content */}
       <button onclick={handleLogin}>Continue<button>
-      {loginIdManager.transaction.hasErrors && loginIdManager.transaction.errors && (
+      {loginIdManager.transaction.hasErrors && errors && (
         <ErrorMessages errors={errors} />
       )}
     </div>
