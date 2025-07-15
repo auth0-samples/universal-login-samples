@@ -15,6 +15,10 @@ export const useLoginPasswordManager = () => {
     loginPasswordManager.login(options);
   };
 
+  const handleSocialConnectionLogin = (connectionName: string) => {
+    loginPasswordManager.federatedLogin({ connection: connectionName });
+  };
+
   return {
     username,
     isCaptchaAvailable,
@@ -23,6 +27,8 @@ export const useLoginPasswordManager = () => {
     signupLink,
     resetPasswordLink,
     errors,
-    login
+    login,
+    loginPasswordManager,
+    handleSocialConnectionLogin
   };
-}; 
+};
