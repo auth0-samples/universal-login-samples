@@ -93,6 +93,38 @@ const LoginIdScreen: React.FC = () => {
 export default LoginIdScreen;
 ```
 
+### Error handling for login ...
+
+In the src/screens/LoginId/index.tsx file, we initialize an object for the LoginId screen. This allows us to manage the state and behavior specific to this screen.
+
+```tsx
+import React, { useState } from "react";
+import LoginIdInstance from "@auth0/auth0-acul-js/login-id";
+
+const LoginIdScreen: React.FC = () => {
+  const [loginIdManager] = useState(() => new LoginIdInstance()); //lazy initialization
+
+  const errors = loginIdManager.getError();
+
+  const handleLogin = () => {
+    //Logic for continue
+    loginIdManager.login({username:"", captcha: ""})
+  }
+
+  return (
+    <div>
+      {/* Render the login ID screen content */}
+      <button onclick={handleLogin}>Continue<button>
+      {loginIdManager.transaction.hasErrors && errors && (
+        // A custom React component that renders a <div> with error details
+        <ErrorMessages errors={errors} />
+      )}
+    </div>
+  );
+
+export default LoginScreen;
+```
+
 ## Additional Information
 
 - This project uses Vite for fast development and build processes.
