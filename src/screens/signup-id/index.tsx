@@ -30,6 +30,10 @@ const SignupIdScreen: React.FC = () => {
     }
   };
 
+  const handlePickCountryCode = async () => {
+    await signupIdManager.pickCountryCode();
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -62,14 +66,23 @@ const SignupIdScreen: React.FC = () => {
               <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                 Phone (optional)
               </label>
-              <div className="mt-1">
+              <div className="mt-1 flex rounded-md shadow-sm">
+                <button
+                  type="button"
+                  onClick={handlePickCountryCode}
+                  className="relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                >
+                  <span>
+                    {signupIdManager.transaction.countryCode} (+{signupIdManager.transaction.countryPrefix})
+                  </span>
+                </button>
                 <input
                   id="phone"
                   name="phone"
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-none rounded-l-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               </div>
             </div>
