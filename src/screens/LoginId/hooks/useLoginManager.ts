@@ -13,7 +13,7 @@ export const useLoginManager = () => {
   };
 
   const handleSocialConnectionLogin = (connectionName: string) => {
-    loginManager.socialLogin({ connection: connectionName });
+    loginManager.federatedLogin({ connection: connectionName });
   };
 
   const handlePasskeyLogin = () => {

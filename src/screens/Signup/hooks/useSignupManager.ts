@@ -18,7 +18,7 @@ export const useSignupManager = () => {
   };
 
   const handleSocialSignup = (connectionName: string) => {
-    signupManager.socialSignup({ connection: connectionName });
+    signupManager.federatedSignup({ connection: connectionName });
   };
 
   return {

@@ -4,7 +4,7 @@ import MfaPushEnrollmentQr from '@auth0/auth0-acul-js/mfa-push-enrollment-qr';
 const MfaPushEnrollmentQrScreen: React.FC = () => {
   const mfaPushEnrollmentQr = new MfaPushEnrollmentQr();
   const { screen } = mfaPushEnrollmentQr;
-  const { qr_code } = screen.data || {};
+  const { qrCode } = screen.data || {};
 
   const handlePickAuthenticator = async () => {
     try {
@@ -20,9 +20,9 @@ const MfaPushEnrollmentQrScreen: React.FC = () => {
         <h2 className="text-2xl font-bold">{ screen.texts?.title ?? 'Enroll with Push Notification' }</h2>
         <p className="mb-4">{ screen.texts?.description ?? '' }</p>
         {
-          qr_code ? (
+          qrCode ? (
             <div className="mb-4">
-              <img src={qr_code} alt="QR Code" className="mb-4 mx-auto" />
+              <img src={qrCode} alt="QR Code" className="mb-4 mx-auto" />
             </div>
           ) : (
             <p>Loading QR Code...</p>

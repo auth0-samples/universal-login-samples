@@ -16,7 +16,7 @@ export const useLoginManager = () => {
   };
 
   const handleSocialConnectionLogin = (connectionName: string) => {
-    loginIdManager.socialLogin({ connection: connectionName });
+    loginIdManager.federatedLogin({ connection: connectionName });
   };
 
   return {
