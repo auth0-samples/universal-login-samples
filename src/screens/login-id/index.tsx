@@ -51,7 +51,7 @@ const LoginIdScreen: React.FC = () => {
   const isCaptchaAvailable = (screen as any).isCaptchaAvailable || false;
   const alternateConnections = transaction.alternateConnections || [];
   const passkeyEnabled = transaction.isPasskeyEnabled;
-  
+
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
@@ -125,13 +125,31 @@ const LoginIdScreen: React.FC = () => {
           </div>
         </form>
 
-        {/* Sign up */}
-        <p className="mt-4 text-center text-sm text-gray-500">
-          Don’t have an account?{' '}
-          <a href={screen.signupLink || '#'} className="text-indigo-500 hover:underline">
-            Sign up
-          </a>
-        </p>
+        {/* Sign up + reset password links */}
+        {screen.links && (
+          <>
+            <p className="mt-4 text-center text-sm text-gray-500">
+              {screen.texts?.footerText || "Don't have an account?"}{' '}
+              {screen.links.signup && (
+                <a
+                  href={screen.signupLink || '#'}
+                  className="text-indigo-500 hover:underline"
+                >
+                  {screen.texts?.signupActionLinkText || 'Sign up'}
+                </a>
+              )}
+            </p>
+
+            {screen.links.reset_password && (
+              <p className="mt-2 text-center text-sm text-indigo-600 hover:text-indigo-500 cursor-pointer">
+                <a href={screen.links.reset_password}>
+                  {screen.texts?.forgotPasswordText || "Can't log in?"}
+                </a>
+              </p>
+            )}
+          </>
+        )}
+
 
         {/* OR separator */}
         <div className="flex items-center my-4">
