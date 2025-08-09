@@ -24,8 +24,7 @@ const LoginIdScreen: React.FC = () => {
     try {
       await login({ username, password, captcha });
     } catch (err: any) {
-      const message = err?.message || 'Login failed';
-      setErrorMessages([message]);
+      setErrorMessages([err?.message || 'Login failed']);
     } finally {
       setIsLoading(false);
     }
@@ -36,7 +35,7 @@ const LoginIdScreen: React.FC = () => {
     try {
       await federatedLogin({ connection });
     } catch (err: any) {
-      setErrorMessages([err.message || 'Federated login failed']);
+      setErrorMessages([err?.message || 'Federated login failed']);
     }
   };
 
@@ -51,27 +50,31 @@ const LoginIdScreen: React.FC = () => {
 
   const isCaptchaAvailable = (screen as any).isCaptchaAvailable || false;
   const alternateConnections = transaction.alternateConnections || [];
-  const passkeyEnabled = (transaction.currentConnection as any)?.options?.authentication_methods?.passkey?.enabled;
+  const passkeyEnabled = transaction.isPasskeyEnabled;
+  
   return (
-    <div className="min-h-screen  flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="text-center">
-          <Logo className="mx-auto h-12 w-auto" />
-
-          <h2 className="mt-6 text-3xl font-extrabold text-indigo-500">
-            {screen.texts?.title || 'Welcome'}
-          </h2>
-          <p className="mt-2 text-sm text-gray-400">
-            {screen.texts?.description}
-          </p>
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
+        {/* Logo */}
+        <div className="flex justify-center">
+          <Logo />
         </div>
 
+        {/* Title */}
+        <h2 className="mt-6 text-center text-xl font-semibold text-gray-900">
+          {screen.texts?.title || 'Welcome'}
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-500">
+          {screen.texts?.description || 'Log in to continue to Test-react-app.'}
+        </p>
+
+        {/* Form */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleLoginClick();
           }}
-          className="mt-8 space-y-6"
+          className="mt-6 space-y-4"
         >
           <div className="rounded-md shadow-sm">
             <div className="mb-4">
@@ -122,51 +125,47 @@ const LoginIdScreen: React.FC = () => {
           </div>
         </form>
 
-        {alternateConnections.length > 0 && (
-          <div className="mt-6">
-            <h3 className="text-center text-gray-400 mb-4">Login with Social</h3>
-            <div className="flex justify-center flex-wrap gap-3">
-              {alternateConnections.map((conn: any) => (
-                <button
-                  key={conn.name}
-                  onClick={() => handleFederatedLogin(conn.name)}
-                  className="bg-white text-gray-900 border border-gray-300 rounded-md py-2 px-4 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Continue with {conn.options?.display_name || conn.name}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Sign up */}
+        <p className="mt-4 text-center text-sm text-gray-500">
+          Don’t have an account?{' '}
+          <a href={screen.signupLink || '#'} className="text-indigo-500 hover:underline">
+            Sign up
+          </a>
+        </p>
 
+        {/* OR separator */}
+        <div className="flex items-center my-4">
+          <div className="flex-1 border-t border-gray-300"></div>
+          <span className="px-3 text-sm text-gray-400">OR</span>
+          <div className="flex-1 border-t border-gray-300"></div>
+        </div>
+
+        {/* Google login */}
+        {alternateConnections.map((conn: any) => (
+          <button
+            key={conn.name}
+            onClick={() => handleFederatedLogin(conn.name)}
+            className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            <img src="/google-icon.svg" alt="" className="h-4 w-4" />
+            Continue with {conn.options?.display_name || conn.name}
+          </button>
+        ))}
+
+        {/* Passkey login */}
         {passkeyEnabled && (
-          <div className="mt-6">
-            <button
-              onClick={handlePasskeyLogin}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              {screen.texts?.passkeyButtonText || 'Continue with a passkey'}
-            </button>
-          </div>
+          <button
+            onClick={handlePasskeyLogin}
+            className="mt-3 w-full rounded-md py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            {screen.texts?.passkeyButtonText || 'Continue with a passkey'}
+          </button>
         )}
 
-        {screen.links?.signup && (
-          <p className="mt-6 text-center text-gray-400">
-            {screen.texts?.footerText || "Don't have an account?"}{' '}
-            <a href={screen.links.signup} className="font-medium text-indigo-600 hover:text-indigo-500">
-              {screen.texts?.signupActionLinkText || 'Sign up'}
-            </a>
-          </p>
-        )}
 
-        {screen.links?.reset_password && (
-          <p className="mt-2 text-center text-sm text-indigo-600 hover:text-indigo-500 cursor-pointer">
-            <a href={screen.links.reset_password}>{screen.texts?.forgotPasswordText || "Can't log in to your accounthkkhk?"}</a>
-          </p>
-        )}
-
+        {/* Errors */}
         {transaction.hasErrors && errorMessages.length > 0 && (
-          <div className="mt-4 text-red-600 text-center">
+          <div className="mt-4 text-red-600 text-center text-sm">
             {errorMessages.map((msg, i) => (
               <p key={i}>{msg}</p>
             ))}
