@@ -1,10 +1,15 @@
-import React, { useEffect, Suspense } from "react";
-import { getCurrentScreen } from "@auth0/auth0-acul-js";
+import React, { Suspense } from "react";
+import { useCurrentScreen } from "@auth0/auth0-acul-react";
 
 // const LoginIdScreen = React.lazy(() => import("./screens/LoginId"));
-const LoginPasswordScreen = React.lazy(() => import("./screens/LoginPassword"));
-const Login = React.lazy(() => import("./screens/Login"));
 const LoginIdScreen = React.lazy(() => import("./screens/login-id"));
+const LoginPasswordScreen = React.lazy(() => import("./screens/Login-Password"));
+const Login = React.lazy(() => import("./screens/Login"));
+// import LoginIdScreen from "./screens/login-id";
+// import LoginPasswordScreen from "./screens/Login-Password";
+
+// const LoginPasswordScreen = React.lazy(() => import("./screens/Login-Password"));
+
 const Signup = React.lazy(() => import("./screens/Signup"));
 const ResetPasswordRequest = React.lazy(() => import("./screens/ResetPasswordRequest"));
 const ResetPasswordEmail = React.lazy(() => import("./screens/ResetPasswordEmail"));
@@ -54,20 +59,16 @@ const PasskeyEnrollmentScreen = React.lazy(() => import("./screens/passkey-enrol
 
 
 const App: React.FC = () => {
-  const [screen, setScreen] = React.useState("login-id");
-  useEffect(() => {
-    const current = getCurrentScreen();
-    setScreen(current.screenName!);
-  }, []);
+  const { screenName } = useCurrentScreen() || {}
 
   const renderScreen = () => {
-    switch (screen) {
+    switch (screenName) {
       case "login-id":
         return <LoginIdScreen />;
       case "login-password":
         return <LoginPasswordScreen />;
       case "login":
-        return <Login />; 
+        return <Login />;
       case "signup":
         return <Signup />;
       case "reset-password-request":
