@@ -84,8 +84,8 @@ const ResetPasswordMfaWebAuthnPlatformChallengeScreen = React.lazy(() => import(
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState("login-id");
   useEffect(() => {
-    const current = getCurrentScreen();
-    setScreen(current!);
+    const { screenName} = getCurrentScreen();
+    setScreen(screenName!);
   }, []);
 
   const renderScreen = () => {
