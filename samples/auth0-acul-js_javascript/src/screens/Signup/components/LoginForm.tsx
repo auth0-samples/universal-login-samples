@@ -1,4 +1,4 @@
-import  Button  from '../../../components/Button';
+import Button from '../../../components/Button';
 interface LoginFormProps {
   emailRef: React.RefObject<HTMLInputElement>;
   usernameRef: React.RefObject<HTMLInputElement>;
@@ -10,6 +10,8 @@ interface LoginFormProps {
   countryCode?: string;
   countryPrefix?: string;
   onLoginClick: () => void;
+  isValid: boolean,
+  errors: Array<{ code: string; message: string }>
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({
@@ -23,6 +25,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   countryCode,
   countryPrefix,
   onLoginClick,
+  isValid,
+  errors
 }) => (
   <div className="input-container">
     <button className="pick-country-code hidden" id="pick-country-code">
@@ -55,7 +59,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       id="password"
       ref={passwordRef}
       placeholder="Enter your password"
+      aria-invalid={!isValid}
+      className={`input w-full border px-4 py-2 rounded ${!isValid ? 'border-red-500' : 'border-gray-300'
+        }`}
     />
+    {!isValid && (
+      <ul className="text-red-500 text-sm list-disc list-inside">
+        {errors.map((err) => (
+          <li key={err.code}>{err.message}</li>
+        ))}
+      </ul>
+    )}
 
     {isCaptchaAvailable && (
       <div className="captcha-container">

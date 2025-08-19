@@ -50,7 +50,7 @@ const MfaPushChallengePushScreen: React.FC = () => {
 
   useEffect(() => {
     clearInterval(pollInterval.current);
-    pollInterval.current = setInterval(startPolling, 5000);
+    // pollInterval.current = setInterval(startPolling, 5000);
 
     return () => {
       clearInterval(pollInterval.current);

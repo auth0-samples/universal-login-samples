@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSignupManager } from './hooks/useSignupManager';
 import { useSignupForm } from './hooks/useSignupForm';
 import { Logo } from "../../components/Logo";
@@ -7,13 +7,22 @@ import { LoginForm } from './components/LoginForm';
 import { FederatedLogin } from './components/FederatedLogin';
 import { Links } from './components/Links';
 import { ErrorMessages } from './components/ErrorMessages';
+import { usePasswordValidation } from '@auth0/auth0-acul-js';
 
 const SignupScreen: React.FC = () => {
   const { signupManager, handleSignup, handleSocialSignup } = useSignupManager();
   const { emailRef, usernameRef, phoneNumberRef, passwordRef, captchaRef, getFormValues } = useSignupForm();
+  const [isValid, setIsValid] = useState(true);
+  const [errors, setErrors] = useState<Array<{ code: string; message: string }>>([]);
+
 
   const onLoginClick = () => {
     const { username, email, phoneNumber, password, captcha } = getFormValues();
+
+    const { isValid, errors } = usePasswordValidation(password, signupManager.transaction.passwordPolicy);
+    setIsValid(isValid);
+    setErrors(errors);
+    if (!isValid) return;
     handleSignup(username, email, phoneNumber, password, captcha);
   };
 
@@ -33,6 +42,8 @@ const SignupScreen: React.FC = () => {
         countryCode={signupManager.transaction.countryCode!}
         countryPrefix={signupManager.transaction.countryPrefix!}
         onLoginClick={onLoginClick}
+        isValid={isValid}
+        errors={errors}
       />
 
       <FederatedLogin
