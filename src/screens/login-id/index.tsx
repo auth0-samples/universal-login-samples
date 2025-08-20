@@ -1,16 +1,23 @@
 import React, { useRef, useState } from 'react';
-import { useScreen, useTransaction, login, federatedLogin, passkeyLogin,  } from '@auth0/auth0-acul-react/login-id';
+import { useScreen, useTransaction, login, federatedLogin, passkeyLogin } from '@auth0/auth0-acul-react/login-id';
 import { Logo } from '../../components/Logo';
-// import { BrandingMembers } from '@auth0/auth0-acul-react';
-
+import { getCurrentThemeOptions} from '@auth0/auth0-acul-js';
 // pickCountryCode
 const LoginIdScreen: React.FC = () => {
   const screen = useScreen();
+  // const theme  = useAuth0Themes();
+  // const scrennTest = useCurrentScreen();
+  // console.log("scrennTest", scrennTest);
+  
+  // console.log("theme", theme);
+  const theme = getCurrentThemeOptions();
+  console.log("theme-->", theme);
+  
   const transaction = useTransaction();
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const captchaRef = useRef<HTMLInputElement>(null);
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
@@ -52,7 +59,7 @@ const LoginIdScreen: React.FC = () => {
   const isCaptchaAvailable = (screen as any).isCaptchaAvailable || false;
   const alternateConnections = transaction.alternateConnections || [];
   const passkeyEnabled = transaction.isPasskeyEnabled;
-
+  // return <div> login id world </div>
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">

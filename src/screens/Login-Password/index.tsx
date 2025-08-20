@@ -1,8 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useScreen, useTransaction, login } from '@auth0/auth0-acul-react/login-password';
 import { Logo } from '../../components/Logo';
+import { useCurrentScreen } from '@auth0/auth0-acul-react';
 
 const LoginPasswordScreen: React.FC = () => {
+   const test = useCurrentScreen();
+    console.log('Current Screen:', test);
   const screen = useScreen();
   
   const transaction = useTransaction();
@@ -13,7 +16,13 @@ const LoginPasswordScreen: React.FC = () => {
 
   const username = screen.data?.username || '';
 
- 
+   useEffect(() => {
+   if (transaction.errors && transaction.errors.length > 0) {
+     // Map the errors to just the message strings
+     const transactionErrorMessages = transaction.errors.map((error) => error.message);
+     setErrorMessages(transactionErrorMessages);
+   }
+ }, [transaction.errors]);
   const handleLoginClick = async () => {
     const password = passwordRef.current?.value ?? '';
 
@@ -28,6 +37,8 @@ const LoginPasswordScreen: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">

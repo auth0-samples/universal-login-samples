@@ -59,10 +59,11 @@ const PasskeyEnrollmentScreen = React.lazy(() => import("./screens/passkey-enrol
 
 
 const App: React.FC = () => {
-  const { screenName } = useCurrentScreen() || {}
-
+  const { screen } = useCurrentScreen() || {};
+  const name = screen?.name;
+  
   const renderScreen = () => {
-    switch (screenName) {
+    switch (name) {
       case "login-id":
         return <LoginIdScreen />;
       case "login-password":
