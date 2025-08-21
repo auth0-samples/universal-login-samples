@@ -7,10 +7,12 @@ import { LoginForm } from './components/LoginForm';
 import { FederatedLogin } from './components/FederatedLogin';
 import { Links } from './components/Links';
 import { ErrorMessages } from './components/ErrorMessages';
-import { usePasswordValidation } from '@auth0/auth0-acul-js';
+import { validatePassword } from '@auth0/auth0-acul-js/signup';
+import { getIdentifier } from '@auth0/auth0-acul-js/signup';
 
 const SignupScreen: React.FC = () => {
   const { signupManager, handleSignup, handleSocialSignup } = useSignupManager();
+  const identifiers = getIdentifier();
   const { emailRef, usernameRef, phoneNumberRef, passwordRef, captchaRef, getFormValues } = useSignupForm();
   const [isValid, setIsValid] = useState(true);
   const [errors, setErrors] = useState<Array<{ code: string; message: string }>>([]);
@@ -19,7 +21,7 @@ const SignupScreen: React.FC = () => {
   const onLoginClick = () => {
     const { username, email, phoneNumber, password, captcha } = getFormValues();
 
-    const { isValid, errors } = usePasswordValidation(password, signupManager.transaction.passwordPolicy);
+    const { isValid, errors } = validatePassword(password);
     setIsValid(isValid);
     setErrors(errors);
     if (!isValid) return;
@@ -44,6 +46,7 @@ const SignupScreen: React.FC = () => {
         onLoginClick={onLoginClick}
         isValid={isValid}
         errors={errors}
+        identifiers={identifiers}
       />
 
       <FederatedLogin
