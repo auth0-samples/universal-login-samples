@@ -8,6 +8,7 @@ interface LoginFormProps {
   countryCode?: string;
   countryPrefix?: string;
   onLoginClick: () => void;
+  // identifierLabel: string; // 🆕
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({
@@ -19,36 +20,26 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   countryCode,
   countryPrefix,
   onLoginClick,
+  // identifierLabel,
 }) => (
   <div className="input-container">
     <button className="pick-country-code hidden" id="pick-country-code">
       Pick country code - {countryCode}: +{countryPrefix}
     </button>
-    <label>Enter your email</label>
-    <input
-      type="text"
-      id="username"
-      ref={usernameRef}
-      placeholder="Enter your email"
+
+    {/* <label>{identifierLabel}</label> */}
+    <input type="text" id="username" ref={usernameRef} 
+    // placeholder={identifierLabel} 
     />
+
     <label>Enter your password</label>
-    <input
-      type="password"
-      id="password"
-      ref={passwordRef}
-      placeholder="Enter your password"
-    />
+    <input type="password" id="password" ref={passwordRef} placeholder="Enter your password" />
 
     {isCaptchaAvailable && (
       <div className="captcha-container">
         <img src={captchaImage ?? ""} alt="Captcha" />
         <label>Enter the captcha</label>
-        <input
-          type="text"
-          id="captcha"
-          ref={captchaRef}
-          placeholder="Enter the captcha"
-        />
+        <input type="text" id="captcha" ref={captchaRef} placeholder="Enter the captcha" />
       </div>
     )}
 
@@ -56,4 +47,4 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       <Button id="continue" onClick={onLoginClick}>Continue</Button>
     </div>
   </div>
-); 
+);

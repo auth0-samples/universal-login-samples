@@ -46,7 +46,7 @@ import React, {Suspense } from "react";
 import { useCurrentScreen } from "@auth0/auth0-acul-react";
 // import { getCurrentScreen } from "@auth0/auth0-acul-js";
 
-// const LoginIdScreen = React.lazy(() => import("./screens/LoginId"));
+const Login = React.lazy(() => import("./screens/Login"));
 const LoginPasswordScreen = React.lazy(() => import("./screens/login-password"));
 // const Login = React.lazy(() => import("./screens/Login"));
 const LoginIdScreen = React.lazy(() => import("./screens/login-id"));
@@ -112,8 +112,8 @@ const App: React.FC = () => {
         return <LoginIdScreen />;
       case "login-password":
         return <LoginPasswordScreen />;
-      // case "login":
-      //   return <Login />; 
+      case "login":
+        return <Login />; 
       case "signup":
         return <Signup />;
       // case "reset-password-request":

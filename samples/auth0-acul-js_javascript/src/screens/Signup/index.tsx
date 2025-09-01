@@ -7,12 +7,10 @@ import { LoginForm } from './components/LoginForm';
 import { FederatedLogin } from './components/FederatedLogin';
 import { Links } from './components/Links';
 import { ErrorMessages } from './components/ErrorMessages';
-import { validatePassword } from '@auth0/auth0-acul-js/signup';
-import { getIdentifier } from '@auth0/auth0-acul-js/signup';
 
 const SignupScreen: React.FC = () => {
   const { signupManager, handleSignup, handleSocialSignup } = useSignupManager();
-  const identifiers = getIdentifier();
+  const identifiers = signupManager.getEnabledIdentifiers();
   const { emailRef, usernameRef, phoneNumberRef, passwordRef, captchaRef, getFormValues } = useSignupForm();
   const [isValid, setIsValid] = useState(true);
   const [errors, setErrors] = useState<Array<{ code: string; message: string }>>([]);
@@ -21,18 +19,18 @@ const SignupScreen: React.FC = () => {
   const onLoginClick = () => {
     const { username, email, phoneNumber, password, captcha } = getFormValues();
 
-    const { isValid, errors } = validatePassword(password);
+    const { isValid, errors } = signupManager.validatePassword(password);
     setIsValid(isValid);
     setErrors(errors);
     if (!isValid) return;
     handleSignup(username, email, phoneNumber, password, captcha);
   };
-
+  
   return (
     <div className="prompt-container">
       <Logo />
       <Title screenTexts={signupManager.screen.texts!} />
-
+    
       <LoginForm
         emailRef={emailRef}
         usernameRef={usernameRef}

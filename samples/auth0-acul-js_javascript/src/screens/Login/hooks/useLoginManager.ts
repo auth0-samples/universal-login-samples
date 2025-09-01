@@ -6,7 +6,7 @@ export const useLoginManager = () => {
   const [loginIdManager] = useState(() => new LoginInstance());
   withWindowDebug(loginIdManager, 'login')
 
-  const errors = loginIdManager.getError();
+  const errors = loginIdManager.getErrors();
 
   const handleLogin = (username: string, password: string, captcha: string): void => {
     const options = {

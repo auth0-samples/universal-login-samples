@@ -13,7 +13,7 @@ interface LoginFormProps {
   onLoginClick: () => void;
   isValid: boolean;
   errors: Array<{ code: string; message: string }>;
-  identifiers?: Array<{ type: string; required: boolean }>;
+  identifiers?: Array<{ type: string; required: boolean }> | null;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({
@@ -36,7 +36,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       Pick country code - {countryCode}: +{countryPrefix}
     </button>
 
-    {identifiers.find((id) => id.type === 'email') && (
+    {identifiers?.find((id) => id.type === 'email') && (
       <>
         <label htmlFor="email">
           Enter your email{' '}
@@ -56,7 +56,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       </>
     )}
 
-    {identifiers.find((id) => id.type === 'username') && (
+    {identifiers?.find((id) => id.type === 'username') && (
       <>
         <label htmlFor="username">
           Enter your username{' '}
@@ -76,7 +76,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       </>
     )}
 
-    {identifiers.find((id) => id.type === 'phone') && (
+    {identifiers?.find((id) => id.type === 'phone') && (
       <>
         <label htmlFor="phoneNumber">
           Enter your phone number{' '}
