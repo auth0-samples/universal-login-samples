@@ -43,7 +43,7 @@
 
 
 import React, {Suspense } from "react";
-import { useCurrentScreen } from "@auth0/auth0-acul-react";
+import { useCurrentScreen, ErrorProvider } from "@auth0/auth0-acul-react";
 // import { getCurrentScreen } from "@auth0/auth0-acul-js";
 
 const Login = React.lazy(() => import("./screens/Login"));
@@ -102,12 +102,12 @@ const PasskeyEnrollmentScreen = React.lazy(() => import("./screens/passkey-enrol
 const App: React.FC = () => {
   // const [screen, setScreen] = React.useState("login-id");
   // useEffect(() => {
-    const {screenName} = useCurrentScreen() || {};
+    const {screen} = useCurrentScreen() || {};
   //   setScreen(screenName!);
   // }, []);
 
   const renderScreen = () => {
-    switch (screenName) {
+    switch (screen?.name) {
       case "login-id":
         return <LoginIdScreen />;
       case "login-password":
@@ -213,7 +213,15 @@ const App: React.FC = () => {
     }
   };
 
-  return <Suspense fallback={<div>Loading...</div>}>{renderScreen()}</Suspense>;
+  return (
+  
+  <Suspense fallback={<div>Loading...</div>}>
+    <ErrorProvider>
+    {renderScreen()}
+     </ErrorProvider>
+    </Suspense>
+ 
+  )
 };
 
 export default App;

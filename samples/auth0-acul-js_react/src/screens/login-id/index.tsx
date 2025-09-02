@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { useScreen, useTransaction, login, federatedLogin, passkeyLogin } from '@auth0/auth0-acul-react/login-id';
 import { Logo } from '../../components/Logo';
-
+import { useErrors } from '@auth0/auth0-acul-react';
+import type { AculError } from '@auth0/auth0-acul-react';
 // pickCountryCode
 const LoginIdScreen: React.FC = () => {
   const screen = useScreen();
@@ -10,8 +11,10 @@ const LoginIdScreen: React.FC = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const captchaRef = useRef<HTMLInputElement>(null);
 
+  const errors: AculError[] = useErrors({ type: 'server' });
+
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessages, setErrorMessages] = useState<string[]>([]);
+  const [, setErrorMessages] = useState<string[]>([]);
 
   const handleLoginClick = async () => {
     const username = usernameRef.current?.value ?? '';
@@ -182,13 +185,24 @@ const LoginIdScreen: React.FC = () => {
 
 
         {/* Errors */}
-        {transaction.hasErrors && errorMessages.length > 0 && (
+        {/* {transaction.hasErrors && errorMessages.length > 0 && (
           <div className="mt-4 text-red-600 text-center text-sm">
             {errorMessages.map((msg, i) => (
               <p key={i}>{msg}</p>
             ))}
           </div>
-        )}
+        )} */}
+
+        <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+      <ul className="list-disc list-inside">
+        {errors.map((error, index) => (
+          <li key={index}>
+            {error.field ? `${error.field}: ` : ''}
+            {error.message}
+          </li>
+        ))}
+      </ul>
+    </div>
       </div>
     </div>
   );

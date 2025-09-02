@@ -1,11 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { useScreen, useTransaction, login } from '@auth0/auth0-acul-react/login-password';
 import { Logo } from '../../components/Logo';
+// import { useErrors } from '@auth0/auth0-acul-react';
+// import type { AculError } from '@auth0/auth0-acul-react';
 
 const LoginPasswordScreen: React.FC = () => {
   const screen = useScreen();
   
   const transaction = useTransaction();
+  // const errors: AculError[] = useErrors({ type: 'server' });
 
   const passwordRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);

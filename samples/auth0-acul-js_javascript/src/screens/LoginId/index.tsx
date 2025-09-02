@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useLoginManager } from './hooks/useLoginManager';
 import { useLoginForm } from './hooks/useLoginForm';
 import { Logo } from "../../components/Logo";
@@ -12,6 +12,7 @@ import { ErrorMessages } from './components/ErrorMessages';
 const LoginIdScreen: React.FC = () => {
   const { loginManager, handleLogin, handleSocialConnectionLogin, handlePasskeyLogin } = useLoginManager();
   const { usernameRef, captchaRef, getFormValues } = useLoginForm();
+  const activeIdentifiers = useMemo(() => loginManager.getActiveIdentifiers(), []);
 
   const onLoginClick = () => {
     const { username, captcha } = getFormValues();

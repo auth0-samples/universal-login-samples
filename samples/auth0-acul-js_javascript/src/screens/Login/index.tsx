@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import LoginSDK from "@auth0/auth0-acul-js/login";
 
 import { useLoginForm } from "./hooks/useLoginForm";
@@ -27,13 +27,12 @@ const LoginScreen: React.FC = () => {
     await loginManager.federatedLogin({ connection: connectionName });
   };
 
-  // const activeIdentifiers = useMemo(() => loginManager.getActiveIdentifier(), []);
-  // console.log(activeIdentifiers, "activeIdentifiers")
+  const activeIdentifiers = useMemo(() => loginManager.getActiveIdentifiers(), []);
 
-  // const getIdentifierLabel = () => {
-  //   if (activeIdentifiers.length === 1) return `Enter your ${activeIdentifiers[0]}`;
-  //   return `Enter your ${activeIdentifiers.join(" or ")}`;
-  // };
+  const getIdentifierLabel = () => {
+    if (activeIdentifiers?.length === 1) return `Enter your ${activeIdentifiers[0]}`;
+    return `Enter your ${activeIdentifiers?.join(" or ")}`;
+  };
 
   const errors = loginManager.getErrors();
 
@@ -51,7 +50,7 @@ const LoginScreen: React.FC = () => {
         countryCode={loginManager.transaction.countryCode ?? undefined}
         countryPrefix={loginManager.transaction.countryPrefix ?? undefined}
         onLoginClick={handleLogin}
-        // identifierLabel={getIdentifierLabel()}
+        identifierLabel={getIdentifierLabel()}
       />
 
       <FederatedLogin

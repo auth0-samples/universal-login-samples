@@ -5,7 +5,7 @@ import {
   signup as signupMethod, 
   federatedSignup, 
   usePasswordValidation,
-  useIdentifiers
+  useEnabledIdentifiers
 } from '@auth0/auth0-acul-react/signup';
 
 import { Logo } from '../../components/Logo';
@@ -14,7 +14,7 @@ import Button from '../../components/Button';
 const SignupScreen: React.FC = () => {
   const screen = useScreen();
   const transaction = useTransaction();
-  const identifiers = useIdentifiers();
+  const identifiers = useEnabledIdentifiers();
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const phoneNumberRef = useRef<HTMLInputElement>(null);
@@ -76,7 +76,7 @@ const SignupScreen: React.FC = () => {
           Pick country code - {transaction.countryCode}: +{transaction.countryPrefix}
         </button>
 
-        {identifiers.find((id) => id.type === 'email') && (
+        {identifiers?.find((id) => id.type === 'email') && (
           <>
             <label htmlFor="email">
               Enter your email{' '}
@@ -96,7 +96,7 @@ const SignupScreen: React.FC = () => {
           </>
         )}
 
-        {identifiers.find((id) => id.type === 'username') && (
+        {identifiers?.find((id) => id.type === 'username') && (
           <>
             <label htmlFor="username">
               Enter your username{' '}
@@ -116,7 +116,7 @@ const SignupScreen: React.FC = () => {
           </>
         )}
 
-        {identifiers.find((id) => id.type === 'phone') && (
+        {identifiers?.find((id) => id.type === 'phone') && (
           <>
             <label htmlFor="phoneNumber">
               Enter your phone number{' '}
