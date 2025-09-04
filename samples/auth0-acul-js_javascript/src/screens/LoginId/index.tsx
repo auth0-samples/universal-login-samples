@@ -19,6 +19,11 @@ const LoginIdScreen: React.FC = () => {
     handleLogin(username, captcha);
   };
 
+  const getIdentifierLabel = () => {
+    if (activeIdentifiers?.length === 1) return `Enter your ${activeIdentifiers[0]}`;
+    return `Enter your ${activeIdentifiers?.join(" or ")}`;
+  };
+
   return (
     <div className="prompt-container">
       <Logo />
@@ -32,6 +37,7 @@ const LoginIdScreen: React.FC = () => {
         countryCode={loginManager.transaction.countryCode!}
         countryPrefix={loginManager.transaction.countryPrefix!}
         onLoginClick={onLoginClick}
+        identifierLabel={getIdentifierLabel()}
       />
 
       <FederatedLogin

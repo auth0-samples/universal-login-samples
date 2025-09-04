@@ -1,11 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import { Logo } from "../../components/Logo";
 import {
   useScreen,
   useTransaction,
   login,
   federatedLogin,
-  // useActiveIdentifiers,
+  useActiveIdentifiers,
 } from "@auth0/auth0-acul-react/login";
 
 const LoginScreen: React.FC = () => {
@@ -19,13 +19,13 @@ const LoginScreen: React.FC = () => {
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // const activeIdentifiers = useActiveIdentifiers();
+  const activeIdentifiers = useActiveIdentifiers();
   const federatedConnections = transaction.alternateConnections ?? [];
 
-  // const identifierLabel = useMemo(() => {
-  //   if (activeIdentifiers.length === 1) return `Enter your ${activeIdentifiers[0]}`;
-  //   return `Enter your ${activeIdentifiers.join(" or ")}`;
-  // }, [activeIdentifiers]);
+  const identifierLabel = useMemo(() => {
+    if (activeIdentifiers?.length === 1) return `Enter your ${activeIdentifiers[0]}`;
+    return `Enter your ${activeIdentifiers?.join(" or ")}`;
+  }, [activeIdentifiers]);
 
   const handleLogin = async () => {
     const username = usernameRef.current?.value ?? "";
@@ -83,14 +83,14 @@ const LoginScreen: React.FC = () => {
           {/* Username / Email / Phone */}
           <div>
             <label htmlFor="username">
-              {/* {identifierLabel} */} Enter your username
+              {identifierLabel}
             </label>
             <input
               id="username"
               name="username"
               type="text"
               autoComplete="username"
-              placeholder="Enter your username"
+              placeholder={identifierLabel}
               ref={usernameRef}
               required
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

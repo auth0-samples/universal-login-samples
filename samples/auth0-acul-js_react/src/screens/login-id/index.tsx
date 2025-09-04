@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
-import { useScreen, useTransaction, login, federatedLogin, passkeyLogin } from '@auth0/auth0-acul-react/login-id';
+import React, { useRef, useState, useMemo } from 'react';
+import { useScreen, useTransaction, login, federatedLogin, passkeyLogin, useActiveIdentifiers } from '@auth0/auth0-acul-react/login-id';
 import { Logo } from '../../components/Logo';
-import { useErrors } from '@auth0/auth0-acul-react';
-import type { AculError } from '@auth0/auth0-acul-react';
+// import { useErrors } from '@auth0/auth0-acul-react';
+// import type { AculError } from '@auth0/auth0-acul-react';
 // pickCountryCode
 const LoginIdScreen: React.FC = () => {
   const screen = useScreen();
@@ -11,10 +11,16 @@ const LoginIdScreen: React.FC = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const captchaRef = useRef<HTMLInputElement>(null);
 
-  const errors: AculError[] = useErrors({ type: 'server' });
+  // const errors: AculError[] = useErrors({ type: 'server' });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [, setErrorMessages] = useState<string[]>([]);
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
+  const activeIdentifiers = useActiveIdentifiers();
+
+  const identifierLabel = useMemo(() => {
+    if (activeIdentifiers?.length === 1) return `Enter your ${activeIdentifiers[0]}`;
+    return `Enter your ${activeIdentifiers?.join(" or ")}`;
+  }, [activeIdentifiers]);
 
   const handleLoginClick = async () => {
     const username = usernameRef.current?.value ?? '';
@@ -81,8 +87,8 @@ const LoginIdScreen: React.FC = () => {
         >
           <div className="rounded-md shadow-sm">
             <div className="mb-4">
-              <label htmlFor="username" className="sr-only">
-                {screen.texts?.usernameOrEmailPlaceholder || 'Username or Email'}
+              <label htmlFor="username">
+                {identifierLabel }
               </label>
               <input
                 id="username"
@@ -90,7 +96,7 @@ const LoginIdScreen: React.FC = () => {
                 type="text"
                 autoComplete="username"
                 required
-                placeholder={screen.texts?.usernameOrEmailPlaceholder || 'Username or email address'}
+                placeholder={identifierLabel}
                 ref={usernameRef}
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
@@ -184,25 +190,14 @@ const LoginIdScreen: React.FC = () => {
         )}
 
 
-        {/* Errors */}
-        {/* {transaction.hasErrors && errorMessages.length > 0 && (
+        Errors
+        {transaction.hasErrors && errorMessages.length > 0 && (
           <div className="mt-4 text-red-600 text-center text-sm">
             {errorMessages.map((msg, i) => (
               <p key={i}>{msg}</p>
             ))}
           </div>
-        )} */}
-
-        <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-      <ul className="list-disc list-inside">
-        {errors.map((error, index) => (
-          <li key={index}>
-            {error.field ? `${error.field}: ` : ''}
-            {error.message}
-          </li>
-        ))}
-      </ul>
-    </div>
+        )}
       </div>
     </div>
   );

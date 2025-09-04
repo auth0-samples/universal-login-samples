@@ -14,7 +14,7 @@
     "preview": "npm run preview --workspaces"
   },
   "dependencies": {
-    "@auth0/auth0-acul-js": "file:../sdk3/universal-login/packages/auth0-acul-js",
+    "@auth0/auth0-acul-js": "file:../sdk3-1/universal-login/packages/auth0-acul-js",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

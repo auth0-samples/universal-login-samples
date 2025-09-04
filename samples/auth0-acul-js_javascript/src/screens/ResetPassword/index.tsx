@@ -11,25 +11,30 @@ const ResetPasswordScreen: React.FC = () => {
   const { newPasswordRef, confirmPasswordRef, captchaRef, getFormValues } = useLoginForm();
   const [isValid, setIsValid] = useState(true);
   const [errors, setErrors] = useState<Array<{ code: string; message: string }>>([]);
-  const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(true);
-  const [confirmPasswordErrors, setConfirmPasswordErrors] = useState<Array<{ code: string; message: string }>>([]); 
-
+  const [passwordValidation, setPasswordValidation] = useState<Array<{ code: string; policy: string; isValid: boolean }>>([]); // NEW
+  const [hasTypedPassword, setHasTypedPassword] = useState(false);
+  
   const onLoginClick = () => {
     const { newPassword, confirmPassword, captcha } = getFormValues();
-    const { isValid, errors } = resetPasswordManager.validatePassword(newPassword);
-    const { isValid: isValidConfirmPassword, errors:confirmPasswordErrors } = resetPasswordManager.validatePassword(confirmPassword);
-
-
-    setIsValid(isValid);
-    setErrors(errors);
-    setIsValidConfirmPassword(isValidConfirmPassword);
-    setConfirmPasswordErrors(confirmPasswordErrors);
-    if (!isValid || !isValidConfirmPassword) {
+    if (!isValid) {
       // Handle password validation errors
       return;
     }
 
     handleResetPassword(newPassword, confirmPassword, captcha);
+  };
+
+  
+  const onPasswordChange = (password: string) => {
+    if (!hasTypedPassword && password.length > 0) {
+    setHasTypedPassword(true);
+  }
+    const results = resetPasswordManager.validatePassword(password);
+    setPasswordValidation(results);
+
+    const failedRules = results.filter(r => !r.isValid);
+    setIsValid(failedRules.length === 0);
+    setErrors(failedRules.map(r => ({ code: r.code, message: r.policy })));
   };
 
   return (
@@ -47,9 +52,11 @@ const ResetPasswordScreen: React.FC = () => {
         countryPrefix={resetPasswordManager.transaction.countryPrefix!}
         onLoginClick={onLoginClick}
         isValid={isValid}
-        isValidConfirmPassword={isValidConfirmPassword}
-        confirmPasswordErrors={confirmPasswordErrors}
         errors={errors}
+        passwordValidation={passwordValidation} 
+        onPasswordChange={onPasswordChange}     
+        hasTypedPassword={hasTypedPassword}
+        
       />
 
       {resetPasswordManager.transaction.hasErrors && resetPasswordManager.transaction.errors && (

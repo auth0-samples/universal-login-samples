@@ -7,10 +7,29 @@ const SignupPasswordScreen: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-
+  const [isValid, setIsValid] = useState(true);
+  const [errors, setErrors] = useState<Array<{ code: string; message: string }>>([]);
   const [passwordErrors, setPasswordErrors] = useState<Array<{ code: string; message: string }>>([]);
+  const [passwordValidation, setPasswordValidation] = useState<Array<{ code: string; policy: string; isValid: boolean }>>([]); // NEW
+  const [hasTypedPassword, setHasTypedPassword] = useState(false);
 
   const signupPasswordManager = new SignupPassword();
+
+  const onPasswordChange = (password: string) => {
+    setPassword(password)
+
+    if (!hasTypedPassword && password.length > 0) {
+      setHasTypedPassword(true);
+    }
+
+    const results = signupPasswordManager.validatePassword(password);
+    setPasswordValidation(results);
+
+    const failedRules = results.filter(r => !r.isValid);
+    setIsValid(failedRules.length === 0);
+    setErrors(failedRules.map(r => ({ code: r.code, message: r.policy })));
+  };
+
 
   const handleSignup = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -22,8 +41,12 @@ const SignupPasswordScreen: React.FC = () => {
       return;
     }
 
-    // ✅ Use validatePassword from the instance
-    const { isValid, errors } = signupPasswordManager.validatePassword(password);
+    const results = signupPasswordManager.validatePassword(password);
+    setPasswordValidation(results);
+
+    const failedRules = results.filter(r => !r.isValid);
+    setIsValid(failedRules.length === 0);
+    setErrors(failedRules.map(r => ({ code: r.code, message: r.policy })));
 
     if (!isValid) {
       setPasswordErrors(errors);
@@ -94,18 +117,74 @@ const SignupPasswordScreen: React.FC = () => {
                 type="password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={`mt-1 block w-full px-3 py-2 border ${
-                  passwordErrors.length ? 'border-red-500' : 'border-gray-300'
-                } rounded-md`}
+                onChange={(e) => onPasswordChange(e.target.value)}
+                className={`mt-1 block w-full px-3 py-2 border ${passwordErrors.length ? 'border-red-500' : 'border-gray-300'
+                  } rounded-md`}
               />
               {/* Show validation errors if any */}
-              {passwordErrors.length > 0 && (
-                <ul className="text-red-500 text-sm mt-1 list-disc list-inside">
-                  {passwordErrors.map((err) => (
-                    <li key={err.code}>{err.message}</li>
-                  ))}
-                </ul>
+              {hasTypedPassword && passwordValidation && passwordValidation.length > 0 && (
+                <div className="mt-2 border border-gray-300 rounded p-3 text-sm">
+                  <p className="mb-1 text-gray-700">Your password must contain:</p>
+                  <ul className="list-disc list-inside space-y-1">
+                    {(() => {
+                      const subItemCodes = [
+                        'password-policy-lower-case',
+                        'password-policy-upper-case',
+                        'password-policy-numbers',
+                        'password-policy-special-characters'
+                      ];
+
+                      const containsAtLeastRule = passwordValidation.find(
+                        r => r.code === 'password-policy-contains-at-least'
+                      );
+
+                      return passwordValidation.map((rule) => {
+                        const isSubItem = subItemCodes.includes(rule.code);
+
+                        // If we have a parent rule, subitems will be rendered under it, so skip them here
+                        if (containsAtLeastRule && isSubItem) return null;
+
+                        // Render the "contains at least" rule with subitems
+                        if (rule.code === 'password-policy-contains-at-least') {
+                          const subItems = passwordValidation.filter(r =>
+                            subItemCodes.includes(r.code)
+                          );
+
+                          return (
+                            <li
+                              key={rule.code}
+                              className={rule.isValid ? 'text-green-600' : 'text-gray-700'}
+                            >
+                              {rule.policy}
+                              {subItems.length > 0 && (
+                                <ul className="list-disc list-inside ml-5 mt-1 space-y-1">
+                                  {subItems.map((subItem) => (
+                                    <li
+                                      key={subItem.code}
+                                      className={subItem.isValid ? 'text-green-600' : 'text-gray-700'}
+                                    >
+                                      {subItem.policy}
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </li>
+                          );
+                        }
+
+                        // Render all others normally
+                        return (
+                          <li
+                            key={rule.code}
+                            className={rule.isValid ? 'text-green-600' : 'text-gray-700'}
+                          >
+                            {rule.policy}
+                          </li>
+                        );
+                      });
+                    })()}
+                  </ul>
+                </div>
               )}
             </div>
 

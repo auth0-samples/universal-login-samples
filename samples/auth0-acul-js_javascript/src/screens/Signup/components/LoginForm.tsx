@@ -14,7 +14,11 @@ interface LoginFormProps {
   isValid: boolean;
   errors: Array<{ code: string; message: string }>;
   identifiers?: Array<{ type: string; required: boolean }> | null;
+  passwordValidation?: Array<{ code: string; policy: string; isValid: boolean }>;
+  onPasswordChange?: (password: string) => void;
+  hasTypedPassword?: boolean;
 }
+
 
 export const LoginForm: React.FC<LoginFormProps> = ({
   emailRef,
@@ -28,9 +32,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   countryPrefix,
   onLoginClick,
   isValid,
-  errors,
+  // errors,
   identifiers = [],
+  passwordValidation,
+  onPasswordChange,
+  hasTypedPassword
 }) => (
+  <>
+    {console.log(passwordValidation, "ankita")}   
+
   <div className="input-container">
     <button className="pick-country-code hidden" id="pick-country-code">
       Pick country code - {countryCode}: +{countryPrefix}
@@ -106,17 +116,122 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       placeholder="Enter your password"
       aria-invalid={!isValid}
       required
-      className={`input w-full border px-4 py-2 rounded ${
-        !isValid ? 'border-red-500' : 'border-gray-300'
-      }`}
+      className={`input w-full border px-4 py-2 rounded ${!isValid ? 'border-red-500' : 'border-gray-300'
+        }`}
+      onChange={(e) => onPasswordChange?.(e.target.value)} // live validation
     />
-    {!isValid && (
-      <ul className="text-red-500 text-sm list-disc list-inside">
-        {errors.map((err) => (
-          <li key={err.code}>{err.message}</li>
-        ))}
-      </ul>
-    )}
+
+    {/* {hasTypedPassword && passwordValidation && passwordValidation.length > 0 && (
+      <div className="mt-2 border border-gray-300 rounded p-3 text-sm">
+        <p className="mb-1 text-gray-700">Your password must contain:</p>
+        <ul className="list-disc list-inside space-y-1"> */}
+          {/* Render top-level rules (excluding subitems) */}
+          {/* {passwordValidation
+            .filter(rule => ![
+              'password-policy-lower-case',
+              'password-policy-upper-case',
+              'password-policy-numbers',
+              'password-policy-special-characters'
+            ].includes(rule.code))
+            .map((rule) => (
+              <li
+                key={rule.code}
+                className={rule.isValid ? 'text-green-600' : 'text-gray-700'}
+              >
+                {rule.policy}
+              </li>
+            ))} */}
+
+          {/* Render the grouped rule for subitems */}
+          {/* {passwordValidation.some(rule =>
+            ['password-policy-lower-case', 'password-policy-upper-case', 'password-policy-numbers', 'password-policy-special-characters'].includes(rule.code)
+          ) && (
+                <ul className="list-disc list-inside ml-5 mt-1 space-y-1">
+                  {passwordValidation
+                    .filter(rule =>
+                      ['password-policy-lower-case', 'password-policy-upper-case', 'password-policy-numbers', 'password-policy-special-characters'].includes(rule.code)
+                    )
+                    .map((rule) => (
+                      <li
+                        key={rule.code}
+                        className={rule.isValid ? 'text-green-600' : 'text-gray-700'}
+                      >
+                        {rule.policy}
+                      </li>
+                    ))}
+                </ul>
+            )} */}
+        {/* </ul>
+      </div>
+    )} */}
+
+{hasTypedPassword && passwordValidation && passwordValidation.length > 0 && (
+  <div className="mt-2 border border-gray-300 rounded p-3 text-sm">
+    <p className="mb-1 text-gray-700">Your password must contain:</p>
+    <ul className="list-disc list-inside space-y-1">
+      {(() => {
+        const subItemCodes = [
+          'password-policy-lower-case',
+          'password-policy-upper-case',
+          'password-policy-numbers',
+          'password-policy-special-characters'
+        ];
+
+        const containsAtLeastRule = passwordValidation.find(
+          r => r.code === 'password-policy-contains-at-least'
+        );
+
+        return passwordValidation.map((rule) => {
+          const isSubItem = subItemCodes.includes(rule.code);
+
+          // If we have a parent rule, subitems will be rendered under it, so skip them here
+          if (containsAtLeastRule && isSubItem) return null;
+
+          // Render the "contains at least" rule with subitems
+          if (rule.code === 'password-policy-contains-at-least') {
+            const subItems = passwordValidation.filter(r =>
+              subItemCodes.includes(r.code)
+            );
+
+            return (
+              <li
+                key={rule.code}
+                className={rule.isValid ? 'text-green-600' : 'text-gray-700'}
+              >
+                {rule.policy}
+                {subItems.length > 0 && (
+                  <ul className="list-disc list-inside ml-5 mt-1 space-y-1">
+                    {subItems.map((subItem) => (
+                      <li
+                        key={subItem.code}
+                        className={subItem.isValid ? 'text-green-600' : 'text-gray-700'}
+                      >
+                        {subItem.policy}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+          }
+
+          // Render all others normally
+          return (
+            <li
+              key={rule.code}
+              className={rule.isValid ? 'text-green-600' : 'text-gray-700'}
+            >
+              {rule.policy}
+            </li>
+          );
+        });
+      })()}
+    </ul>
+  </div>
+)}
+
+
+
 
     {isCaptchaAvailable && (
       <div className="captcha-container">
@@ -135,4 +250,5 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       <Button onClick={onLoginClick}>Continue</Button>
     </div>
   </div>
+  </>
 );

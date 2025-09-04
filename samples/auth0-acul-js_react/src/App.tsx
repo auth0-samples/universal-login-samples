@@ -43,7 +43,7 @@
 
 
 import React, {Suspense } from "react";
-import { useCurrentScreen, ErrorProvider } from "@auth0/auth0-acul-react";
+import { useCurrentScreen } from "@auth0/auth0-acul-react";
 // import { getCurrentScreen } from "@auth0/auth0-acul-js";
 
 const Login = React.lazy(() => import("./screens/Login"));
@@ -51,9 +51,12 @@ const LoginPasswordScreen = React.lazy(() => import("./screens/login-password"))
 // const Login = React.lazy(() => import("./screens/Login"));
 const LoginIdScreen = React.lazy(() => import("./screens/login-id"));
 const Signup = React.lazy(() => import("./screens/Signup"));
+const SignupId = React.lazy(() => import("./screens/signup-id"));
+const SignupPassword = React.lazy(() => import("./screens/SignupPassword"));
+
 // const ResetPasswordRequest = React.lazy(() => import("./screens/ResetPasswordRequest"));
 // const ResetPasswordEmail = React.lazy(() => import("./screens/ResetPasswordEmail"));
-// const ResetPassword = React.lazy(() => import("./screens/ResetPassword"));
+const ResetPassword = React.lazy(() => import("./screens/ResetPassword"));
 // const ResetPasswordError = React.lazy(() => import("./screens/ResetPasswordError"));
 // const ResetPasswordSuccess = React.lazy(() => import("./screens/ResetPasswordSuccess"));
 const MfaSmsChallengeScreen = React.lazy(() => import("./screens/mfa-sms-challenge"));
@@ -116,12 +119,16 @@ const App: React.FC = () => {
         return <Login />; 
       case "signup":
         return <Signup />;
+      case "signup-id":
+        return <SignupId />;
+      case "signup-password":
+        return <SignupPassword />;
       // case "reset-password-request":
       //   return <ResetPasswordRequest />;
       // case "reset-password-email":
       //   return <ResetPasswordEmail />;
-      // case "reset-password":
-      //   return <ResetPassword />;
+      case "reset-password":
+        return <ResetPassword />;
       // case "reset-password-error":
       //   return <ResetPasswordError />;
       // case "reset-password-success":
@@ -216,9 +223,9 @@ const App: React.FC = () => {
   return (
   
   <Suspense fallback={<div>Loading...</div>}>
-    <ErrorProvider>
+    {/* <ErrorProvider> */}
     {renderScreen()}
-     </ErrorProvider>
+     {/* </ErrorProvider> */}
     </Suspense>
  
   )

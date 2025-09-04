@@ -12,25 +12,48 @@ const SignupScreen: React.FC = () => {
   const { signupManager, handleSignup, handleSocialSignup } = useSignupManager();
   const identifiers = signupManager.getEnabledIdentifiers();
   const { emailRef, usernameRef, phoneNumberRef, passwordRef, captchaRef, getFormValues } = useSignupForm();
+
   const [isValid, setIsValid] = useState(true);
   const [errors, setErrors] = useState<Array<{ code: string; message: string }>>([]);
+  const [passwordValidation, setPasswordValidation] = useState<Array<{ code: string; policy: string; isValid: boolean }>>([]); // NEW
+  const [hasTypedPassword, setHasTypedPassword] = useState(false); 
 
+  const onPasswordChange = (password: string) => {
+    if (!hasTypedPassword && password.length > 0) {
+    setHasTypedPassword(true);
+  }
+
+    const results = signupManager.validatePassword(password);
+    setPasswordValidation(results);
+
+    const failedRules = results.filter(r => !r.isValid);
+    setIsValid(failedRules.length === 0);
+    setErrors(failedRules.map(r => ({ code: r.code, message: r.policy })));
+  };
 
   const onLoginClick = () => {
     const { username, email, phoneNumber, password, captcha } = getFormValues();
+    const results = signupManager.validatePassword(password);
+    const failed = results.filter(rule => !rule.isValid);
 
-    const { isValid, errors } = signupManager.validatePassword(password);
+    const isValid = failed.length === 0;
+    const errors = failed.map(rule => ({
+      code: rule.code,
+      message: rule.policy
+    }));
+
     setIsValid(isValid);
     setErrors(errors);
     if (!isValid) return;
+
     handleSignup(username, email, phoneNumber, password, captcha);
   };
-  
+
   return (
     <div className="prompt-container">
       <Logo />
       <Title screenTexts={signupManager.screen.texts!} />
-    
+
       <LoginForm
         emailRef={emailRef}
         usernameRef={usernameRef}
@@ -45,6 +68,9 @@ const SignupScreen: React.FC = () => {
         isValid={isValid}
         errors={errors}
         identifiers={identifiers}
+        passwordValidation={passwordValidation} // NEW
+        onPasswordChange={onPasswordChange}     // NEW
+        hasTypedPassword={hasTypedPassword}
       />
 
       <FederatedLogin
@@ -53,9 +79,7 @@ const SignupScreen: React.FC = () => {
       />
 
       {signupManager.screen.links && (
-        <Links
-          loginLink={signupManager.screen.links.loginLink!}
-        />
+        <Links loginLink={signupManager.screen.links.loginLink!} />
       )}
 
       {signupManager.transaction.hasErrors && signupManager.transaction.errors && (
@@ -64,5 +88,4 @@ const SignupScreen: React.FC = () => {
     </div>
   );
 };
-
 export default SignupScreen;
