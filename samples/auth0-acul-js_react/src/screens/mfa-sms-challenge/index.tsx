@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useMfaSmsChallenge} from '@auth0/auth0-acul-react/mfa-sms-challenge';
+import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
 
 const MfaSmsChallengeScreen = () => {
-  const mfaSmsChallenge = useMfaSmsChallenge();
+  const mfaSmsChallenge = new MfaSmsChallenge();
   const [code, setCode] = useState('');
   const [rememberDevice, setRememberDevice] = useState(false);
   const { phoneNumber, showRememberDevice, showLinkVoice } = mfaSmsChallenge.screen.data || {};

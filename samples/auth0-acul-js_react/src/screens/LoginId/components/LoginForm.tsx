@@ -7,6 +7,7 @@ interface LoginFormProps {
   countryCode?: string;
   countryPrefix?: string;
   onLoginClick: () => void;
+  identifierLabel: string;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({
@@ -17,17 +18,18 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   countryCode,
   countryPrefix,
   onLoginClick,
+  identifierLabel
 }) => (
   <div className="input-container">
     <button className="pick-country-code hidden" id="pick-country-code">
       Pick country code - {countryCode}: +{countryPrefix}
     </button>
-    <label>Enter your email</label>
+    <label>{identifierLabel}</label>
     <input
       type="text"
       id="username"
       ref={usernameRef}
-      placeholder="Enter your email"
+      placeholder={identifierLabel}
     />
 
     {isCaptchaAvailable && (

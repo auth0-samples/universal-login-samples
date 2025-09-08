@@ -1,8 +1,8 @@
 import React from 'react';
-import PasskeyEnrollment from '@auth0/auth0-acul-js/passkey-enrollment';
+import { usePasskeyEnrollment} from '@auth0/auth0-acul-react/passkey-enrollment';
 
 const PasskeyEnrollmentScreen: React.FC = () => {
-  const passkeyEnrollment = new PasskeyEnrollment();
+  const passkeyEnrollment = usePasskeyEnrollment();
   const { screen, transaction } = passkeyEnrollment;
   const texts = screen?.texts ?? {};
 

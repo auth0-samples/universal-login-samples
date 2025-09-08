@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import Consent from '@auth0/auth0-acul-js/consent';
+import {useConsent} from '@auth0/auth0-acul-react/consent'; // Import the Consent SDK class
 import type { Scope } from '@auth0/auth0-acul-js/consent'; // Import Scope type
 
 const ConsentScreen: React.FC = () => {
   // Instantiate the SDK class for the Consent screen.
   // useMemo ensures it's only created once per component instance.
-  const consentManager = useMemo(() => new Consent(), []);
+  const consentManager = useMemo(() => useConsent(), []);
 
   const { client, organization, screen, transaction, user } = consentManager;
   const texts = screen.texts ?? {}; // UI texts from Auth0 dashboard

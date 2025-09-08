@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useLoginManager } from './hooks/useLoginManager';
 import { useLoginForm } from './hooks/useLoginForm';
 import { Logo } from "../../components/Logo";
@@ -12,10 +12,16 @@ import { ErrorMessages } from './components/ErrorMessages';
 const LoginIdScreen: React.FC = () => {
   const { loginManager, handleLogin, handleSocialConnectionLogin, handlePasskeyLogin } = useLoginManager();
   const { usernameRef, captchaRef, getFormValues } = useLoginForm();
+  const activeIdentifiers = useMemo(() => loginManager.getActiveIdentifiers(), []);
 
   const onLoginClick = () => {
     const { username, captcha } = getFormValues();
     handleLogin(username, captcha);
+  };
+
+  const getIdentifierLabel = () => {
+    if (activeIdentifiers?.length === 1) return `Enter your ${activeIdentifiers[0]}`;
+    return `Enter your ${activeIdentifiers?.join(" or ")}`;
   };
 
   return (
@@ -31,6 +37,7 @@ const LoginIdScreen: React.FC = () => {
         countryCode={loginManager.transaction.countryCode!}
         countryPrefix={loginManager.transaction.countryPrefix!}
         onLoginClick={onLoginClick}
+        identifierLabel={getIdentifierLabel()}
       />
 
       <FederatedLogin

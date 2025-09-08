@@ -1,33 +1,24 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import path from "path";
 
-const rootNodeModules = path.resolve(__dirname, "../../../node_modules");
-
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // resolve: {
-  //   alias: {
-  //     react: path.resolve(rootNodeModules, "react"),
-  //     "react-dom": path.resolve(rootNodeModules, "react-dom"),
-  //   },
-  //   dedupe: ["react", "react-dom"],
-  // },
   build: {
     target: "esnext",
     rollupOptions: {
       output: {
-        entryFileNames: "index.js",      // Single JS output
-        assetFileNames: "index.css",     // Single CSS output
-        manualChunks: () => "index.js",  // Force single chunk
+        entryFileNames: "index.js", // Single JavaScript output file
+        assetFileNames: "index.css", // Single CSS output file
+        manualChunks: () => "index.js", // Force single chunk
       },
     },
-    cssCodeSplit: false, // Bundle all CSS into one file
+    cssCodeSplit: false, // Disable CSS code-splitting to bundle CSS in one file
   },
   css: {
     preprocessorOptions: {
       scss: {
-        quietDeps: true,
+        quietDeps: true, // Disable "Dependency is not used" warning
       },
     },
   },

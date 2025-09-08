@@ -1,13 +1,7 @@
 {
-  "extends": "../../tsconfig.app.json",
-  "compilerOptions": {
-    "baseUrl": "./src",
-    "paths": {
-        "@/*": ["*"]
-    },
-    "outDir": "dist",
-    "noEmit": true,
-    "allowImportingTsExtensions": true
-  },
-  "include": ["src"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }
