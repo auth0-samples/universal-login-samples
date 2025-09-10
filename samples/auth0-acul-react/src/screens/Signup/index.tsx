@@ -6,7 +6,7 @@ import {
   federatedSignup,
   usePasswordValidation,
   useEnabledIdentifiers,
-  useUsernameValidation
+  // useUsernameValidation
 } from '@auth0/auth0-acul-react/signup';
 
 import { Logo } from '../../components/Logo';
@@ -49,13 +49,14 @@ const SignupScreen: React.FC = () => {
   };
 
   const handleUsername = (value: string) => {
-    const validationRules = useUsernameValidation(value) || [];
-    setIsValidUsername(validationRules.isValid);
-    setErrors(validationRules.errors.map((err) => ({
-            code: 'username',
-            message: err.message,
-          })
-        ));
+    console.log('Username validation is not implemented yet.', value);
+    // const validationRules = useUsernameValidation(value) || [];
+    // setIsValidUsername(validationRules.isValid);
+    // setErrors(validationRules.errors.map((err) => ({
+    //         code: 'username',
+    //         message: err.message,
+    //       })
+    //     ));
   };
 
   // Overall validity: all top-level rules are valid
