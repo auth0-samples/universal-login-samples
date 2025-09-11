@@ -33,17 +33,18 @@ const SignupScreen: React.FC = () => {
   };
 
   const onUsernameChange = (username: string) => {
-    const results = signupManager.validateUsername(username); 
-    setIsUsernameValid(results.isValid);
-    setErrors((prevErrors) => [
-      ...prevErrors.filter((error) => error.code !== 'username'),
-      ...(!results.isValid
-        ? results.errors.map((err) => ({
-            code: 'username',
-            message: err.message,
-          }))
-        : []),
-    ]);
+    console.log('Username changed:', username);
+    // const results = signupManager.validateUsername(username); 
+    // setIsUsernameValid(results.isValid);
+    // setErrors((prevErrors) => [
+    //   ...prevErrors.filter((error) => error.code !== 'username'),
+    //   ...(!results.isValid
+    //     ? results.errors.map((err) => ({
+    //         code: 'username',
+    //         message: err.message,
+    //       }))
+    //     : []),
+    // ]);
   };
 
   const onLoginClick = () => {
