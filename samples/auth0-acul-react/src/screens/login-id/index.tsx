@@ -66,7 +66,9 @@ const LoginIdScreen: React.FC = () => {
       <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
         {/* Logo */}
         <div className="flex justify-center">
-          <Logo />
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
         </div>
 
         {/* Title */}
@@ -88,7 +90,7 @@ const LoginIdScreen: React.FC = () => {
           <div className="rounded-md shadow-sm">
             <div className="mb-4">
               <label htmlFor="username">
-                {identifierLabel }
+                {identifierLabel}
               </label>
               <input
                 id="username"
@@ -190,7 +192,6 @@ const LoginIdScreen: React.FC = () => {
         )}
 
 
-        Errors
         {transaction.hasErrors && errorMessages.length > 0 && (
           <div className="mt-4 text-red-600 text-center text-sm">
             {errorMessages.map((msg, i) => (
