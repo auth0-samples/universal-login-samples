@@ -37,7 +37,9 @@ const LoginPasswordScreen: React.FC = () => {
       <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
         {/* Logo */}
         <div className="flex justify-center">
-          <Logo />
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
         </div>
 
         {/* Title */}

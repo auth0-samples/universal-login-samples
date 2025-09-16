@@ -49,7 +49,9 @@ const SignupIdScreen: React.FC = () => {
       <div className="bg-white rounded-lg shadow-md w-full max-w-sm p-8">
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <Logo />
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
         </div>
 
         {/* Title */}
