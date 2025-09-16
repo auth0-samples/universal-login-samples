@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   submitPhoneChallenge,
   returnToPrevious,
-  resendCode,
   useResend
 } from '@auth0/auth0-acul-react/phone-identifier-challenge';
 
