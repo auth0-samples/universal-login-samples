@@ -114,80 +114,84 @@ const ResetPasswordScreen: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="bg-white rounded-lg shadow-md w-full max-w-sm p-8">
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
         {/* Logo */}
-        <div className="flex justify-center mb-6">
-          <Logo />
+        <div className="flex justify-center">
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
         </div>
 
         {/* Title */}
-        <h1 className="text-2xl font-bold text-center text-gray-800">
+        <h2 className="mt-6 text-center text-xl font-semibold text-gray-900">
           {screen.texts?.title || 'Reset Password'}
-        </h1>
-        <p className="mt-2 text-sm text-center text-gray-600">
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-500">
           {screen.texts?.description || 'Enter your new password below'}
         </p>
 
-        {/* Form */}
+        {/* Content */}
         <div className="mt-6 space-y-4">
-          {/* New Password */}
-          <div>
-            <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
-              Enter your new password <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="password"
-              id="newPassword"
-              ref={newPasswordRef}
-              placeholder="Enter new password"
-              onChange={(e) => handlePasswordChange(e.target.value)}
-              aria-invalid={!isValid}
-              required
-              className={`block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
-                !isValid ? 'border-red-500' : 'border-gray-300'
-              }`}
-            />
-            {hasTypedPassword && password.length > 0 && renderRules(passwordValidationRules)}
-          </div>
-
-          {/* Confirm Password */}
-          <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-              Confirm your new password <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              ref={confirmPasswordRef}
-              placeholder="Confirm new password"
-              required
-              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          {/* Captcha */}
-          {screen.isCaptchaAvailable && (
-            <div>
-              <label htmlFor="captcha" className="block text-sm font-medium text-gray-700">
-                Enter the captcha
+          <div className="rounded-md shadow-sm">
+            {/* New Password */}
+            <div className="mb-4">
+              <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                Enter your new password <span className="text-red-500">*</span>
               </label>
-              <img src={screen.captchaImage ?? ''} alt="Captcha" className="mb-2 w-full rounded" />
               <input
-                type="text"
-                id="captcha"
-                ref={captchaRef}
-                placeholder="Enter the captcha"
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                type="password"
+                id="newPassword"
+                ref={newPasswordRef}
+                placeholder="Enter new password"
+                onChange={(e) => handlePasswordChange(e.target.value)}
+                aria-invalid={!isValid}
+                required
+                className={`appearance-none rounded-md relative block w-full px-3 py-2 border placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
+                  !isValid ? 'border-red-500' : 'border-gray-300'
+                }`}
+              />
+              {hasTypedPassword && password.length > 0 && renderRules(passwordValidationRules)}
+            </div>
+
+            {/* Confirm Password */}
+            <div className="mb-4">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                Confirm your new password <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                ref={confirmPasswordRef}
+                placeholder="Confirm new password"
+                required
+                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
-          )}
+
+            {/* Captcha */}
+            {screen.isCaptchaAvailable && (
+              <div className="mb-4">
+                <label htmlFor="captcha" className="block text-sm font-medium text-gray-700 mb-1">
+                  Enter the captcha
+                </label>
+                <img src={screen.captchaImage ?? ''} alt="Captcha" className="mb-2 w-full rounded" />
+                <input
+                  type="text"
+                  id="captcha"
+                  ref={captchaRef}
+                  placeholder="Enter the captcha"
+                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+            )}
+          </div>
 
           {/* Continue Button */}
           <div>
             <button
               onClick={handleResetPassword}
-              className="w-full bg-blue-500 text-white py-2 rounded-md"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Continue
             </button>
@@ -196,7 +200,7 @@ const ResetPasswordScreen: React.FC = () => {
 
         {/* Errors */}
         {transaction.hasErrors && transaction.errors && (
-          <div className="mt-4 text-sm text-red-600 text-center">
+          <div className="mt-4 text-red-600 text-center text-sm">
             {transaction.errors.map((error, index) => (
               <p key={index}>{error.message}</p>
             ))}
