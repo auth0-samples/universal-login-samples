@@ -1,26 +1,27 @@
-import { useState } from 'react';
-import ResetPasswordEmailInstance from "@auth0/auth0-acul-js/reset-password-email";
-import { withWindowDebug } from "../../../utils";
+import { 
+  useScreen,
+  useTransaction,
+  resendEmail
+} from '@auth0/auth0-acul-react/reset-password-email';
 
 export const useResetPasswordRequestManager = () => {
-  const resetPasswordEmailInstance  = new ResetPasswordEmailInstance()
-  const [resetPasswordRequestManager] = useState(resetPasswordEmailInstance);
-  withWindowDebug(resetPasswordEmailInstance, 'resetPasswordEmail')
+  const screen = useScreen();
+  const transaction = useTransaction();
 
-  const resendEmail = (): void => {
-    resetPasswordRequestManager.resendEmail();
+  const handleResendEmail = (): void => {
+    resendEmail();
   };
 
   const getScreenText = () => {
     return {
-      title: resetPasswordRequestManager.screen.texts?.title || 'Check Your Email',
-      description: resetPasswordRequestManager.screen.texts?.usernameDescription || 'We sent a password reset link to your email'
+      title: screen.texts?.title || 'Check Your Email',
+      description: screen.texts?.usernameDescription || 'We sent a password reset link to your email'
     }
   };
 
   return {
-    resetPasswordRequestManager,
-    resendEmail,
+    resetPasswordRequestManager: { screen, transaction },
+    resendEmail: handleResendEmail,
     getScreenText
   };
 };
