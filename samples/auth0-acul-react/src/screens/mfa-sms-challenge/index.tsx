@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useMfaSmsChallenge, useResend } from '@auth0/auth0-acul-react/mfa-sms-challenge';
+import { Logo } from '../../components/Logo';
 
 const MfaSmsChallengeScreen = () => {
   const mfaSmsChallenge = useMfaSmsChallenge();
   const [code, setCode] = useState('');
   const [rememberDevice, setRememberDevice] = useState(false);
   const { phoneNumber, showRememberDevice, showLinkVoice } = mfaSmsChallenge.screen.data || {};
-    const { remaining, disabled, startResend } = useResend({
+  const { remaining, disabled, startResend } = useResend({
     timeoutSeconds: 12,
     onTimeout: () => console.log('MFA SMS resend available')
   });
@@ -64,48 +65,54 @@ const MfaSmsChallengeScreen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
+        {/* Logo */}
+        <div className="flex justify-center">
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
+        </div>
+
+        {/* Title */}
+        <h2 className="mt-6 text-center text-xl font-semibold text-gray-900">
           MFA SMS Challenge
         </h2>
         {phoneNumber && (
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-gray-500">
             Enter the code sent to {phoneNumber}
           </p>
         )}
-      </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label
-                htmlFor="code"
-                className="block text-sm font-medium text-gray-700"
-              >
+        {/* Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="mt-6 space-y-4"
+        >
+          <div className="rounded-md shadow-sm">
+            <div className="mb-4">
+              <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
                 Enter Code
               </label>
-              <div className="mt-1">
-                <input
-                  id="code"
-                  name="code"
-                  type="text"
-                  required
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
+              <input
+                id="code"
+                name="code"
+                type="text"
+                required
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="Enter verification code"
+                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
             </div>
 
             {showRememberDevice && (
-              <div className="flex items-center">
+              <div className="flex items-center mb-4">
                 <input
                   id="rememberDevice"
                   name="rememberDevice"
                   type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                   checked={rememberDevice}
                   onChange={(e) => setRememberDevice(e.target.checked)}
                 />
@@ -117,50 +124,60 @@ const MfaSmsChallengeScreen = () => {
                 </label>
               </div>
             )}
-
-            <div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Continue
-              </button>
-            </div>
-          </form>
-
-          <div className="mt-6">
-            <button
-              onClick={handlePickSms}
-              className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-            >
-              Pick SMS
-            </button>
-            <button
-              onClick={handleResendCode}
-              disabled={disabled}
-              className={`w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium mt-2 ${
-                disabled 
-                  ? 'text-gray-500 bg-gray-200 cursor-not-allowed border-gray-400' 
-                  : 'text-gray-700 bg-white hover:bg-gray-50'
-              }`}
-            >
-              {disabled ? `Resend in ${remaining}s` : 'Resend Code'}
-            </button>
-            <button
-              onClick={handleTryAnotherMethod}
-              className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mt-2"
-            >
-              Try Another Method
-            </button>
-            {showLinkVoice && (
-              <button
-                onClick={handleGetACall}
-                className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mt-2"
-              >
-                Get a Call
-              </button>
-            )}
           </div>
+
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Continue
+            </button>
+          </div>
+        </form>
+
+        {/* OR separator */}
+        <div className="flex items-center my-4">
+          <div className="flex-1 border-t border-gray-300"></div>
+          <span className="px-3 text-sm text-gray-400">OR</span>
+          <div className="flex-1 border-t border-gray-300"></div>
+        </div>
+
+        {/* Alternative Actions */}
+        <div className="space-y-3">
+          <button
+            onClick={handleResendCode}
+            disabled={disabled}
+            className={`w-full flex items-center justify-center gap-2 rounded-md border px-4 py-2 text-sm font-medium ${disabled
+              ? 'border-gray-300 bg-gray-200 text-gray-500 cursor-not-allowed'
+              : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+              }`}
+          >
+            {disabled ? `Resend in ${remaining}s` : 'Resend Code'}
+          </button>
+
+          <button
+            onClick={handlePickSms}
+            className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            Pick SMS
+          </button>
+
+          <button
+            onClick={handleTryAnotherMethod}
+            className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            Try Another Method
+          </button>
+
+          {showLinkVoice && (
+            <button
+              onClick={handleGetACall}
+              className="w-full rounded-md py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Get a Call
+            </button>
+          )}
         </div>
       </div>
     </div>
