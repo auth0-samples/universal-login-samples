@@ -1,34 +1,28 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
-import { usePollingManager } from '@auth0/auth0-acul-react';
-import { continueMethod } from '@auth0/auth0-acul-react/mfa-push-challenge-push';
+import React, { useState, useEffect } from 'react';
+import { useScreen, useTransaction, continueMethod, resendPushNotification, enterCodeManually, tryAnotherMethod, usePollingManager, useUntrustedData } from '@auth0/auth0-acul-react/mfa-push-challenge-push';
 import { Logo } from '../../components/Logo';
 
 const MfaPushChallengePushScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [rememberDevice, setRememberDevice] = useState(false);
-  const mfaPushChallengePush = useMemo(() => new MfaPushChallengePush(), []);
-  const { screen, transaction } = mfaPushChallengePush;
-  const { deviceName, showRememberDevice } =
-    mfaPushChallengePush.screen.data || {};
-    
+  const screen = useScreen();
+  const transaction = useTransaction();
+  const { deviceName, showRememberDevice } = screen.data || {};
+  const untrustedData = useUntrustedData();
+
   // Initialize form values from untrustedData
   useEffect(() => {
-    // Use untrustedData to prepopulate form fields if available
-    const savedFormData = mfaPushChallengePush.untrustedData.submittedFormData;
-    if (savedFormData?.rememberDevice !== undefined) {
+    const savedFormData = (untrustedData && (untrustedData as any).submittedFormData) || {};
+    if (savedFormData.rememberDevice !== undefined) {
       setRememberDevice(savedFormData.rememberDevice);
     }
-  }, []);
-  console.log('kkkmsmmjj')
-  console.log('hsfsjnjdsf')
+  }, [untrustedData]);
+
   const screenText = {
     title: screen.texts?.title ?? 'Push Notification Sent',
     description:
-      screen.texts?.description ??
-      "We've sent a push notification to your device",
-    rememberMe:
-      screen.texts?.rememberMeText ?? 'Remember this device for 30 days',
+      screen.texts?.description ?? "We've sent a push notification to your device",
+    rememberMe: screen.texts?.rememberMeText ?? 'Remember this device for 30 days',
     resend: screen.texts?.resendActionText ?? 'Resend Push Notification',
     enterCode: screen.texts?.enterOtpCode ?? 'Enter Code Manually',
     tryAnother: screen.texts?.pickAuthenticatorText ?? 'Try Another Method',
@@ -37,8 +31,7 @@ const MfaPushChallengePushScreen: React.FC = () => {
       'Waiting for you to accept the push notification...',
     errorResend: 'Failed to resend push notification. Please try again.',
     errorManualCode: 'Failed to switch to manual code entry. Please try again.',
-    errorAnotherMethod:
-      'Failed to switch authentication method. Please try again.',
+    errorAnotherMethod: 'Failed to switch authentication method. Please try again.',
   };
 
   // Polling state
@@ -68,7 +61,7 @@ const MfaPushChallengePushScreen: React.FC = () => {
   const handleResend = async () => {
     setIsLoading(true);
     try {
-      await mfaPushChallengePush.resendPushNotification({ rememberDevice });
+      await resendPushNotification({ rememberDevice });
     } catch (err) {
       console.log(err);
     } finally {
@@ -79,7 +72,7 @@ const MfaPushChallengePushScreen: React.FC = () => {
   const handleEnterCodeManually = async () => {
     setIsLoading(true);
     try {
-      await mfaPushChallengePush.enterCodeManually({ rememberDevice });
+      await enterCodeManually({ rememberDevice });
     } catch (err) {
       console.log(err);
     } finally {
@@ -90,7 +83,7 @@ const MfaPushChallengePushScreen: React.FC = () => {
   const handleTryAnotherMethod = async () => {
     setIsLoading(true);
     try {
-      await mfaPushChallengePush.tryAnotherMethod({ rememberDevice });
+      await tryAnotherMethod({ rememberDevice });
     } catch (err) {
       console.log(err);
     } finally {

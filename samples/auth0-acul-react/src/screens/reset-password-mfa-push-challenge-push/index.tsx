@@ -1,21 +1,30 @@
-import React, { useState, useMemo } from 'react';
-import ResetPasswordMfaPushChallengePush from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
-import { usePollingManager } from '@auth0/auth0-acul-react';
-import { continueMethod } from '@auth0/auth0-acul-react/reset-password-mfa-push-challenge-push';
+import React, { useState, useEffect } from 'react';
+import { useScreen, useTransaction, useUntrustedData, continueMethod, resendPushNotification, enterCodeManually, tryAnotherMethod, useResetPollingManager } from '@auth0/auth0-acul-react/reset-password-mfa-push-challenge-push';
 import { Logo } from '../../components/Logo';
 
 const ResetPasswordMfaPushChallengePushScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [rememberDevice, setRememberDevice] = useState(false);
-  const resetPasswordMfaPushChallengePush = useMemo(() => new ResetPasswordMfaPushChallengePush(), []);
-  const { deviceName } = resetPasswordMfaPushChallengePush.screen.data || {};
-  const { screen, transaction } = resetPasswordMfaPushChallengePush;
+  const screen = useScreen();
+  const transaction = useTransaction();
+  const untrustedData = useUntrustedData();
+  const { deviceName } = screen.data || {};
+
+  useEffect(() => {
+    const savedFormData = (untrustedData && (untrustedData as any).submittedFormData) || {};
+    if (savedFormData.rememberDevice !== undefined) {
+      setRememberDevice(savedFormData.rememberDevice);
+    }
+  }, [untrustedData]);
+
+  // Defensive: check for showRememberDevice in screen.data, fallback to false
+  const showRememberDevice = (screen.data && (screen.data as any).showRememberDevice === true);
 
   // Polling state
-  const polling = usePollingManager({
+  const polling = useResetPollingManager({
     intervalMs: 5000,
     onComplete: () => {
-      continueMethod();
+      continueMethod({ rememberDevice });
     },
     onError: (err) => {
       polling.stopPolling();
@@ -35,13 +44,13 @@ const ResetPasswordMfaPushChallengePushScreen: React.FC = () => {
   };
 
   const handleContinue = async () => {
-    await resetPasswordMfaPushChallengePush.continue();
+    await continueMethod({ rememberDevice });
   };
 
   const handleResend = async () => {
     setIsLoading(true);
     try {
-      await resetPasswordMfaPushChallengePush.resendPushNotification();
+      await resendPushNotification({ rememberDevice });
     } finally {
       setIsLoading(false);
     }
@@ -50,7 +59,7 @@ const ResetPasswordMfaPushChallengePushScreen: React.FC = () => {
   const handleEnterCodeManually = async () => {
     setIsLoading(true);
     try {
-      await resetPasswordMfaPushChallengePush.enterCodeManually();
+      await enterCodeManually({ rememberDevice });
     } finally {
       setIsLoading(false);
     }
@@ -59,14 +68,11 @@ const ResetPasswordMfaPushChallengePushScreen: React.FC = () => {
   const handleTryAnotherMethod = async () => {
     setIsLoading(true);
     try {
-      await resetPasswordMfaPushChallengePush.tryAnotherMethod();
+      await tryAnotherMethod({ rememberDevice });
     } finally {
       setIsLoading(false);
     }
   };
-
-  // Defensive: check for showRememberDevice in screen.data, fallback to false
-  const showRememberDevice = (screen.data && (screen.data as any).showRememberDevice === true);
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
