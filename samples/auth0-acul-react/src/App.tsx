@@ -13,6 +13,7 @@ import PasskeyEnrollmentScreen from "./screens/passkey-enrollment";
 import ResetPasswordScreen from "./screens/reset-password";
 import EmailIdentifierChallengeScreen from "./screens/email-identifier-challenge";
 import PhoneIdentifierChallengeScreen from "./screens/phone-identifier-challenge";
+import MfaPushChallengePushScreen from "./screens/mfa-challenge-push-challenge";
 
 const screenMap: Record<string, React.FC> = {
   "login": LoginScreen,
@@ -26,7 +27,8 @@ const screenMap: Record<string, React.FC> = {
   "passkey-enrollment": PasskeyEnrollmentScreen,
   "reset-password": ResetPasswordScreen,
   "email-identifier-challenge": EmailIdentifierChallengeScreen,
-  "phone-identifier-challenge": PhoneIdentifierChallengeScreen
+  "phone-identifier-challenge": PhoneIdentifierChallengeScreen,
+  "mfa-push-challenge-push": MfaPushChallengePushScreen,
 };
 
 const App: React.FC = () => {
