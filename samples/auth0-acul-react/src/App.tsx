@@ -13,6 +13,9 @@ import PasskeyEnrollmentScreen from "./screens/passkey-enrollment";
 import ResetPasswordScreen from "./screens/reset-password";
 import EmailIdentifierChallengeScreen from "./screens/email-identifier-challenge";
 import PhoneIdentifierChallengeScreen from "./screens/phone-identifier-challenge";
+import MfaPushChallengePushScreen from "./screens/mfa-push-challenge-push";
+import MfaDetectBrowserCapabilitiesScreen from "./screens/mfa-detect-browser-capabilities";
+import ResetPasswordMfaPushChallengePush from "./screens/reset-password-mfa-push-challenge-push";
 
 const screenMap: Record<string, React.FC> = {
   "login": LoginScreen,
@@ -26,11 +29,16 @@ const screenMap: Record<string, React.FC> = {
   "passkey-enrollment": PasskeyEnrollmentScreen,
   "reset-password": ResetPasswordScreen,
   "email-identifier-challenge": EmailIdentifierChallengeScreen,
-  "phone-identifier-challenge": PhoneIdentifierChallengeScreen
+  "phone-identifier-challenge": PhoneIdentifierChallengeScreen,
+  "mfa-push-challenge-push": MfaPushChallengePushScreen,
+  "mfa-detect-browser-capabilities": MfaDetectBrowserCapabilitiesScreen,
+  "reset-password-mfa-push-challenge-push": ResetPasswordMfaPushChallengePush,
 };
 
 const App: React.FC = () => {
   const current = useCurrentScreen();
+  // Force the screen for testing
+  // const screenName = "mfa-push-challenge-push";
   const screenName = current?.screen?.name;
   const ScreenComponent = screenName ? screenMap[screenName] : undefined;
 
