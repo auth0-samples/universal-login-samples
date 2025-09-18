@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useScreen, useTransaction, continueMethod, resendPushNotification, enterCodeManually, tryAnotherMethod, usePollingManager, useUntrustedData } from '@auth0/auth0-acul-react/mfa-push-challenge-push';
+import { usePollingManager, useScreen, useTransaction, continueMethod, resendPushNotification, enterCodeManually, tryAnotherMethod, useUntrustedData } from '@auth0/auth0-acul-react/mfa-push-challenge-push';
 import { Logo } from '../../components/Logo';
+// Add this import, adjust the path if needed
+// import { usePollingManager } from '@auth0/auth0-acul-react/mfa-push-challenge-push';
 
 const MfaPushChallengePushScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +37,8 @@ const MfaPushChallengePushScreen: React.FC = () => {
   };
 
   // Polling state
-  const polling = usePollingManager({
+  const { usePollingControl } = usePollingManager;
+  const polling = usePollingControl({
     intervalMs: 5000,
     onComplete: () => {
       continueMethod({ rememberDevice });
@@ -45,7 +48,6 @@ const MfaPushChallengePushScreen: React.FC = () => {
       console.error('Polling error:', err);
     },
   });
-
   // Start/stop polling only on button click
   const handleStartPolling = () => {
     if (!polling.isRunning) {

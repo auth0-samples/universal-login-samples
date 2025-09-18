@@ -21,7 +21,8 @@ const ResetPasswordMfaPushChallengePushScreen: React.FC = () => {
   const showRememberDevice = (screen.data && (screen.data as any).showRememberDevice === true);
 
   // Polling state
-  const polling = useResetPollingManager({
+  const pollingManager = useResetPollingManager;
+  const polling = pollingManager.usePollingControl({
     intervalMs: 5000,
     onComplete: () => {
       continueMethod({ rememberDevice });
