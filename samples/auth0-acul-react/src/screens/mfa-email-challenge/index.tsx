@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
-import { useMfaEmailChallenge, useResend } from '@auth0/auth0-acul-react/mfa-email-challenge';
+import { useResend, continueMethod, tryAnotherMethod, useScreen, useUntrustedData } from '@auth0/auth0-acul-react/mfa-email-challenge';
 import { Logo } from '../../components/Logo';
 
 const MfaEmailChallengeScreen = () => {
-  const mfaEmailChallenge = useMfaEmailChallenge();
   const [code, setCode] = useState('');
   const [rememberDevice, setRememberDevice] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { email, showRememberDevice } = mfaEmailChallenge.screen.data || {};
+  const { email, showRememberDevice } = useScreen().data || {};
   const { remaining, disabled, startResend } = useResend({
     timeoutSeconds: 12,
     onTimeout: () => console.log('MFA Email resend available')
   });
 
   useEffect(() => {
-    const savedFormData = mfaEmailChallenge.untrustedData.submittedFormData;
+    const savedFormData = useUntrustedData().submittedFormData;
     if (savedFormData?.rememberDevice !== undefined) {
       setRememberDevice(savedFormData.rememberDevice);
     }
@@ -26,7 +25,7 @@ const MfaEmailChallengeScreen = () => {
     setError('');
     setIsSubmitting(true);
     try {
-      await mfaEmailChallenge.continue({ code, rememberDevice });
+      await continueMethod({ code, rememberDevice });
     } catch (err) {
       setError('Failed to verify code. Please try again.');
     } finally {
@@ -46,7 +45,7 @@ const MfaEmailChallengeScreen = () => {
   const handleTryAnotherMethod = async () => {
     setError('');
     try {
-      await mfaEmailChallenge.tryAnotherMethod();
+      await tryAnotherMethod();
     } catch (err) {
       setError('Failed to try another method. Please try again.');
     }
