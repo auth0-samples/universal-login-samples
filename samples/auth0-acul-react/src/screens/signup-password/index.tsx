@@ -1,189 +1,212 @@
 import React, { useState } from 'react';
 import { Logo } from '../../components/Logo';
 import {
-    usePasswordValidation,
+    // Context hooks
+    useScreen,
+    useTransaction,
+    // Submit functions
     signup as signupMethod,
+    usePasswordValidation,
+    // Common hooks
+    useErrors
 } from '@auth0/auth0-acul-react/signup-password';
 
 const SignupPasswordScreen: React.FC = () => {
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
+    const screen = useScreen();
+    const transaction = useTransaction();
+    const { hasError, errors, dismiss } = useErrors();
+
+    // Local state
+    const [email] = useState(screen.data?.email || '');
+    const [username] = useState(screen.data?.username || '');
+    const [phone] = useState(screen.data?.phone || '');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
-    const [isValid, setIsValid] = useState(true);
-    const [errors, setErrors] = useState<Array<{ code: string; message: string }>>([]);
-    const [passwordValidation, setPasswordValidation] = useState<
-        Array<{ code: string; policy: string; isValid: boolean }>
-    >([]);
-    const [hasTypedPassword, setHasTypedPassword] = useState(false);
+    const [captcha, setCaptcha]     = useState('');
 
-    const onPasswordChange = (pwd: string) => {
-        setPassword(pwd);
-
-        if (!hasTypedPassword && pwd.length > 0) {
-            setHasTypedPassword(true);
-        }
-
-        const results = usePasswordValidation(pwd) || [];
-        setPasswordValidation(results);
-
-        const failedRules = results.filter(r => !r.isValid);
-        setIsValid(failedRules.length === 0);
-        setErrors(failedRules.map(r => ({ code: r.code, message: r.policy })));
-    };
+    // Validation hook – same style as signup.tsx
+    const { isValid: isPasswordValid, results: passwordResults } =
+        usePasswordValidation(password);
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError('');
-        setSuccess(false);
-
-        if (!email || !password) {
-            setError('Email and password are required.');
-            return;
-        }
-
-        const results = usePasswordValidation(password) || [];
-        setPasswordValidation(results);
-
-        const failedRules = results.filter(r => !r.isValid);
-        setIsValid(failedRules.length === 0);
-        setErrors(failedRules.map(r => ({ code: r.code, message: r.policy })));
-
-        if (!isValid) {
-            return;
-        }
-
-        try {
-            await signupMethod({
-                email,
-                phone,
-                password,
-            });
-            setSuccess(true);
-        } catch {
-            setError('Signup failed. Please try again later.');
-        }
+        await signupMethod({
+            email,
+            username,
+            phone,
+            password,
+            captcha: screen.isCaptchaAvailable ? captcha : ''
+        });
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="mb-6 flex justify-center">
+        <div className="min-h-screen bg-black flex items-center justify-center px-4">
+            <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
+                {/* Logo */}
+                <div className="flex justify-center mb-6">
                     <div className="w-20 h-20">
                         <Logo />
                     </div>
                 </div>
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Sign up with password
-                </h2>
-            </div>
 
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                    <form className="space-y-6" onSubmit={handleSignup}>
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                            <input
-                                id="email"
-                                type="email"
-                                required
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                            />
-                        </div>
+                {/* Title */}
+                <h1 className="text-2xl font-bold text-center text-gray-800">
+                    {screen.texts?.title || 'Sign up with password'}
+                </h1>
+                <p className="mt-2 text-sm text-center text-gray-600">
+                    {screen.texts?.description || 'Create your account'}
+                </p>
 
-                        <div>
-                            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone (optional)</label>
-                            <input
-                                id="phone"
-                                type="tel"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                            />
-                        </div>
+                {/* Form */}
+                <form onSubmit={handleSignup} className="mt-6 space-y-6">
+                    {/* Email */}
+                    <div>
+                        <label
+                            htmlFor="email"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Email <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            id="email"
+                            type="email"
+                            value={email}
+                            disabled
+                            placeholder="Enter your email"
+                            className="block w-full px-3 py-2 border cursor-not-allowed border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                    </div>
 
-                        <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                            <input
-                                id="password"
-                                type="password"
-                                required
-                                value={password}
-                                onChange={(e) => onPasswordChange(e.target.value)}
-                                className={`mt-1 block w-full px-3 py-2 border ${errors.length ? 'border-red-500' : 'border-gray-300'
-                                    } rounded-md`}
-                            />
+                    {/* Username */}
+                    <div>
+                        <label
+                            htmlFor="email"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Username <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            id="username"
+                            type="text"
+                            value={username}
+                            disabled
+                            placeholder="Enter your email"
+                            className="block w-full px-3 py-2 border cursor-not-allowed border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                    </div>
 
-                            {hasTypedPassword && passwordValidation.length > 0 && (
-                                <div className="mt-2 border border-gray-300 rounded p-3 text-sm">
-                                    <p className="mb-1 text-gray-700">Your password must contain:</p>
-                                    <ul className="list-disc list-inside space-y-1">
-                                        {(() => {
-                                            const subItemCodes = [
-                                                'password-policy-lower-case',
-                                                'password-policy-upper-case',
-                                                'password-policy-numbers',
-                                                'password-policy-special-characters'
-                                            ];
+                    {/* Phone */}
+                    <div>
+                        <label
+                            htmlFor="phone"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Phone <span className="text-gray-500 text-sm">(optional)</span>
+                        </label>
+                        <input
+                            id="phone"
+                            type="tel"
+                            value={phone}
+                            disabled
+                            placeholder="Enter your phone number"
+                            className="block w-full px-3 py-2 border cursor-not-allowed border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                    </div>
 
-                                            const containsAtLeastRule = passwordValidation.find(
-                                                r => r.code === 'password-policy-contains-at-least'
-                                            );
+                    {/* Password */}
+                    <div>
+                        <label
+                            htmlFor="password"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Password <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            id="password"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            placeholder="Enter your password"
+                            className={`block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${password && !isPasswordValid ? 'border-red-500' : 'border-gray-300'
+                                }`}
+                        />
 
-                                            return passwordValidation.map(rule => {
-                                                const isSub = subItemCodes.includes(rule.code);
-                                                if (containsAtLeastRule && isSub) return null;
-
-                                                if (rule.code === 'password-policy-contains-at-least') {
-                                                    const subItems = passwordValidation.filter(r => subItemCodes.includes(r.code));
-                                                    return (
-                                                        <li key={rule.code} className={rule.isValid ? 'text-green-600' : 'text-gray-700'}>
-                                                            {rule.policy}
-                                                            {subItems.length > 0 && (
-                                                                <ul className="list-disc list-inside ml-5 mt-1 space-y-1">
-                                                                    {subItems.map(sub => (
-                                                                        <li key={sub.code} className={sub.isValid ? 'text-green-600' : 'text-gray-700'}>
-                                                                            {sub.policy}
-                                                                        </li>
-                                                                    ))}
-                                                                </ul>
-                                                            )}
-                                                        </li>
-                                                    );
-                                                }
-
-                                                return (
-                                                    <li key={rule.code} className={rule.isValid ? 'text-green-600' : 'text-gray-700'}>
-                                                        {rule.policy}
+                        {/* Inline password policy results (identical structure to signup.tsx) */}
+                        {password.length > 0 && passwordResults.length > 0 && (
+                            <ul className="mt-1 text-sm text-red-500 space-y-1">
+                                {passwordResults.map((rule, i) => (
+                                    <li key={i} className={rule.isValid ? 'text-green-600' : 'text-red-600'}>
+                                        {rule.label}
+                                        {rule.items && (
+                                            <ul className="ml-4 list-disc space-y-1">
+                                                {rule.items.map((item, idx) => (
+                                                    <li
+                                                        key={idx}
+                                                        className={item.isValid ? 'text-green-600' : 'text-red-600'}
+                                                    >
+                                                        {item.label}
                                                     </li>
-                                                );
-                                            });
-                                        })()}
-                                    </ul>
-                                </div>
-                            )}
-                        </div>
-
-                        {error && <div className="text-red-600 text-sm">{error}</div>}
-                        {success && (
-                            <div className="text-green-600 text-sm">
-                                Signup successful! Please check your email to verify your account.
-                            </div>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </li>
+                                ))}
+                            </ul>
                         )}
+                    </div>
 
+                    {/* Captcha */}
+                    {screen.isCaptchaAvailable && (
                         <div>
-                            <button
-                                type="submit"
-                                className="w-full flex justify-center py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
-                            >
-                                Sign Up
-                            </button>
+                            <label htmlFor="captcha" className="block text-sm font-medium text-gray-700">
+                                Captcha
+                            </label>
+                            {screen.captchaImage && (
+                                <img
+                                    src={screen.captchaImage}
+                                    alt="Captcha"
+                                    className="mb-2 m-auto w-[200px] rounded"
+                                />
+                            )}
+                            <input
+                                id="captcha"
+                                type="text"
+                                value={captcha}
+                                onChange={(e) => setCaptcha(e.target.value)}
+                                placeholder="Enter the captcha"
+                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            />
                         </div>
-                    </form>
-                </div>
+                    )}
+
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                        Sign Up
+                    </button>
+                </form>
+
+                {/* Server-side / global errors */}
+                {(transaction.hasErrors || hasError) && (
+                    <div className="mt-4 text-sm text-white-900 text-left">
+                        {errors.map((err, index) => (
+                            <p
+                                key={`client-${index}`}
+                                className="bg-red-500 text-white flex p-2 mt-1 rounded flex-row items-center"
+                            >
+                                <span>{err.message}</span>
+                                <span
+                                    className="ml-auto cursor-pointer"
+                                    onClick={() => dismiss(err.id)}
+                                >
+                                    &#x2715;
+                                </span>
+                            </p>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );

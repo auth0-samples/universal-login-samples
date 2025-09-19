@@ -1,52 +1,56 @@
 import React, { useState } from 'react';
-import SignupId from '@auth0/auth0-acul-js/signup-id';
-import { useEnabledIdentifiers } from '@auth0/auth0-acul-react/signup-id';
-import { Logo } from '../../components/Logo'; // Ensure this path is correct
-import { useTransaction, useScreen, federatedSignup } from '@auth0/auth0-acul-react/signup-id';
+import {
+  // Context hooks
+  useScreen,
+  useTransaction,
+  // Utility hooks
+  useEnabledIdentifiers,
+  useErrors,
+  useUsernameValidation,
+  // Submit functions
+  signup,
+  federatedSignup,
+} from '@auth0/auth0-acul-react/signup-id';
+import { Logo } from '../../components/Logo';
 
 const SignupIdScreen: React.FC = () => {
-  const identifiers = useEnabledIdentifiers();
-  const transaction = useTransaction();
   const screen = useScreen();
+  const transaction = useTransaction();
+  const identifiers = useEnabledIdentifiers();
+  const { hasError, errors, dismiss } = useErrors();
+  const federatedConnections = transaction.alternateConnections ?? [];
 
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+  // Local form state
+  const [username, setUsername]   = useState('');
+  const [email, setEmail]         = useState('');
+  const [phone, setPhone]         = useState('');
+  const [captcha, setCaptcha]     = useState('');
 
-  const signupIdManager = new SignupId();
+  const { isValid: isUsernameValid, errors: usernameResults } =
+    useUsernameValidation(username);
 
-  const handleSignup = async (e: { preventDefault: () => void }) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setSuccess(false);
-
-    const isEmailRequired = identifiers?.find(id => id.type === 'email')?.required;
-    if (isEmailRequired && !email) {
-      setError('Email is required.');
-      return;
-    }
-
-    try {
-      await signupIdManager.signup({
-        email,
-        phone,
-        username,
-      });
-      setSuccess(true);
-    } catch {
-      setError('Signup failed. Please try again later.');
-    }
+    await signup({
+      username,
+      email,
+      phone,
+      captcha: screen.isCaptchaAvailable ? captcha : ''
+    });
   };
 
   const handleFederatedSignup = (connectionName: string) => {
     federatedSignup({ connection: connectionName });
   };
 
+  // Precompute required flags to simplify JSX
+  const usernameId = identifiers?.find((id) => id.type === 'username');
+  const emailId    = identifiers?.find((id) => id.type === 'email');
+  const phoneId    = identifiers?.find((id) => id.type === 'phone');
+
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
-      <div className="bg-white rounded-lg shadow-md w-full max-w-sm p-8">
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
         {/* Logo */}
         <div className="flex justify-center mb-6">
           <div className="w-20 h-20">
@@ -54,119 +58,157 @@ const SignupIdScreen: React.FC = () => {
           </div>
         </div>
 
-        {/* Title */}
+        {/* Title and Description */}
         <h1 className="text-2xl font-bold text-center text-gray-800">
-          Sign up for an account
+          {screen.texts?.title || 'Sign up for an account'}
         </h1>
         <p className="mt-2 text-sm text-center text-gray-600">
-          Create your account
+          {screen.texts?.description || 'Create your account'}
         </p>
 
-        {/* Form */}
-        <div className="mt-6 space-y-4">
-          <form onSubmit={handleSignup}>
-            {/* Username */}
-            {identifiers?.find(id => id.type === 'username') && (
-              <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                  Username{' '}
-                  {identifiers.find(id => id.type === 'username')?.required ? (
-                    <span className="text-red-500">*</span>
-                  ) : (
-                    <span className="text-gray-500 text-sm">(optional)</span>
-                  )}
-                </label>
-                <input
-                  id="username"
-                  name="username"
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required={identifiers.find(id => id.type === 'username')?.required}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-              </div>
-            )}
-
-            {/* Email */}
-            {identifiers?.find(id => id.type === 'email') && (
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email{' '}
-                  {identifiers.find(id => id.type === 'email')?.required ? (
-                    <span className="text-red-500">*</span>
-                  ) : (
-                    <span className="text-gray-500 text-sm">(optional)</span>
-                  )}
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required={identifiers.find(id => id.type === 'email')?.required}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-              </div>
-            )}
-
-            {/* Phone */}
-            {identifiers?.find(id => id.type === 'phone') && (
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                  Phone{' '}
-                  {identifiers.find(id => id.type === 'phone')?.required ? (
-                    <span className="text-red-500">*</span>
-                  ) : (
-                    <span className="text-gray-500 text-sm">(optional)</span>
-                  )}
-                </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required={identifiers.find(id => id.type === 'phone')?.required}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-              </div>
-            )}
-
-            {/* Error Message */}
-            {error && (
-              <div className="text-red-600 text-sm mt-2">{error}</div>
-            )}
-
-            {/* Success Message */}
-            {success && (
-              <div className="text-green-600 text-sm mt-2">
-                Signup successful! Please check your email to verify your account.
-              </div>
-            )}
-
-            {/* Submit Button */}
-            <div className="mt-4">
-              <button
-                type="submit"
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Sign Up
-              </button>
+        {/* Signup Form */}
+        <form onSubmit={handleSignup} className="mt-6 space-y-6">
+          {/* Username */}
+          {usernameId && (
+            <div>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                Username{' '}
+                {usernameId.required ? (
+                  <span className="text-red-500">*</span>
+                ) : (
+                  <span className="text-gray-500 text-sm">(optional)</span>
+                )}
+              </label>
+              <input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required={usernameId.required}
+                placeholder="Enter your username"
+                className={`block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
+                  username && !isUsernameValid ? 'border-red-500' : 'border-gray-300'
+                }`}
+              />
+              {username.length > 0 && usernameResults.length > 0 && (
+                <ul className="mt-1 text-sm text-red-500">
+                  {usernameResults.map((err, i) => (
+                    <li key={i}>{err.message}</li>
+                  ))}
+                </ul>
+              )}
             </div>
-          </form>
-        </div>
+          )}
+
+          {/* Email */}
+          {emailId && (
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email{' '}
+                {emailId.required ? (
+                  <span className="text-red-500">*</span>
+                ) : (
+                  <span className="text-gray-500 text-sm">(optional)</span>
+                )}
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required={emailId.required}
+                placeholder="Enter your email"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+          )}
+
+          {/* Phone */}
+          {phoneId && (
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                Phone{' '}
+                {phoneId.required ? (
+                  <span className="text-red-500">*</span>
+                ) : (
+                  <span className="text-gray-500 text-sm">(optional)</span>
+                )}
+              </label>
+              <input
+                id="phone"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required={phoneId.required}
+                placeholder="Enter your phone number"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+          )}
+
+          {/* Captcha */}
+          {screen.isCaptchaAvailable && (
+            <div>
+              <label htmlFor="captcha" className="block text-sm font-medium text-gray-700">
+                Captcha
+              </label>
+              {screen.captchaImage && (
+                <img
+                  src={screen.captchaImage}
+                  alt="Captcha"
+                  className="mb-2 m-auto w-[200px] rounded"
+                />
+              )}
+              <input
+                id="captcha"
+                type="text"
+                value={captcha}
+                onChange={(e) => setCaptcha(e.target.value)}
+                placeholder="Enter the captcha"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+          )}
+
+          {/* Client-side ACUL errors */}
+          {hasError && (
+            <div className="text-sm mt-2 space-y-1">
+              {errors.map((err) => (
+                <p
+                  key={err.id}
+                  className="bg-red-500 text-white flex items-center justify-between px-3 py-2 rounded"
+                >
+                  <span>{err.message}</span>
+                  <button
+                    type="button"
+                    onClick={() => dismiss(err.id)}
+                    className="ml-2 font-bold hover:opacity-80"
+                  >
+                    &times;
+                  </button>
+                </p>
+              ))}
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Sign Up
+          </button>
+        </form>
 
         {/* Federated Signup */}
-        {transaction.alternateConnections && transaction.alternateConnections.length > 0 && (
-          <div className="mt-6">
-            <p className="text-center text-gray-600 mb-2">Or continue with</p>
-            {transaction.alternateConnections.map((connection) => (
+        {federatedConnections.length > 0 && (
+          <div className="mt-5">
+            <p className="text-left text-gray-600 mb-3">Or continue with</p>
+            {federatedConnections.map((connection) => (
               <button
                 key={connection.name}
                 onClick={() => handleFederatedSignup(connection.name)}
-                className="w-full bg-blue-500 text-white py-2 rounded-md mb-2"
+                className="w-full mb-2 py-2 px-4 border border-gray-300 rounded-md text-sm text-left font-medium text-gray-700 hover:bg-gray-100"
               >
                 Continue with {connection.name}
               </button>
@@ -183,6 +225,15 @@ const SignupIdScreen: React.FC = () => {
             >
               Already have an account? Log in
             </a>
+          </div>
+        )}
+
+        {/* Server-side transaction errors */}
+        {transaction.hasErrors && transaction.errors && (
+          <div className="mt-4 text-sm text-red-600 space-y-1">
+            {transaction.errors.map((err, index) => (
+              <p key={index}>{err.message}</p>
+            ))}
           </div>
         )}
       </div>
