@@ -30,12 +30,15 @@ const SignupScreen: React.FC = () => {
 
   // Validation hooks
   const { isValid: isPasswordValid, results: passwordResults } =
-    usePasswordValidation(password);
+    usePasswordValidation(password, { includeInErrors: true});
   const { isValid: isUsernameValid, errors: usernameResults } =
-    useUsernameValidation(username);
+    useUsernameValidation(username, { includeInErrors: true});
   const { hasError, errors, dismiss } = useErrors();
 
   const handleSignup = () => {
+    if(!isPasswordValid || !isUsernameValid) {
+      return;
+    }
     signupMethod({
       username,
       email,
@@ -174,26 +177,33 @@ const SignupScreen: React.FC = () => {
               className={`block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${password && !isPasswordValid ? 'border-red-500' : 'border-gray-300'
                 }`}
             />
-            {/* Inline password policy results */}
+            {/* Show checklist only when user types - from usePasswordValidation */}
             {password.length > 0 && passwordResults.length > 0 && (
-              <ul className="mt-1 text-sm text-red-500">
-                {passwordResults.map((rule, i) => (
-                  <li key={i} className={rule.isValid ? 'text-green-600' : 'text-red-600'}>
-                    {rule.label}
-                    {
-                      rule.items && (
-                        <ul className="ml-4 list-disc">
-                          {rule.items.map((item, idx) => (
-                            <li key={idx} className={item.isValid ? 'text-green-600' : 'text-red-600'}>
-                              {item.label}
+              <div className="mt-2 border border-gray-300 rounded p-3 text-sm">
+                <p className="mb-1 text-gray-700">Your password must contain:</p>
+                <ul className="list-disc list-inside space-y-1">
+                  {passwordResults.map((rule) => (
+                    <li
+                      key={rule.code}
+                      className={rule.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+                    >
+                      {rule.label}
+                      {rule.items && rule.items.length > 0 && (
+                        <ul className="list-disc list-inside ml-5 mt-1 space-y-1">
+                          {rule.items.map((subRule) => (
+                            <li
+                              key={subRule.code}
+                              className={subRule.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+                            >
+                              {subRule.label}
                             </li>
                           ))}
                         </ul>
-                      )
-                    }
-                  </li>
-                ))}
-              </ul>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
 
@@ -261,23 +271,39 @@ const SignupScreen: React.FC = () => {
           </div>
         )}
 
-        {/* Global errors */}
-        {hasError && (
-          <div className="mt-4 text-sm text-white-900 text-left">
-            {errors.map((err, index) => (
-              <p
-                key={`client-${index}`}
-                className="bg-red-500 text-white flex p-2 mt-1 rounded flex-row items-center"
-              >
-                <span>{err.message}</span>
-                <span
-                  className="ml-auto cursor-pointer"
-                  onClick={() => dismiss(err.id)}
-                >&#x2715;</span>
-              </p>
-            ))}
-          </div>
-        )}
+        {
+          hasError && (
+            <div className="mt-2 text-sm text-red-600">
+              {errors.map((error, index) => (
+                <p
+                  key={index}
+                  className="bg-red-500 text-white flex p-2 mt-1 rounded flex-row items-center"
+                >
+                  <span>{error.message}</span>
+
+                  {error.rules && (
+                    <ul className="ml-4 list-disc space-y-1">
+                      {error.rules.map((rule, idx) => (
+                        rule.items && rule.items.length > 0 &&
+                        <li key={idx}>
+                          {rule.items ? rule.items.map((item, itemIdx) => (
+                            item.status !== 'valid' && (
+                              <li key={itemIdx}>{item.label}</li>
+                            )
+                          )) : rule.label}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <span
+                    className="ml-auto cursor-pointer"
+                    onClick={() => dismiss(error.id)}
+                  >&#x2715;</span>
+                </p>
+              ))}
+            </div>
+          )
+        }
       </div>
     </div>
   );
