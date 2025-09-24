@@ -4,6 +4,6 @@ interface LinksProps {
 
 export const Links: React.FC<LinksProps> = ({ loginLink }) => (
   <div className="links">
-    {loginLink && <a href={loginLink}>Sign Up</a>}
+    {loginLink && <a href={loginLink}>Log In</a>}
   </div>
 ); 

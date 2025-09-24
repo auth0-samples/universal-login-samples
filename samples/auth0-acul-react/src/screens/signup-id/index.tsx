@@ -21,10 +21,10 @@ const SignupIdScreen: React.FC = () => {
   const federatedConnections = transaction.alternateConnections ?? [];
 
   // Local form state
-  const [username, setUsername]   = useState('');
-  const [email, setEmail]         = useState('');
-  const [phone, setPhone]         = useState('');
-  const [captcha, setCaptcha]     = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [captcha, setCaptcha] = useState('');
 
   const { isValid: isUsernameValid, errors: usernameResults } =
     useUsernameValidation(username);
@@ -45,8 +45,8 @@ const SignupIdScreen: React.FC = () => {
 
   // Precompute required flags to simplify JSX
   const usernameId = identifiers?.find((id) => id.type === 'username');
-  const emailId    = identifiers?.find((id) => id.type === 'email');
-  const phoneId    = identifiers?.find((id) => id.type === 'phone');
+  const emailId = identifiers?.find((id) => id.type === 'email');
+  const phoneId = identifiers?.find((id) => id.type === 'phone');
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
@@ -86,9 +86,8 @@ const SignupIdScreen: React.FC = () => {
                 onChange={(e) => setUsername(e.target.value)}
                 required={usernameId.required}
                 placeholder="Enter your username"
-                className={`block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
-                  username && !isUsernameValid ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${username && !isUsernameValid ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {username.length > 0 && usernameResults.length > 0 && (
                 <ul className="mt-1 text-sm text-red-500">
@@ -200,33 +199,36 @@ const SignupIdScreen: React.FC = () => {
           </button>
         </form>
 
-        {/* Federated Signup */}
-        {federatedConnections.length > 0 && (
-          <div className="mt-5">
-            <p className="text-left text-gray-600 mb-3">Or continue with</p>
-            {federatedConnections.map((connection) => (
-              <button
-                key={connection.name}
-                onClick={() => handleFederatedSignup(connection.name)}
-                className="w-full mb-2 py-2 px-4 border border-gray-300 rounded-md text-sm text-left font-medium text-gray-700 hover:bg-gray-100"
-              >
-                Continue with {connection.name}
-              </button>
-            ))}
-          </div>
-        )}
-
         {/* Login Link */}
-        {screen.links?.loginLink && (
+        {screen.links?.login && (
           <div className="mt-6 text-center text-sm">
             <a
-              href={screen.links.loginLink}
+              href={screen.links.login}
               className="text-indigo-600 hover:underline"
             >
               Already have an account? Log in
             </a>
           </div>
         )}
+
+        {/* OR separator */}
+        <div className="flex items-center my-4">
+          <div className="flex-1 border-t border-gray-300"></div>
+          <span className="px-3 text-sm text-gray-400">OR</span>
+          <div className="flex-1 border-t border-gray-300"></div>
+        </div>
+
+        {/* Google login */}
+        {federatedConnections.length > 0 && federatedConnections.map((conn: any) => (
+          <button
+            key={conn.name}
+            onClick={() => handleFederatedSignup(conn.name)}
+            className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            {/* <img src="/google-icon.svg" alt="" className="h-4 w-4" /> */}
+            Continue with {conn.options?.display_name || conn.name}
+          </button>
+        ))}
 
         {/* Server-side transaction errors */}
         {transaction.hasErrors && transaction.errors && (

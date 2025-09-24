@@ -21,7 +21,7 @@ const SignupPasswordScreen: React.FC = () => {
     const [username] = useState(screen.data?.username || '');
     const [phone] = useState(screen.data?.phoneNumber || '');
     const [password, setPassword] = useState('');
-    const [captcha, setCaptcha]     = useState('');
+    const [captcha, setCaptcha] = useState('');
 
     // Validation hook – same style as signup.tsx
     const { isValid: isPasswordValid, results: passwordResults } =
@@ -59,58 +59,74 @@ const SignupPasswordScreen: React.FC = () => {
                 {/* Form */}
                 <form onSubmit={handleSignup} className="mt-6 space-y-6">
                     {/* Email */}
-                    <div>
-                        <label
-                            htmlFor="email"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Email <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            id="email"
-                            type="email"
-                            value={email}
-                            disabled
-                            placeholder="Enter your email"
-                            className="block w-full px-3 py-2 border cursor-not-allowed border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        />
-                    </div>
+
+                    {email && (
+
+                        <div>
+                            <label
+                                htmlFor="email"
+                                className="block text-sm font-medium text-gray-700"
+                            >
+                                Email <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                                id="email"
+                                type="email"
+                                value={email}
+                                disabled
+                                placeholder="Enter your email"
+                                className="block w-full px-3 py-2 border cursor-not-allowed border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            />
+                        </div>
+                    )}
 
                     {/* Username */}
-                    <div>
-                        <label
-                            htmlFor="email"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Username <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            id="username"
-                            type="text"
-                            value={username}
-                            disabled
-                            placeholder="Enter your email"
-                            className="block w-full px-3 py-2 border cursor-not-allowed border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        />
-                    </div>
+                    {
+                        username && (
+
+
+                            <div>
+                                <label
+                                    htmlFor="email"
+                                    className="block text-sm font-medium text-gray-700"
+                                >
+                                    Username <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    id="username"
+                                    type="text"
+                                    value={username}
+                                    disabled
+                                    placeholder="Enter your email"
+                                    className="block w-full px-3 py-2 border cursor-not-allowed border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                />
+                            </div>
+                        )
+                    }
 
                     {/* Phone */}
-                    <div>
-                        <label
-                            htmlFor="phone"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Phone <span className="text-gray-500 text-sm">(optional)</span>
-                        </label>
-                        <input
-                            id="phone"
-                            type="tel"
-                            value={phone}
-                            disabled
-                            placeholder="Enter your phone number"
-                            className="block w-full px-3 py-2 border cursor-not-allowed border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        />
-                    </div>
+                    {
+                        phone && (
+
+
+                            <div>
+                                <label
+                                    htmlFor="phone"
+                                    className="block text-sm font-medium text-gray-700"
+                                >
+                                    Phone <span className="text-gray-500 text-sm">(optional)</span>
+                                </label>
+                                <input
+                                    id="phone"
+                                    type="tel"
+                                    value={phone}
+                                    disabled
+                                    placeholder="Enter your phone number"
+                                    className="block w-full px-3 py-2 border cursor-not-allowed border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                />
+                            </div>
+                        )
+                    }
 
                     {/* Password */}
                     <div>
@@ -133,25 +149,31 @@ const SignupPasswordScreen: React.FC = () => {
 
                         {/* Inline password policy results (identical structure to signup.tsx) */}
                         {password.length > 0 && passwordResults.length > 0 && (
-                            <ul className="mt-1 text-sm text-red-500 space-y-1">
-                                {passwordResults.map((rule, i) => (
-                                    <li key={i} className={rule.isValid ? 'text-green-600' : 'text-red-600'}>
-                                        {rule.label}
-                                        {rule.items && (
-                                            <ul className="ml-4 list-disc space-y-1">
-                                                {rule.items.map((item, idx) => (
-                                                    <li
-                                                        key={idx}
-                                                        className={item.isValid ? 'text-green-600' : 'text-red-600'}
-                                                    >
-                                                        {item.label}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
+                            <div className="mt-2 border border-gray-300 rounded p-3 text-sm">
+                                <p className="mb-1 text-gray-700">Your password must contain:</p>
+                                <ul className="list-disc list-inside space-y-1">
+                                    {passwordResults.map((rule) => (
+                                        <li
+                                            key={rule.code}
+                                            className={rule.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+                                        >
+                                            {rule.label}
+                                            {rule.items && rule.items.length > 0 && (
+                                                <ul className="list-disc list-inside ml-5 mt-1 space-y-1">
+                                                    {rule.items.map((subRule) => (
+                                                        <li
+                                                            key={subRule.code}
+                                                            className={subRule.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+                                                        >
+                                                            {subRule.label}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         )}
                     </div>
 

@@ -28,11 +28,13 @@ const SignupScreen: React.FC = () => {
   const [password, setPassword] = useState('');
   const [captcha, setCaptcha] = useState('');
 
+  const [touched, setTouched] = useState(false);
+
   // Validation hooks
   const { isValid: isPasswordValid, results: passwordResults } =
-    usePasswordValidation(password, {includeInErrors: true});
+    usePasswordValidation(password, { includeInErrors: true });
   const { isValid: isUsernameValid, errors: usernameResults } =
-    useUsernameValidation(username, {includeInErrors: true});
+    useUsernameValidation(username, { includeInErrors: true });
   const { hasError, errors, dismiss } = useErrors();
 
   const handleSignup = () => {
@@ -119,6 +121,7 @@ const SignupScreen: React.FC = () => {
                 onChange={(e) => setUsername(e.target.value)}
                 required={identifiers.find((id) => id.type === 'username')?.required}
                 placeholder="Enter your username"
+                onFocus={() => setTouched(true)}
                 className={`block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${username && !isUsernameValid ? 'border-red-500' : 'border-gray-300'
                   }`}
               />
@@ -174,6 +177,7 @@ const SignupScreen: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="Enter your password"
+              onFocus={() => setTouched(true)}
               className={`block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${password && !isPasswordValid ? 'border-red-500' : 'border-gray-300'
                 }`}
             />
@@ -271,7 +275,7 @@ const SignupScreen: React.FC = () => {
           </div>
         )}
 
-        {hasError && (
+        {hasError && touched && (
           <div className="mt-2 text-sm text-red-600 space-y-3">
             {errors.map((error, index) => (
               <div

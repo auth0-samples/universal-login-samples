@@ -56,9 +56,11 @@ const SignupScreen: React.FC = () => {
         onFederatedLogin={handleSocialSignup}
       />
 
-      {signupManager.screen.links?.loginLink && (
-        <Links loginLink={signupManager.screen.links.loginLink} />
+
+      {signupManager.screen.links?.login && (
+          <Links loginLink={signupManager.screen.links.login} />
       )}
+
 
       {signupManager.transaction.hasErrors && (
         <ErrorMessages errors={signupManager.transaction.errors} />

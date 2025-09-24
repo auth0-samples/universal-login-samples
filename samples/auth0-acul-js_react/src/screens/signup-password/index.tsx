@@ -4,13 +4,19 @@ import { Logo } from '../../components/Logo';
 import Button from '../../components/Button';
 
 const SignupPasswordScreen: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
   const signupPasswordManager = new SignupPassword();
+
+  const email = signupPasswordManager.screen.data?.email || '';
+  const phone = signupPasswordManager.screen.data?.phoneNumber || '';
+  const username = signupPasswordManager.screen.data?.username || '';
+
+  const title = signupPasswordManager.screen.texts?.title || '';
+  const description = signupPasswordManager.screen.texts?.description || '';
+
   const { isValid, results } = signupPasswordManager.validatePassword(password);
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -26,7 +32,7 @@ const SignupPasswordScreen: React.FC = () => {
     if (!isValid) return;
 
     try {
-      await signupPasswordManager.signup({ email, phone, password });
+      await signupPasswordManager.signup({ email, username, phone, password });
       setSuccess(true);
     } catch {
       setError('Signup failed. Please try again later.');
@@ -39,29 +45,58 @@ const SignupPasswordScreen: React.FC = () => {
 
       {/* Title Section (inline, not imported) */}
       <div className="title-container">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign up with password</h2>
+        <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900">{title}</h1>
+        <div>
+          <p className="mt-2 text-center text-sm text-gray-600">{description}</p>
+        </div>
       </div>
 
       {/* Form */}
       <div className="input-container">
         <form onSubmit={handleSignup}>
-          <label>Email</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          {email && (
+            <div>
+              <label>Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                value={email}
+                disabled
+              />
+            </div>
+          )}
 
-          <label>Phone (optional)</label>
-          <input
-            type="tel"
-            id="phone"
-            placeholder="Enter your phone number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
+
+          {username && (
+            <div>
+              <label>Username</label>
+              <input
+                type="text"
+                id="username"
+                placeholder="Enter your username"
+                value={username}
+                disabled
+              />
+            </div>
+          )}
+
+          {
+            phone && (
+              <div>
+                <label>Phone</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  placeholder="Enter your phone number"
+                  value={phone}
+                  disabled
+                />
+              </div>
+            )
+          }
+
+
 
           <label>Password</label>
           <input
@@ -74,17 +109,24 @@ const SignupPasswordScreen: React.FC = () => {
           />
 
           {/* Password Validation Rules */}
+
           {password.length > 0 && results.length > 0 && (
-            <div className="password-rules">
-              <p>Your password must contain:</p>
-              <ul>
+            <div className="mt-2 border border-gray-300 rounded p-2 text-sm">
+              <p className="text-gray-700 mb-1">Your password must contain:</p>
+              <ul className="list-disc ml-4">
                 {results.map((rule) => (
-                  <li key={rule.code} className={rule.status === 'valid' ? 'valid' : ''}>
+                  <li
+                    key={rule.code}
+                    className={rule.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+                  >
                     {rule.label}
                     {rule.items && rule.items.length > 0 && (
-                      <ul>
+                      <ul className="ml-5 list-disc">
                         {rule.items.map((sub) => (
-                          <li key={sub.code} className={sub.status === 'valid' ? 'valid' : ''}>
+                          <li
+                            key={sub.code}
+                            className={sub.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+                          >
                             {sub.label}
                           </li>
                         ))}
@@ -95,7 +137,6 @@ const SignupPasswordScreen: React.FC = () => {
               </ul>
             </div>
           )}
-
           {/* Error & Success messages */}
           {error && (
             <div className="error-container">
