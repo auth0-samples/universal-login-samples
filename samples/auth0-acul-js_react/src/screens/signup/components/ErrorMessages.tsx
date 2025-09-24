@@ -3,7 +3,7 @@ interface Error {
 }
 
 interface ErrorMessagesProps {
-  errors?: Error[];
+  errors?: Error[] | null;
 }
 
 export const ErrorMessages: React.FC<ErrorMessagesProps> = ({ errors }) => (

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useMemo } from 'react';
-import { useScreen, useTransaction, login, federatedLogin, passkeyLogin, useActiveIdentifiers } from '@auth0/auth0-acul-react/login-id';
+import { useScreen, useTransaction, login, federatedLogin, passkeyLogin, useLoginIdentifiers } from '@auth0/auth0-acul-react/login-id';
 import { Logo } from '../../components/Logo';
 // import { useErrors } from '@auth0/auth0-acul-react';
 // import type { AculError } from '@auth0/auth0-acul-react';
@@ -15,7 +15,7 @@ const LoginIdScreen: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
-  const activeIdentifiers = useActiveIdentifiers();
+  const activeIdentifiers = useLoginIdentifiers();
 
   const identifierLabel = useMemo(() => {
     if (activeIdentifiers?.length === 1) return `Enter your ${activeIdentifiers[0]}`;

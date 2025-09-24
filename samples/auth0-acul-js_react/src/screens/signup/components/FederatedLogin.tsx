@@ -4,7 +4,7 @@ interface Connection {
 }
 
 interface FederatedLoginProps {
-  connections?: Connection[];
+  connections?: Connection[] | null;
   onFederatedLogin: (name: string) => void;
 }
 

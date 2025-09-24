@@ -13,7 +13,6 @@ const LoginScreen: React.FC = () => {
   const [loginManager] = useState(() => new LoginSDK());
   const { usernameRef, passwordRef, captchaRef, getFormValues } = useLoginForm();
 
-  console.log(loginManager.transaction.allowedIdentifiers, "ankita")
   const handleLogin = async () => {
     const { username, password, captcha } = getFormValues();
     await loginManager.login({
@@ -27,7 +26,7 @@ const LoginScreen: React.FC = () => {
     await loginManager.federatedLogin({ connection: connectionName });
   };
 
-  const activeIdentifiers = useMemo(() => loginManager.getActiveIdentifiers(), []);
+  const activeIdentifiers = useMemo(() => loginManager.getLoginIdentifiers(), []);
 
   const getIdentifierLabel = () => {
     if (activeIdentifiers?.length === 1) return `Enter your ${activeIdentifiers[0]}`;

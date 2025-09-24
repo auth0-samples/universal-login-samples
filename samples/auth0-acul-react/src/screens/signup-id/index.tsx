@@ -4,7 +4,7 @@ import {
   useScreen,
   useTransaction,
   // Utility hooks
-  useEnabledIdentifiers,
+  useSignupIdentifiers,
   useErrors,
   useUsernameValidation,
   // Submit functions
@@ -16,7 +16,7 @@ import { Logo } from '../../components/Logo';
 const SignupIdScreen: React.FC = () => {
   const screen = useScreen();
   const transaction = useTransaction();
-  const identifiers = useEnabledIdentifiers();
+  const identifiers = useSignupIdentifiers();
   const { hasError, errors, dismiss } = useErrors();
   const federatedConnections = transaction.alternateConnections ?? [];
 

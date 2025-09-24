@@ -19,7 +19,7 @@ const SignupPasswordScreen: React.FC = () => {
     // Local state
     const [email] = useState(screen.data?.email || '');
     const [username] = useState(screen.data?.username || '');
-    const [phone] = useState(screen.data?.phone || '');
+    const [phone] = useState(screen.data?.phoneNumber || '');
     const [password, setPassword] = useState('');
     const [captcha, setCaptcha]     = useState('');
 

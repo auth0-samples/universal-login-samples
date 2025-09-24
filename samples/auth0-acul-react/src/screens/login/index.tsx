@@ -5,7 +5,7 @@ import {
   useTransaction,
   login,
   federatedLogin,
-  useActiveIdentifiers,
+  useLoginIdentifiers,
 } from "@auth0/auth0-acul-react/login";
 
 const LoginScreen: React.FC = () => {
@@ -19,7 +19,7 @@ const LoginScreen: React.FC = () => {
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const activeIdentifiers = useActiveIdentifiers();
+  const activeIdentifiers = useLoginIdentifiers();
   const federatedConnections = transaction.alternateConnections ?? [];
 
   const identifierLabel = useMemo(() => {

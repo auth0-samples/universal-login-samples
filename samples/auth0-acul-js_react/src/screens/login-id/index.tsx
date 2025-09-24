@@ -12,7 +12,7 @@ import { ErrorMessages } from './components/ErrorMessages';
 const LoginIdScreen: React.FC = () => {
   const { loginManager, handleLogin, handleSocialConnectionLogin, handlePasskeyLogin } = useLoginManager();
   const { usernameRef, captchaRef, getFormValues } = useLoginForm();
-  const activeIdentifiers = useMemo(() => loginManager.getActiveIdentifiers(), []);
+  const activeIdentifiers = useMemo(() => loginManager.getLoginIdentifiers(), []);
 
   const onLoginClick = () => {
     const { username, captcha } = getFormValues();

@@ -12,7 +12,7 @@ const SignupIdScreen: React.FC = () => {
   const signupIdManager = new SignupId();
 
   useEffect(() => {
-    const enabledIds = signupIdManager.getEnabledIdentifiers();
+    const enabledIds = signupIdManager.getSignupIdentifiers();
     setIdentifiers(enabledIds ?? []);
   }, []);
 

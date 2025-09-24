@@ -8,7 +8,7 @@ import {
   federatedSignup,
   // Utility hooks
   usePasswordValidation,
-  useEnabledIdentifiers,
+  useSignupIdentifiers,
   useUsernameValidation,
   useErrors
 } from '@auth0/auth0-acul-react/signup';
@@ -18,7 +18,7 @@ const SignupScreen: React.FC = () => {
   const screen = useScreen();
   const transaction = useTransaction();
 
-  const identifiers = useEnabledIdentifiers();
+  const identifiers = useSignupIdentifiers();
   const federatedConnections = transaction.alternateConnections ?? [];
 
   // Local state
@@ -30,13 +30,13 @@ const SignupScreen: React.FC = () => {
 
   // Validation hooks
   const { isValid: isPasswordValid, results: passwordResults } =
-    usePasswordValidation(password, { includeInErrors: true});
+    usePasswordValidation(password, {includeInErrors: true});
   const { isValid: isUsernameValid, errors: usernameResults } =
-    useUsernameValidation(username, { includeInErrors: true});
+    useUsernameValidation(username, {includeInErrors: true});
   const { hasError, errors, dismiss } = useErrors();
 
   const handleSignup = () => {
-    if(!isPasswordValid || !isUsernameValid) {
+    if (!isPasswordValid || !isUsernameValid) {
       return;
     }
     signupMethod({
@@ -271,39 +271,55 @@ const SignupScreen: React.FC = () => {
           </div>
         )}
 
-        {
-          hasError && (
-            <div className="mt-2 text-sm text-red-600">
-              {errors.map((error, index) => (
-                <p
-                  key={index}
-                  className="bg-red-500 text-white flex p-2 mt-1 rounded flex-row items-center"
-                >
-                  <span>{error.message}</span>
+        {hasError && (
+          <div className="mt-2 text-sm text-red-600 space-y-3">
+            {errors.map((error, index) => (
+              <div
+                key={index}
+                className="border border-red-300 bg-red-50 p-3 rounded relative"
+              >
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <p className="font-medium text-red-800 mb-1">{error.message}</p>
 
-                  {error.rules && (
-                    <ul className="ml-4 list-disc space-y-1">
-                      {error.rules.map((rule, idx) => (
-                        rule.items && rule.items.length > 0 &&
-                        <li key={idx}>
-                          {rule.items ? rule.items.map((item, itemIdx) => (
-                            item.status !== 'valid' && (
-                              <li key={itemIdx}>{item.label}</li>
+                    {error.rules && (
+                      <ul className="list-disc list-inside ml-4 space-y-1">
+                        {error.rules.map(
+                          (rule, idx) =>
+                            !rule.isValid && (
+                              <li key={idx}>
+                                {rule.label}
+
+                                {rule.items && rule.items.length > 0 && (
+                                  <ul className="list-disc list-inside ml-5 mt-1 space-y-1">
+                                    {rule.items.map(
+                                      (item, itemIdx) =>
+                                        item.status !== 'valid' && (
+                                          <li key={itemIdx}>{item.label}</li>
+                                        )
+                                    )}
+                                  </ul>
+                                )}
+                              </li>
                             )
-                          )) : rule.label}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <span
-                    className="ml-auto cursor-pointer"
+                        )}
+                      </ul>
+                    )}
+                  </div>
+
+                  <button
                     onClick={() => dismiss(error.id)}
-                  >&#x2715;</span>
-                </p>
-              ))}
-            </div>
-          )
-        }
+                    className="ml-4 text-red-500 hover:text-red-700 text-lg leading-none"
+                    aria-label="Dismiss error"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
       </div>
     </div>
   );

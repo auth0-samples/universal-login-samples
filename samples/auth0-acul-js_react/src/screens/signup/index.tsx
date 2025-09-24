@@ -1,67 +1,27 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { useSignupManager } from './hooks/useSignupManager';
-import { useSignupForm } from './hooks/useSignupForm';
-import { Logo } from "../../components/Logo";
+import { Logo } from '../../components/Logo';
 import { Title } from './components/Title';
-import { LoginForm } from './components/LoginForm';
+import { SignupForm } from './components/signupForm';
 import { FederatedLogin } from './components/FederatedLogin';
 import { Links } from './components/Links';
 import { ErrorMessages } from './components/ErrorMessages';
 
 const SignupScreen: React.FC = () => {
   const { signupManager, handleSignup, handleSocialSignup } = useSignupManager();
-  const identifiers = signupManager.getEnabledIdentifiers();
-  const { emailRef, usernameRef, phoneNumberRef, passwordRef, captchaRef, getFormValues } = useSignupForm();
+  const identifiers = signupManager.getSignupIdentifiers();
 
-  const [isUsernameValid, setIsUsernameValid] = useState(true);
-  const [isValid, setIsValid] = useState(true);
-  const [errors, setErrors] = useState<Array<{ code: string; message: string }>>([]);
-  const [passwordValidation, setPasswordValidation] = useState<Array<{ code: string; policy: string; isValid: boolean }>>([]); // NEW
-  const [hasTypedPassword, setHasTypedPassword] = useState(false); 
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [captcha, setCaptcha] = useState('');
 
-  const onPasswordChange = (password: string) => {
-    if (!hasTypedPassword && password.length > 0) {
-    setHasTypedPassword(true);
-  }
+  const passwordValidation = signupManager.validatePassword(password);
+  const usernameValidation = signupManager.validateUsername(username);
 
-    const results = signupManager.validatePassword(password);
-    setPasswordValidation(results);
-
-    const failedRules = results.filter(r => !r.isValid);
-    setIsValid(failedRules.length === 0);
-    setErrors(failedRules.map(r => ({ code: r.code, message: r.policy })));
-  };
-
-  const onUsernameChange = (username: string) => {
-    console.log('Username changed:', username);
-    // const results = signupManager.validateUsername(username); 
-    // setIsUsernameValid(results.isValid);
-    // setErrors((prevErrors) => [
-    //   ...prevErrors.filter((error) => error.code !== 'username'),
-    //   ...(!results.isValid
-    //     ? results.errors.map((err) => ({
-    //         code: 'username',
-    //         message: err.message,
-    //       }))
-    //     : []),
-    // ]);
-  };
-
-  const onLoginClick = () => {
-    const { username, email, phoneNumber, password, captcha } = getFormValues();
-    const results = signupManager.validatePassword(password);
-    const failed = results.filter(rule => !rule.isValid);
-
-    const isValid = failed.length === 0;
-    const errors = failed.map(rule => ({
-      code: rule.code,
-      message: rule.policy
-    }));
-
-    setIsValid(isValid);
-    setErrors(errors);
-    if (!isValid || !isUsernameValid) return;
-
+  const onSubmit = () => {
+    if (!passwordValidation.isValid || !usernameValidation.isValid) return;
     handleSignup(username, email, phoneNumber, password, captcha);
   };
 
@@ -70,40 +30,41 @@ const SignupScreen: React.FC = () => {
       <Logo />
       <Title screenTexts={signupManager.screen.texts!} />
 
-      <LoginForm
-        emailRef={emailRef}
-        usernameRef={usernameRef}
-        phoneNumberRef={phoneNumberRef}
-        passwordRef={passwordRef}
-        captchaRef={captchaRef}
+      <SignupForm
+        email={email}
+        username={username}
+        phoneNumber={phoneNumber}
+        password={password}
+        captcha={captcha}
         isCaptchaAvailable={signupManager.screen.isCaptchaAvailable}
-        captchaImage={signupManager.screen.captchaImage!}
-        countryCode={signupManager.transaction.countryCode!}
-        countryPrefix={signupManager.transaction.countryPrefix!}
-        onLoginClick={onLoginClick}
-        isValid={isValid}
-        errors={errors}
+        captchaImage={signupManager.screen.captchaImage}
+        countryCode={signupManager.transaction.countryCode}
+        countryPrefix={signupManager.transaction.countryPrefix}
         identifiers={identifiers}
-        passwordValidation={passwordValidation} // NEW
-        onPasswordChange={onPasswordChange}     // NEW
-        hasTypedPassword={hasTypedPassword}
-        usernameValid={isUsernameValid}
-        onUsernameChange={onUsernameChange}
+        passwordValidation={passwordValidation}
+        usernameValidation={usernameValidation}
+        setEmail={setEmail}
+        setUsername={setUsername}
+        setPhoneNumber={setPhoneNumber}
+        setPassword={setPassword}
+        setCaptcha={setCaptcha}
+        onSubmit={onSubmit}
       />
 
       <FederatedLogin
-        connections={signupManager.transaction.alternateConnections!}
+        connections={signupManager.transaction.alternateConnections}
         onFederatedLogin={handleSocialSignup}
       />
 
-      {signupManager.screen.links && (
-        <Links loginLink={signupManager.screen.links.loginLink!} />
+      {signupManager.screen.links?.loginLink && (
+        <Links loginLink={signupManager.screen.links.loginLink} />
       )}
 
-      {signupManager.transaction.hasErrors && signupManager.transaction.errors && (
-        <ErrorMessages errors={signupManager.transaction.errors!} />
+      {signupManager.transaction.hasErrors && (
+        <ErrorMessages errors={signupManager.transaction.errors} />
       )}
     </div>
   );
 };
+
 export default SignupScreen;
