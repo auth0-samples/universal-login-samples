@@ -255,7 +255,7 @@ const SignupScreen: React.FC = () => {
               <button
                 key={connection.name}
                 onClick={() => handleFederatedSignup(connection.name)}
-                className="w-full mb-2 py-2 px-4 border border-gray-300 rounded-md text-sm text-left font-medium text-gray-700 hover:bg-gray-100"
+                className="w-full mb-2 py-2 px-4 border border-gray-300 rounded-md text-sm text-center font-medium text-gray-700 hover:bg-gray-100"
               >
                 Continue with {connection.name}
               </button>

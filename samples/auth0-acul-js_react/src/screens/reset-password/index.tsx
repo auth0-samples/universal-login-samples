@@ -9,32 +9,17 @@ import { ErrorMessages } from './components/ErrorMessages';
 const ResetPasswordScreen: React.FC = () => {
   const { resetPasswordManager, handleResetPassword } = useResetPasswordManager();
   const { newPasswordRef, confirmPasswordRef, captchaRef, getFormValues } = useLoginForm();
-  const [isValid, setIsValid] = useState(true);
-  const [errors, setErrors] = useState<Array<{ code: string; message: string }>>([]);
-  const [passwordValidation, setPasswordValidation] = useState<Array<{ code: string; policy: string; isValid: boolean }>>([]); // NEW
-  const [hasTypedPassword, setHasTypedPassword] = useState(false);
-  
+  const [password, setPassword] = useState('');
+  const passwordValidation = resetPasswordManager.validatePassword(password);
+
   const onLoginClick = () => {
     const { newPassword, confirmPassword, captcha } = getFormValues();
-    if (!isValid) {
+    if (!passwordValidation.isValid) {
       // Handle password validation errors
       return;
     }
 
     handleResetPassword(newPassword, confirmPassword, captcha);
-  };
-
-  
-  const onPasswordChange = (password: string) => {
-    if (!hasTypedPassword && password.length > 0) {
-    setHasTypedPassword(true);
-  }
-    const results = resetPasswordManager.validatePassword(password);
-    setPasswordValidation(results);
-
-    const failedRules = results.filter(r => !r.isValid);
-    setIsValid(failedRules.length === 0);
-    setErrors(failedRules.map(r => ({ code: r.code, message: r.policy })));
   };
 
   return (
@@ -51,12 +36,10 @@ const ResetPasswordScreen: React.FC = () => {
         countryCode={resetPasswordManager.transaction.countryCode!}
         countryPrefix={resetPasswordManager.transaction.countryPrefix!}
         onLoginClick={onLoginClick}
-        isValid={isValid}
-        errors={errors}
-        passwordValidation={passwordValidation} 
-        onPasswordChange={onPasswordChange}     
-        hasTypedPassword={hasTypedPassword}
-        
+        isValid={passwordValidation.isValid}
+        results={passwordValidation}
+        setPassword={setPassword}
+        password={password}
       />
 
       {resetPasswordManager.transaction.hasErrors && resetPasswordManager.transaction.errors && (

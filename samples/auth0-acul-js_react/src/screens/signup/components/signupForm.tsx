@@ -169,6 +169,16 @@ export const SignupForm: React.FC<SignupFormProps> = ({
       )}
     </div>
 
+    {
+      usernameValidation.errors && (
+        <div className="text-red-500 text-sm mt-1">
+          {usernameValidation.errors.map((error, index) => (
+            <div key={index}>{error.message}</div>
+          ))}
+        </div>
+      )
+    }
+
     {isCaptchaAvailable && (
       <div>
         {captchaImage && <img src={captchaImage} alt="Captcha" className="mb-2" />}
