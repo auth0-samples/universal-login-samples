@@ -17,15 +17,21 @@ const SignupIdScreen: React.FC = () => {
   const description = signupIdManager.screen.texts?.description || '';
   const federatedConnections = signupIdManager.transaction.alternateConnections ?? [];
   const links = signupIdManager.screen.links ?? {};
-
-  const { isValid, errors } = signupIdManager.validateUsername(username);
-
+  const [isValid, setIsValid] = useState(false);
+  const [errors, setErrors] = useState<{ code: string; message: string }[]>([]);
 
   useEffect(() => {
     const enabledIds = signupIdManager.getSignupIdentifiers();
     setIdentifiers(enabledIds ?? []);
   }, []);
 
+
+  const handleUsernameChange = (value: string) => {
+    setUsername(value);
+    const { isValid, errors: usernameError } = signupIdManager.validateUsername(value);
+    setIsValid(isValid);
+    setErrors(usernameError);
+  };
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -122,7 +128,7 @@ const SignupIdScreen: React.FC = () => {
                 id="username"
                 placeholder="Enter your username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => handleUsernameChange(e.target.value)}
                 className={`input-field ${username && !isValid ? 'border-red-500' : 'border-gray-300'
                   }`}
               />

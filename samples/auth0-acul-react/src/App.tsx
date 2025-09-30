@@ -17,6 +17,7 @@ import MfaPushChallengePushScreen from "./screens/mfa-push-challenge-push";
 import MfaDetectBrowserCapabilitiesScreen from "./screens/mfa-detect-browser-capabilities";
 import ResetPasswordMfaPushChallengePushScreen from "./screens/reset-password-mfa-push-challenge-push";
 import MfaEmailChallengeScreen from "./screens/mfa-email-challenge";
+import ResetPasswordRequestScreen from "./screens/reset-password-request";
 
 const screenMap: Record<string, React.FC> = {
   "login": LoginScreen,
@@ -35,6 +36,7 @@ const screenMap: Record<string, React.FC> = {
   "mfa-detect-browser-capabilities": MfaDetectBrowserCapabilitiesScreen,
   "reset-password-mfa-push-challenge-push": ResetPasswordMfaPushChallengePushScreen,
   "mfa-email-challenge": MfaEmailChallengeScreen,
+  "reset-password-request": ResetPasswordRequestScreen
 };
 
 const App: React.FC = () => {
