@@ -6,7 +6,7 @@ import {
   resetPassword,
   backToLogin
 } from '@auth0/auth0-acul-react/reset-password-request';
-import type { ResetPasswordRequestOptions } from "@auth0/auth0-acul-js/types";
+import type { ResetPasswordRequestOptions } from "@auth0/auth0-acul-react/types";
 import { Logo } from '../../components/Logo';
 
 const ResetPasswordRequestScreen: React.FC = () => {

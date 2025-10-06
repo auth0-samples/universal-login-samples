@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import {useConsent} from '@auth0/auth0-acul-react/consent'; // Import the Consent SDK class
-import type { Scope } from '@auth0/auth0-acul-js/consent'; // Import Scope type
+import type { Scope } from '@auth0/auth0-acul-react/types'; // Import Scope type
 
 const ConsentScreen: React.FC = () => {
   // Instantiate the SDK class for the Consent screen.
