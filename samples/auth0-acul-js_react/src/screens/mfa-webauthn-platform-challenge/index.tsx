@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import MfaWebAuthnPlatformChallenge, {
-  type VerifyPlatformAuthenticatorOptions} from '@auth0/auth0-acul-js/mfa-webauthn-platform-challenge'; // Adjust path as necessary
+  type VerifyPlatformAuthenticatorOptions} from '@auth0/auth0-acul-js/mfa-webauthn-platform-challenge';
+import { Logo } from '../../components/Logo';
 
 const MfaWebAuthnPlatformChallengeScreen: React.FC = () => {
-  // Instantiate the SDK class. Memoized to avoid re-creation on re-renders.
   const sdk = useMemo(() => new MfaWebAuthnPlatformChallenge(), []);
 
   const { screen, transaction, client } = sdk;
@@ -25,63 +25,63 @@ const MfaWebAuthnPlatformChallengeScreen: React.FC = () => {
   }, [sdk]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 antialiased">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-xl p-8 space-y-6">
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+      <div className="prompt-container">
         {client.logoUrl && (
-          <img src={client.logoUrl} alt={client.name ?? 'Client Logo'} className="mx-auto h-12 mb-6" />
+          <img src={client.logoUrl} alt={client.name ?? 'Client Logo'} style={{ display: 'block', margin: '0 auto', height: '3rem', marginBottom: '1.5rem' }} />
         )}
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800">
-            {texts.title ?? 'Verify Your Identity'}
-          </h1>
-          <p className="mt-2 text-gray-600">
-            {texts.description ?? 'Please use your device\'s screen lock (fingerprint, face, PIN) or a connected security key to continue.'}
-          </p>
+      
+      <Logo />
+      
+      <div className="title-container">
+        <h1 style={{ textAlign: 'center' }}>
+          {texts.title ?? 'Verify Your Identity'}
+        </h1>
+        <p style={{ textAlign: 'center' }}>
+          {texts.description ?? 'Please use your device\'s screen lock (fingerprint, face, PIN) or a connected security key to continue.'}
+        </p>
+      </div>
+
+      {showRememberDevice && (
+        <div className="input-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <input
+            id="rememberDevice"
+            name="rememberDevice"
+            type="checkbox"
+            checked={rememberDevice}
+            onChange={(e) => setRememberDevice(e.target.checked)}
+            style={{ width: 'auto', marginRight: '0.5rem' }}
+          />
+          <label htmlFor="rememberDevice" style={{ margin: 0 }}>
+            {texts.rememberMeText ?? 'Remember this device for 30 days'}
+          </label>
         </div>
+      )}
 
-        {/* Display transaction errors (e.g., from previous failed attempts, invalid state) */}
-        {transaction.errors && transaction.errors.length > 0 && (
-          <div className="bg-red-50 border-l-4 border-red-400 text-red-700 p-4 rounded-md" role="alert">
-            <p className="font-bold">{texts.alertListTitle ?? 'Errors:'}</p>
-            {transaction.errors.map((err, index) => (
-              <p key={`tx-err-${index}`}>{err.message}</p>
-            ))}
-          </div>
-        )}
-
-        {/* Remember device checkbox */}
-        {showRememberDevice && (
-          <div className="flex items-center justify-center">
-            <input
-              id="rememberDevice"
-              name="rememberDevice"
-              type="checkbox"
-              checked={rememberDevice}
-              onChange={(e) => setRememberDevice(e.target.checked)}
-              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-            />
-            <label htmlFor="rememberDevice" className="ml-2 block text-sm text-gray-900">
-              {texts.rememberMeText ?? 'Remember this device for 30 days'}
-            </label>
-          </div>
-        )}
-
-        <div className="space-y-4">
+      <div className="input-container">
+        <div className="button-container">
           <button
             onClick={handleVerify}
             disabled={!publicKeyChallengeOptions}
-            className="w-full flex justify-center items-center px-4 py-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-150"
           >
-            {(texts.buttonText ?? 'Verify with Device')}
+            {texts.buttonText ?? 'Verify with Device'}
           </button>
+        </div>
 
-          <button
-            onClick={handleTryAnotherMethod}
-            className="w-full flex justify-center px-4 py-2.5 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-150"
-          >
+        <div className="button-container">
+          <button onClick={handleTryAnotherMethod}>
             {texts.pickAuthenticatorText ?? 'Try Another Method'}
           </button>
         </div>
+      </div>
+
+      {transaction.errors && transaction.errors.length > 0 && (
+        <div className="error-container">
+          {transaction.errors.map((err, index) => (
+            <p key={`tx-err-${index}`}>{err.message}</p>
+          ))}
+        </div>
+      )}
       </div>
     </div>
   );
