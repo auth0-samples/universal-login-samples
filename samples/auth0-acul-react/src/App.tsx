@@ -22,10 +22,8 @@ import ResetPasswordEmailScreen from "./screens/reset-password-email";
 import ResetPasswordSuccessScreen from "./screens/reset-password-success";
 import ResetPasswordErrorScreen from "./screens/reset-password-error";
 import MfaBeginEnrollOptionsScreen from "./screens/mfa-begin-enroll-options";
-import LoginEmailVerificationScreen from "./screens/login-email-verification";
 import LoginPasswordlessEmailCodeScreen from "./screens/login-passwordless-email-code";
 import LoginPasswordlessSmsOtpScreen from "./screens/login-passwordless-sms-otp";
-import LogoutScreen from "./screens/logout";
 import LogoutAbortedScreen from "./screens/logout-aborted";
 import MfaCountryCodesScreen from "./screens/mfa-country-codes";
 import MfaEmailListScreen from "./screens/mfa-email-list";
@@ -53,11 +51,9 @@ import LogoutCompleteScreen from "./screens/logout-complete";
 const screenMap: Record<string, React.FC> = {
   "login": LoginScreen,
   "login-id": LoginIdScreen,
-  "login-email-verification": LoginEmailVerificationScreen,
   "login-passwordless-email-code": LoginPasswordlessEmailCodeScreen,
   "login-passwordless-sms-otp": LoginPasswordlessSmsOtpScreen,
   "logout-complete": LogoutCompleteScreen,
-  "logout": LogoutScreen,
   "logout-aborted": LogoutAbortedScreen,
   "login-password": LoginPasswordScreen,
   "email-otp-challenge": EmailOTPChallengeScreen,
