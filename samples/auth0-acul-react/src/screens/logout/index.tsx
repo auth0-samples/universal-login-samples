@@ -1,5 +1,5 @@
 import React, {useEffect } from 'react';
-import Logout, { type ConfirmLogoutOptions} from '@auth0/auth0-acul-js/logout';
+import { type ConfirmLogoutOptions} from '@auth0/auth0-acul-js/logout';
 import { useLogout } from '@auth0/auth0-acul-react/logout';
 
 const LogoutScreen: React.FC = () => {

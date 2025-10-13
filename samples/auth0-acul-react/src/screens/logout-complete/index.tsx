@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import LogoutComplete from '@auth0/auth0-acul-js/logout-complete';
 import { useLogoutComplete } from '@auth0/auth0-acul-react/logout-complete';
 
 const LogoutCompleteScreen: React.FC = () => {

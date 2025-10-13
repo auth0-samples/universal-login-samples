@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import LogoutAborted from '@auth0/auth0-acul-js/logout-aborted';
 import { useLogoutAborted } from '@auth0/auth0-acul-react/logout-aborted';
 
 const LogoutAbortedScreen: React.FC = () => {

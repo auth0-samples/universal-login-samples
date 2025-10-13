@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
 import { useMfaVoiceEnrollment, tryAnotherMethod, continueMethod, selectPhoneCountryCode } from '@auth0/auth0-acul-react/mfa-voice-enrollment';
 import { Logo } from '../../components/Logo';
 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import LoginPasswordlessSmsOtp from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
 import { useLoginPasswordlessSmsOtp } from '@auth0/auth0-acul-react/login-passwordless-sms-otp';
 
 const LoginPasswordlessSmsOtpScreen: React.FC = () => {

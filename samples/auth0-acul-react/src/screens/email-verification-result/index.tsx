@@ -1,5 +1,4 @@
 import React from 'react';
-import EmailVerificationResult from '@auth0/auth0-acul-js/email-verification-result';
 import { useEmailVerificationResult } from '@auth0/auth0-acul-react/email-verification-result';
 
 const EmailVerificationResultScreen: React.FC = () => {

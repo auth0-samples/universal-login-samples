@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import InterstitialCaptcha from '@auth0/auth0-acul-js/interstitial-captcha';
 import { useInterstitialCaptcha } from '@auth0/auth0-acul-react/interstitial-captcha';
 
 const InterstitialCaptchaScreen: React.FC = () => {

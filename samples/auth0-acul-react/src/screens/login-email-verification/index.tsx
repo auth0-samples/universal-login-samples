@@ -1,5 +1,5 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
-import LoginEmailVerification, { ContinueWithCodeOptions, ResendCodeOptions } from '@auth0/auth0-acul-js/login-email-verification';
+import { ContinueWithCodeOptions, ResendCodeOptions } from '@auth0/auth0-acul-js/login-email-verification';
 import { useLoginEmailVerification, continueWithCode, resendCode } from '@auth0/auth0-acul-react/login-email-verification';
 
 const LoginEmailVerificationScreen: React.FC = () => {

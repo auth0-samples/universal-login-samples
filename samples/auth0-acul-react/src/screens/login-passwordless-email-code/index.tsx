@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import LoginPasswordlessEmailCode from '@auth0/auth0-acul-js/login-passwordless-email-code';
 import { useLoginPasswordlessEmailCode } from '@auth0/auth0-acul-react/login-passwordless-email-code';
 
 const LoginPasswordlessEmailCodeScreen: React.FC = () => {
