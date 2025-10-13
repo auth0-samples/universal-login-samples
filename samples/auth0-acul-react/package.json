@@ -4,15 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build",
+    "build": "vite build --watch",
     "build:watch": "tsc -b --watch & vite build --watch",
     "lint": "eslint . --ext .ts,.tsx --max-warnings=0",
     "deploy": "http-server dist -p ${PORT:-8080} -c-1"
   },
   "dependencies": {
-    "@auth0/auth0-acul-react": "<SDK_LOCAL_PATH>",
-    "react-error-boundary": "^4.1.2",
+    "@auth0/auth0-acul-react": "file:../../../universal-login/packages/auth0-acul-react",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-error-boundary": "^4.1.2"
   }
 }
