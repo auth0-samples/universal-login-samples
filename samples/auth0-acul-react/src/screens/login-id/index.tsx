@@ -1,17 +1,13 @@
 import React, { useRef, useState, useMemo } from 'react';
 import { useScreen, useTransaction, login, federatedLogin, passkeyLogin, useLoginIdentifiers } from '@auth0/auth0-acul-react/login-id';
 import { Logo } from '../../components/Logo';
-// import { useErrors } from '@auth0/auth0-acul-react';
-// import type { AculError } from '@auth0/auth0-acul-react';
-// pickCountryCode
+
 const LoginIdScreen: React.FC = () => {
   const screen = useScreen();
   const transaction = useTransaction();
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const captchaRef = useRef<HTMLInputElement>(null);
-
-  // const errors: AculError[] = useErrors({ type: 'server' });
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);

@@ -17,7 +17,7 @@ const ResetPasswordScreen: React.FC = () => {
 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const { isValid, results } = usePasswordValidation(password, {includeInErrors: true});
+  const { isValid, results } = usePasswordValidation(password);
   const { errors, hasError, dismiss } = useErrors();
 
   const handleResetPassword = () => {
@@ -71,28 +71,33 @@ const ResetPasswordScreen: React.FC = () => {
                 }`}
             />
 
-            {password.length > 0 && results.length > 0 && (
-              <ul className="mt-1 text-sm text-red-500 space-y-1">
-                {results.map((rule, i) => (
-                  <li key={i} className={rule.isValid ? 'text-green-600' : 'text-red-600'}>
-                    {rule.label}
-                    {rule.items && (
-                      <ul className="ml-4 list-disc space-y-1">
-                        {rule.items.map((item, idx) => (
-                          <li
-                            key={idx}
-                            className={item.isValid ? 'text-green-600' : 'text-red-600'}
-                          >
-                            {item.label}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ))}
-              </ul>
+            {password.length > 0 && (
+              <div className="mt-2 border border-gray-300 rounded p-3 text-sm">
+                <p className="mb-1 text-gray-700">Your password must contain:</p>
+                <ul className="list-disc list-inside space-y-1">
+                  {results.map((rule) => (
+                    <li
+                      key={rule.code}
+                      className={rule.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+                    >
+                      {rule.label}
+                      {rule.items && rule.items.length > 0 && (
+                        <ul className="list-disc list-inside ml-5 mt-1 space-y-1">
+                          {rule.items.map((subRule) => (
+                            <li
+                              key={subRule.code}
+                              className={subRule.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+                            >
+                              {subRule.label}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
-
           </div>
 
           {/* Confirm Password */}

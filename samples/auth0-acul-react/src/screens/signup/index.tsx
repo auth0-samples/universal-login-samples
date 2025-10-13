@@ -32,9 +32,9 @@ const SignupScreen: React.FC = () => {
 
   // Validation hooks
   const { isValid: isPasswordValid, results: passwordResults } =
-    usePasswordValidation(password, { includeInErrors: true });
+    usePasswordValidation(password);
   const { isValid: isUsernameValid, errors: usernameResults } =
-    useUsernameValidation(username, { includeInErrors: true });
+    useUsernameValidation(username);
   const { hasError, errors, dismiss } = useErrors();
 
   const handleSignup = () => {
