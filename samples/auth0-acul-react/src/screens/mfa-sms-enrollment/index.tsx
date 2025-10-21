@@ -11,8 +11,8 @@ const MFASmsEnrollmentScreen = () => {
   const texts = screen?.texts || {};
   
   // Get country data from transaction
-  const countryCodeStr = transaction.countryCode || 'IN';
-  const countryPrefix = transaction.countryPrefix || '91';
+  const countryCodeStr = transaction.countryCode
+  const countryPrefix = transaction.countryPrefix 
   
   const countryCode = `+${countryPrefix}`;
   const displayName = `${countryCodeStr} ${countryCode}`;
