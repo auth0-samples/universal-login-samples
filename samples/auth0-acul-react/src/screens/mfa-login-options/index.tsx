@@ -20,7 +20,6 @@ const buildFactorDisplayNames = (texts: any): Record<MfaLoginFactorType, string>
 const MfaLoginOptionsScreen: React.FC = () => {
   const { tenant, screen: { texts } } = useMfaLoginOptions();
   const screen = useScreen();
-  console.log('MfaLoginOptionsScreen screen:', screen);
   const factorDisplayNames = buildFactorDisplayNames(texts);
 
   const handleFactorSelection = useCallback(async (factor: MfaLoginFactorType) => {

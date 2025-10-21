@@ -49,8 +49,8 @@ import InterstitialCaptchaScreen from "./screens/intertitial-captcha";
 import LogoutCompleteScreen from "./screens/logout-complete";
 import MfaWebAuthnPlatformEnrollmentScreen from "./screens/mfa-webauthn-platform-enrollment";
 import MfaWebAuthnEnrollmentSuccessScreen from "./screens/mfa-webauthn-enrollment-success";
-import MfaWebAuthnPlatformChallengeScreen from "./screens/mfa-webauthn-platform-challenge"
-
+import MfaWebAuthnPlatformChallengeScreen from "./screens/mfa-webauthn-platform-challenge";
+import MfaWebAuthnRoamingEnrollmentScreen from "./screens/mfa-webauthn-roaming-enrollment";
 
 const screenMap: Record<string, React.FC> = {
   "login": LoginScreen,
@@ -101,7 +101,8 @@ const screenMap: Record<string, React.FC> = {
   "mfa-voice-enrollment": MfaVoiceEnrollmentScreen,
   "mfa-webauthn-platform-enrollment": MfaWebAuthnPlatformEnrollmentScreen,
   "mfa-webauthn-enrollment-success": MfaWebAuthnEnrollmentSuccessScreen,
-  "mfa-webauthn-platform-challenge": MfaWebAuthnPlatformChallengeScreen
+  "mfa-webauthn-platform-challenge": MfaWebAuthnPlatformChallengeScreen,
+  "mfa-webauthn-roaming-enrollment":MfaWebAuthnRoamingEnrollmentScreen
 };
 
 const App: React.FC = () => {

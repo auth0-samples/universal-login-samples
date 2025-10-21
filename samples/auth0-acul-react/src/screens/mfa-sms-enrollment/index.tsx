@@ -1,85 +1,138 @@
 import { useState } from 'react';
-import { useMfaSmsEnrollment, tryAnotherMethod, continueEnrollment, pickCountryCode } from '@auth0/auth0-acul-react/mfa-sms-enrollment';
+import { useScreen, useTransaction, tryAnotherMethod, continueEnrollment, pickCountryCode } from '@auth0/auth0-acul-react/mfa-sms-enrollment';
 import { Logo } from '../../components/Logo';
 
 const MFASmsEnrollmentScreen = () => {
   const [phone, setPhone] = useState('');
-  const mfaSmsEnrollment = useMfaSmsEnrollment();
-  const { screen, transaction: { errors } } = mfaSmsEnrollment;
+  const [error, setError] = useState('');
+  
+  const transaction = useTransaction();
+  const screen = useScreen();
   const texts = screen?.texts || {};
+  
+  // Get country data from transaction
+  const countryCodeStr = transaction.countryCode || 'IN';
+  const countryPrefix = transaction.countryPrefix || '91';
+  
+  const countryCode = `+${countryPrefix}`;
+  const displayName = `${countryCodeStr} ${countryCode}`;
+  
+
 
   const handlePickCountryCode = async () => {
-    await pickCountryCode();
+    setError('');
+    try {
+      await pickCountryCode();
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to pick country code.';
+      setError(errorMessage);
+    }
   };
 
   const handleContinueEnrollment = async () => {
-    await continueEnrollment({ phone });
+    setError('');
+    if (!phone) {
+      setError('Phone number is required.');
+      return;
+    }
+    
+    try {
+      await continueEnrollment({ phone });
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to continue enrollment.';
+      setError(errorMessage);
+    }
   };
 
   const handleTryAnotherMethod = async () => {
-    await tryAnotherMethod();
+    setError('');
+    try {
+      await tryAnotherMethod();
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to try another method.';
+      setError(errorMessage);
+    }
   };
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
+        {/* Logo */}
         <div className="flex justify-center">
           <div className="w-20 h-20">
             <Logo />
           </div>
         </div>
+
+        {/* Title */}
         <h2 className="mt-6 text-center text-xl font-semibold text-gray-900">
-          {texts.title || 'MFA SMS Enrollment'}
+          {texts.title || 'Secure Your Account'}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-500">
-          {texts.description || 'Enter your phone number so we can send you verification codes.'}
+          {texts.description || 'Enter your phone number below. An SMS will be sent to that number with a code to enter on the next screen.'}
         </p>
 
         <div className="mt-6 space-y-4">
+          {/* Country Selector */}
+          <button
+            type="button"
+            onClick={handlePickCountryCode}
+            className="w-full flex items-center justify-between px-4 py-3 border-2 border-indigo-500 rounded-md bg-white text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium">{displayName}</span>
+            </div>
+            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          {/* Phone Number Input */}
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-              {texts.placeholder || 'Phone Number'}
-            </label>
             <input
               id="phone"
-              type="text"
-              placeholder={texts.placeholder || 'Enter your phone number'}
+              type="tel"
+              placeholder={texts.placeholder || 'Enter your phone number*'}
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="appearance-none rounded-md relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
-            {errors?.length ? (
-              <div className="mt-2 space-y-1" aria-live="polite">
-                {errors.map((err, i) => (
-                  <p key={i} className="text-red-600 text-xs">{err.message}</p>
-                ))}
-              </div>
-            ) : null}
           </div>
 
+          {/* Error Messages */}
+          {error && (
+            <div className="text-red-600 text-sm text-center" role="alert">
+              {error}
+            </div>
+          )}
+          
+          {transaction.errors && transaction.errors.length > 0 && (
+            <div className="text-red-600 text-sm text-center" role="alert">
+              {transaction.errors.map((err, i) => (
+                <p key={i}>{err.message}</p>
+              ))}
+            </div>
+          )}
+
+          {/* Continue Button */}
           <button
             type="button"
             onClick={handleContinueEnrollment}
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             {texts.continueButtonText || 'Continue'}
           </button>
 
-          <button
-            type="button"
-            onClick={handlePickCountryCode}
-            className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          >
-            {texts.pickCountryCodeButtonText || 'Pick Country Code'}
-          </button>
-
-          <button
-            type="button"
-            onClick={handleTryAnotherMethod}
-            className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          >
-            {texts.pickAuthenticatorText || 'Try Another Method'}
-          </button>
+          {/* Try Another Method Link */}
+          {texts.pickAuthenticatorText && (
+            <button
+              type="button"
+              onClick={handleTryAnotherMethod}
+              className="w-full text-center text-sm text-indigo-600 hover:text-indigo-500 focus:outline-none"
+            >
+              {texts.pickAuthenticatorText}
+            </button>
+          )}
         </div>
       </div>
     </div>
