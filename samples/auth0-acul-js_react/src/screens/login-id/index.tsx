@@ -1,61 +1,142 @@
-import React, { useMemo } from "react";
-import { useLoginManager } from './hooks/useLoginManager';
-import { useLoginForm } from './hooks/useLoginForm';
+import React, { useEffect, useState, useMemo, useRef } from "react";
+import LoginIdInstance from "@auth0/auth0-acul-js/login-id";
 import { Logo } from "../../components/Logo";
-import { Title } from './components/Title';
-import { LoginForm } from './components/LoginForm';
-import { FederatedLogin } from './components/FederatedLogin';
-import { PasskeyButton } from './components/PasskeyButton';
-import { Links } from './components/Links';
-import { ErrorMessages } from './components/ErrorMessages';
+import Button from "../../components/Button";
+
+// Types
+interface Connection {
+  name: string;
+}
+
+interface Error {
+  message?: string;
+}
 
 const LoginIdScreen: React.FC = () => {
-  const { loginManager, handleLogin, handleSocialConnectionLogin, handlePasskeyLogin } = useLoginManager();
-  const { usernameRef, captchaRef, getFormValues } = useLoginForm();
-  const activeIdentifiers = useMemo(() => loginManager.getLoginIdentifiers(), []);
+  // State and refs
+  const [loginManager] = useState(() => new LoginIdInstance());
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const captchaRef = useRef<HTMLInputElement>(null);
+
+  // Register passkey autofill on mount
+  useEffect(() => {
+    (async () => {
+      await loginManager.registerPasskeyAutofill('username');
+    })();
+  }, []);
+
+  // Get form values
+  const getFormValues = () => ({
+    username: usernameRef.current?.value ?? "",
+    captcha: captchaRef.current?.value ?? "",
+  });
+
+  // Handlers
+  const handleLogin = (username: string, captcha: string): void => {
+    const options = {
+      username,
+      captcha: loginManager.screen.isCaptchaAvailable ? captcha : "",
+    };
+    loginManager.login(options);
+  };
+
+  const handleSocialConnectionLogin = (connectionName: string) => {
+    loginManager.federatedLogin({ connection: connectionName });
+  };
+
+  const handlePasskeyLogin = () => {
+    loginManager.passkeyLogin();
+  };
 
   const onLoginClick = () => {
     const { username, captcha } = getFormValues();
     handleLogin(username, captcha);
   };
 
+  // Get active identifiers
+  const activeIdentifiers = useMemo(() => loginManager.getLoginIdentifiers(), []);
+
   const getIdentifierLabel = () => {
     if (activeIdentifiers?.length === 1) return `Enter your ${activeIdentifiers[0]}`;
     return `Enter your ${activeIdentifiers?.join(" or ")}`;
   };
 
+  const screenTexts = loginManager.screen.texts!;
+
   return (
     <div className="prompt-container">
+      {/* Logo */}
       <Logo />
-      <Title screenTexts={loginManager.screen.texts!} />
+      
+      {/* Title */}
+      <div className="title-container">
+        <h1>{screenTexts?.title}</h1>
+        <p>{screenTexts?.description}</p>
+      </div>
 
-      <LoginForm
-        usernameRef={usernameRef}
-        captchaRef={captchaRef}
-        isCaptchaAvailable={loginManager.screen.isCaptchaAvailable}
-        captchaImage={loginManager.screen.captchaImage!}
-        countryCode={loginManager.transaction.countryCode!}
-        countryPrefix={loginManager.transaction.countryPrefix!}
-        onLoginClick={onLoginClick}
-        identifierLabel={getIdentifierLabel()}
-      />
-
-      <FederatedLogin
-        connections={loginManager.transaction.alternateConnections!}
-        onFederatedLogin={handleSocialConnectionLogin}
-      />
-
-      <PasskeyButton onPasskeyLogin={handlePasskeyLogin} />
-
-      {loginManager.screen.links && (
-        <Links
-          signupLink={loginManager.screen.signupLink!}
-          resetPasswordLink={loginManager.screen.resetPasswordLink!}
+      {/* Login Form */}
+      <div className="input-container">
+        <button className="pick-country-code hidden" id="pick-country-code">
+          Pick country code - {loginManager.transaction.countryCode}: +{loginManager.transaction.countryPrefix}
+        </button>
+        <label>{getIdentifierLabel()}</label>
+        <input
+          type="text"
+          id="username"
+          ref={usernameRef}
+          placeholder={getIdentifierLabel()}
         />
+
+        {loginManager.screen.isCaptchaAvailable && (
+          <div className="captcha-container">
+            <img src={loginManager.screen.captchaImage ?? ""} alt="Captcha" />
+            <label>Enter the captcha</label>
+            <input
+              type="text"
+              id="captcha"
+              ref={captchaRef}
+              placeholder="Enter the captcha"
+            />
+          </div>
+        )}
+
+        <div className="button-container">
+          <Button onClick={onLoginClick}>Continue</Button>
+        </div>
+      </div>
+
+      {/* Federated Login */}
+      <div className="federated-login-container">
+        {loginManager.transaction.alternateConnections?.map((connection: Connection) => (
+          <Button
+            key={connection.name}
+            onClick={() => handleSocialConnectionLogin(connection.name)}
+          >
+            Continue with {connection.name}
+          </Button>
+        ))}
+      </div>
+
+      {/* Passkey Button */}
+      <div className="passkey-container">
+        <Button onClick={handlePasskeyLogin}>Continue with Passkey</Button>
+      </div>
+
+      {/* Links */}
+      {loginManager.screen.links && (
+        <div className="links">
+          {loginManager.screen.signupLink && <a href={loginManager.screen.signupLink}>Sign Up</a>}
+          {loginManager.screen.resetPasswordLink && <a href={loginManager.screen.resetPasswordLink}>Forgot Password?</a>}
+        </div>
       )}
 
+      {/* Error Messages */}
       {loginManager.transaction.hasErrors && loginManager.transaction.errors && (
-        <ErrorMessages errors={loginManager.transaction.errors!} />
+        <div className="error-container">
+          {loginManager.transaction.errors.map((error: Error, index: number) => (
+            <p key={index}>{error?.message}</p>
+          ))}
+        </div>
       )}
     </div>
   );

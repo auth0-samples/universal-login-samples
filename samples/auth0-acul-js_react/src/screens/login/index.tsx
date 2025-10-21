@@ -1,17 +1,31 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import LoginSDK from "@auth0/auth0-acul-js/login";
-
-import { useLoginForm } from "./hooks/useLoginForm";
 import { Logo } from "../../components/Logo";
-import { Title } from "./components/Title";
-import { LoginForm } from "./components/LoginForm";
-import { FederatedLogin } from "./components/FederatedLogin";
-import { Links } from "./components/Links";
-import { ErrorMessages } from "./components/ErrorMessages";
+import Button from "../../components/Button";
+
+// Types
+interface Connection {
+  name: string;
+}
+
+interface Error {
+  message?: string;
+}
 
 const LoginScreen: React.FC = () => {
   const [loginManager] = useState(() => new LoginSDK());
-  const { usernameRef, passwordRef, captchaRef, getFormValues } = useLoginForm();
+  
+  // Refs for form inputs
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const captchaRef = useRef<HTMLInputElement>(null);
+
+  // Get form values
+  const getFormValues = () => ({
+    username: usernameRef.current?.value ?? "",
+    password: passwordRef.current?.value ?? "",
+    captcha: captchaRef.current?.value ?? "",
+  });
 
   const handleLogin = async () => {
     const { username, password, captcha } = getFormValues();
@@ -34,35 +48,88 @@ const LoginScreen: React.FC = () => {
   };
 
   const errors = loginManager.getErrors();
+  const screenTexts = loginManager.screen.texts!;
+  const connections = loginManager.transaction.alternateConnections;
+  const signupLink = loginManager.screen.signupLink;
+  const resetPasswordLink = loginManager.screen.resetPasswordLink;
 
   return (
     <div className="prompt-container">
+      {/* Logo */}
       <Logo />
-      <Title screenTexts={loginManager.screen.texts!} />
+      
+      {/* Title */}
+      <div className="title-container">
+        <h1>{screenTexts?.title}</h1>
+        <p>{screenTexts?.description}</p>
+      </div>
 
-      <LoginForm
-        usernameRef={usernameRef}
-        passwordRef={passwordRef}
-        captchaRef={captchaRef}
-        isCaptchaAvailable={loginManager.screen.isCaptchaAvailable}
-        captchaImage={loginManager.screen.captchaImage ?? undefined}
-        countryCode={loginManager.transaction.countryCode ?? undefined}
-        countryPrefix={loginManager.transaction.countryPrefix ?? undefined}
-        onLoginClick={handleLogin}
-        identifierLabel={getIdentifierLabel()}
-      />
+      {/* Login Form */}
+      <div className="input-container">
+        <button className="pick-country-code hidden" id="pick-country-code">
+          Pick country code - {loginManager.transaction.countryCode}: +{loginManager.transaction.countryPrefix}
+        </button>
 
-      <FederatedLogin
-        connections={loginManager.transaction.alternateConnections ?? undefined}
-        onFederatedLogin={handleFederatedLogin}
-      />
+        <label>{getIdentifierLabel()}</label>
+        <input 
+          type="text" 
+          id="username" 
+          ref={usernameRef} 
+          placeholder={getIdentifierLabel()} 
+        />
 
-      <Links
-        signupLink={loginManager.screen.signupLink ?? undefined}
-        resetPasswordLink={loginManager.screen.resetPasswordLink ?? undefined}
-      />
+        <label>Enter your password</label>
+        <input 
+          type="password" 
+          id="password" 
+          ref={passwordRef} 
+          placeholder="Enter your password" 
+        />
 
-      {loginManager.transaction.hasErrors && errors && <ErrorMessages errors={errors} />}
+        {loginManager.screen.isCaptchaAvailable && (
+          <div className="captcha-container">
+            <img src={loginManager.screen.captchaImage ?? ""} alt="Captcha" />
+            <label>Enter the captcha</label>
+            <input 
+              type="text" 
+              id="captcha" 
+              ref={captchaRef} 
+              placeholder="Enter the captcha" 
+            />
+          </div>
+        )}
+
+        <div className="button-container">
+          <Button id="continue" onClick={handleLogin}>Continue</Button>
+        </div>
+      </div>
+
+      {/* Federated Login */}
+      <div className="federated-login-container">
+        {connections?.map((connection: Connection) => (
+          <Button
+            key={connection.name}
+            onClick={() => handleFederatedLogin(connection.name)}
+          >
+            Continue with {connection.name}
+          </Button>
+        ))}
+      </div>
+
+      {/* Links */}
+      <div className="links">
+        {signupLink && <a href={signupLink}>Sign Up</a>}
+        {resetPasswordLink && <a href={resetPasswordLink}>Forgot Password?</a>}
+      </div>
+
+      {/* Error Messages */}
+      {loginManager.transaction.hasErrors && errors && (
+        <div className="error-container">
+          {errors?.map((error: Error, index: number) => (
+            <p key={index}>{error?.message}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
