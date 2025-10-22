@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
-import MfaBeginEnrollOptions, { type MfaLoginFactorType } from '@auth0/auth0-acul-js/mfa-login-options';
+import MfaBeginEnrollOptions from '@auth0/auth0-acul-js/mfa-login-options';
+import { MfaLoginFactorType } from '@auth0/auth0-acul-react/types'
 import { Logo } from '../../components/Logo';
 
 /** Enum for Factor Types */
@@ -49,7 +50,7 @@ const MfaLoginOptionsScreen: React.FC = () => {
     <div className="prompt-container">
       {/* Logo */}
       <Logo />
-      
+
       {/* Title */}
       <div className="title-container" style={{ textAlign: 'center' }}>
         <h1>{texts?.title ?? 'Multi-factor Authentication'}</h1>
