@@ -51,6 +51,7 @@ import MfaWebAuthnPlatformEnrollmentScreen from "./screens/mfa-webauthn-platform
 import MfaWebAuthnEnrollmentSuccessScreen from "./screens/mfa-webauthn-enrollment-success";
 import MfaWebAuthnPlatformChallengeScreen from "./screens/mfa-webauthn-platform-challenge";
 import MfaWebAuthnRoamingEnrollmentScreen from "./screens/mfa-webauthn-roaming-enrollment";
+import MfaWebAuthnErrorScreen from "./screens/mfa-webauthn-error";
 
 const screenMap: Record<string, React.FC> = {
   "login": LoginScreen,
@@ -102,7 +103,8 @@ const screenMap: Record<string, React.FC> = {
   "mfa-webauthn-platform-enrollment": MfaWebAuthnPlatformEnrollmentScreen,
   "mfa-webauthn-enrollment-success": MfaWebAuthnEnrollmentSuccessScreen,
   "mfa-webauthn-platform-challenge": MfaWebAuthnPlatformChallengeScreen,
-  "mfa-webauthn-roaming-enrollment":MfaWebAuthnRoamingEnrollmentScreen
+  "mfa-webauthn-roaming-enrollment": MfaWebAuthnRoamingEnrollmentScreen,
+  "mfa-webauthn-error": MfaWebAuthnErrorScreen
 };
 
 const App: React.FC = () => {
