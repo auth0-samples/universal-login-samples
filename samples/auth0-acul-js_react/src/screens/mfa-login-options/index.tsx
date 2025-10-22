@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
-import MfaBeginEnrollOptions from '@auth0/auth0-acul-js/mfa-login-options';
-import { MfaLoginFactorType } from '@auth0/auth0-acul-react/types'
+import MfaBeginEnrollOptions, { type MfaLoginFactorType } from '@auth0/auth0-acul-js/mfa-login-options';
 import { Logo } from '../../components/Logo';
 
 /** Enum for Factor Types */
