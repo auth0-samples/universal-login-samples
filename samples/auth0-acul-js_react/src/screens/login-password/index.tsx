@@ -1,47 +1,114 @@
-import React from "react";
-import { useLoginPasswordManager } from "./hooks/useLoginPasswordManager";
+import React, { useState, useRef } from "react";
+import LoginPasswordInstance from "@auth0/auth0-acul-js/login-password";
 import { Logo } from "../../components/Logo";
-import { LoginForm } from "./components/LoginForm";
-import { FederatedLogin } from "./components/FederatedLogin";
-import { Links } from "./components/Links";
-import { ErrorMessages } from "./components/ErrorMessages";
+import Button from "../../components/Button";
 import "../../styles/screens/login-password.scss";
 
-const LoginPasswordScreen: React.FC = () => {
-  const {
-    username,
-    isCaptchaAvailable,
-    captchaImage,
-    screenLinks,
-    signupLink,
-    resetPasswordLink,
-    errors,
-    login,
-    loginPasswordManager,
-    handleSocialConnectionLogin
-  } = useLoginPasswordManager();
+// Types
+interface Connection {
+  name: string;
+}
 
-  const handleSubmit = (password: string, captcha: string) => {
+const LoginPasswordScreen: React.FC = () => {
+  const [loginPasswordManager] = useState(() => new LoginPasswordInstance());
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const captchaRef = useRef<HTMLInputElement>(null);
+
+  // Extract data from manager
+  const username = loginPasswordManager.screen.data?.username || "";
+  const isCaptchaAvailable = loginPasswordManager.screen.isCaptchaAvailable;
+  const captchaImage = loginPasswordManager.screen.captchaImage;
+  const screenLinks = loginPasswordManager.screen.links;
+  const { signupLink, resetPasswordLink } = loginPasswordManager.screen;
+  const errors = loginPasswordManager.transaction.hasErrors ? loginPasswordManager.transaction.errors : null;
+
+  // Handlers
+  const login = (options: { username: string; password: string; captcha: string }) => {
+    loginPasswordManager.login(options);
+  };
+
+  const handleSocialConnectionLogin = (connectionName: string) => {
+    loginPasswordManager.federatedLogin({ connection: connectionName });
+  };
+
+  const handleSubmit = () => {
+    const password = passwordRef.current?.value || "";
+    const captcha = captchaRef.current?.value || "";
     login({ username, password, captcha });
   };
 
   return (
     <div className="prompt-container">
+      {/* Logo */}
       <Logo />
-      <LoginForm
-        username={username}
-        isCaptchaAvailable={isCaptchaAvailable}
-        captchaImage={captchaImage!}
-        onSubmit={handleSubmit}
-      />
+      
+      {/* Login Form */}
+      <div className="input-container">
+        <label>Enter your username</label>
+        <input
+          type="text"
+          id="username"
+          value={username}
+          placeholder="Enter your username"
+          disabled
+        />
+        
+        <label>Enter your password</label>
+        <input
+          type="password"
+          id="password"
+          ref={passwordRef}
+          placeholder="Enter your password"
+        />
 
-      <FederatedLogin
-        connections={loginPasswordManager.transaction.alternateConnections!}
-        onFederatedLogin={handleSocialConnectionLogin}
-      />
+        {isCaptchaAvailable && (
+          <div className="captcha-container">
+            <img src={captchaImage ?? ""} alt="Captcha" />
+            <label>Enter the captcha</label>
+            <input
+              type="text"
+              id="captcha"
+              ref={captchaRef}
+              placeholder="Enter the captcha"
+            />
+          </div>
+        )}
 
-      {screenLinks && <Links signupLink={signupLink!} resetPasswordLink={resetPasswordLink!} />}
-      {errors && <ErrorMessages errors={errors} />}
+        <div className="button-container">
+          <button id="continue" onClick={handleSubmit}>
+            Continue
+          </button>
+        </div>
+      </div>
+
+      {/* Federated Login */}
+      <div className="federated-login-container">
+        {loginPasswordManager.transaction.alternateConnections?.map((connection: Connection) => (
+          <Button
+            key={connection.name}
+            onClick={() => handleSocialConnectionLogin(connection.name)}
+          >
+            Continue with {connection.name}
+          </Button>
+        ))}
+      </div>
+
+      {/* Links */}
+      {screenLinks && (
+        <div className="links">
+          {signupLink && <a href={signupLink}>Sign Up</a>}
+          {resetPasswordLink && <a href={resetPasswordLink}>Reset Password</a>}
+        </div>
+      )}
+
+      {/* Error Messages */}
+      {errors && (
+        <div className="error-container">
+          {errors.map((error: { message: string }, index: number) => (
+            <p key={index}>{error?.message}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

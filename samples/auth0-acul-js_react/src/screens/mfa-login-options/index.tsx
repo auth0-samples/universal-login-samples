@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import MfaBeginEnrollOptions, { type MfaLoginFactorType } from '@auth0/auth0-acul-js/mfa-login-options';
+import { Logo } from '../../components/Logo';
 
 /** Enum for Factor Types */
 enum FactorTypeEnum {
@@ -45,34 +46,38 @@ const MfaLoginOptionsScreen: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col flex-start py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="text-center text-3xl font-extrabold text-gray-900">
-          {texts?.title ?? 'Multi-factor Authentication'}
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          {texts?.description ?? 'Choose a Multi-factor Authentication Method'}
-        </p>
+    <div className="prompt-container">
+      {/* Logo */}
+      <Logo />
+
+      {/* Title */}
+      <div className="title-container" style={{ textAlign: 'center' }}>
+        <h1>{texts?.title ?? 'Multi-factor Authentication'}</h1>
+        <p>{texts?.description ?? 'Choose a Multi-factor Authentication Method'}</p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <div className="space-y-4">
-            {tenant.enabledFactors?.map((factor) => {
-              const factorEnum = factor as MfaLoginFactorType;
-              return (
-                <button
-                  key={factor}
-                  onClick={() => handleFactorSelection(factorEnum)}
-                  className="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  {factorDisplayNames[factorEnum]}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+      {/* Factor Options */}
+      <div className="input-container">
+        {tenant.enabledFactors?.map((factor) => {
+          const factorEnum = factor as MfaLoginFactorType;
+          return (
+            <div key={factor} className="button-container">
+              <button onClick={() => handleFactorSelection(factorEnum)}>
+                {factorDisplayNames[factorEnum]}
+              </button>
+            </div>
+          );
+        })}
       </div>
+
+      {/* Error Messages */}
+      {mfaBeginEnrollOptions.transaction.hasErrors && mfaBeginEnrollOptions.transaction.errors && (
+        <div className="error-container">
+          {mfaBeginEnrollOptions.transaction.errors.map((error: any, index: number) => (
+            <p key={index}>{error?.message}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

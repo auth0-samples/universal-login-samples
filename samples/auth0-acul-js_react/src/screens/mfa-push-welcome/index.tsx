@@ -1,16 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import MfaPushWelcome from '@auth0/auth0-acul-js/mfa-push-welcome';
+import { Logo } from '../../components/Logo';
 
 const MfaPushWelcomeScreen: React.FC = () => {
-  const mfaPushWelcome = new MfaPushWelcome();
+  const [mfaPushWelcome] = useState(() => new MfaPushWelcome());
   const { screen } = mfaPushWelcome;
-
-  /** Button Styles */
-  const buttonBase =
-    "py-2 px-4 font-bold rounded focus:outline-none focus:shadow-outline transition";
-  const primaryButton = `${buttonBase} bg-blue-500 hover:bg-blue-700 text-white`;
-  const secondaryButton = `${buttonBase} bg-gray-500 hover:bg-gray-700 text-white`;
-  const linkStyle = "text-blue-600 hover:text-blue-800 hover:underline transition";
 
   /** Handle Enroll */
   const handleEnroll = useCallback(async () => {
@@ -31,44 +25,71 @@ const MfaPushWelcomeScreen: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center flex-start min-h-screen bg-gray-100">
-      <div className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 max-w-md w-full">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          {screen.texts?.title ?? 'Secure Your Account'}
-        </h2>
-        <p className="text-gray-700 mb-4">
+    <div className="prompt-container">
+      {/* Logo */}
+      <Logo />
+      
+      {/* Title */}
+      <div className="title-container" style={{ textAlign: 'center' }}>
+        <h1>{screen.texts?.title ?? 'Secure Your Account'}</h1>
+        <p>
           {screen.texts?.description ??
-            'To continue, install the Auth0 Guardian app from your mobile device’s app store.'}
+            'In order to continue, install the Auth0 Guardian app via the app store from your mobile device.'}
         </p>
-
-        {/* Buttons */}
-        <div className="flex space-x-4">
-          <button type="button" className={primaryButton} onClick={handleEnroll}>
-            {screen.texts?.buttonText ?? 'Continue'}
-          </button>
-          <button type="button" className={secondaryButton} onClick={handlePickAuthenticator}>
-            {screen.texts?.pickAuthenticatorText ?? 'Try Another Method'}
-          </button>
-        </div>
-
-        {/* App Download Links */}
-        <div className="mt-5 text-left">
-          {screen.links?.ios && (
-            <p>
-              <a href={screen.links.ios} className={linkStyle}>
-                Download iOS App
-              </a>
-            </p>
-          )}
-          {screen.links?.android && (
-            <p>
-              <a href={screen.links.android} className={linkStyle}>
-                Download Android App
-              </a>
-            </p>
-          )}
-        </div>
       </div>
+
+      {/* App Store Buttons */}
+      {(screen.links?.ios || screen.links?.android) && (
+        <div className="input-container">
+          <div className="flex gap-4 mb-4 justify-center">
+            {screen.links?.ios && (
+              <a 
+                href={screen.links.ios} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex-1 flex flex-col items-center justify-center py-6 px-4 border border-gray-300 rounded-lg no-underline text-gray-800 text-base font-medium gap-2 bg-white hover:bg-gray-50 transition-all"
+              >
+                <span className="text-4xl">🍎</span>
+                App Store
+              </a>
+            )}
+            {screen.links?.android && (
+              <a 
+                href={screen.links.android} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex-1 flex flex-col items-center justify-center py-6 px-4 border border-gray-300 rounded-lg no-underline text-gray-800 text-base font-medium gap-2 bg-white hover:bg-gray-50 transition-all"
+              >
+                <span className="text-4xl">📱</span>
+                Google Play
+              </a>
+            )}
+          </div>
+
+          {/* Continue Button */}
+          <div className="button-container">
+            <button type="button" onClick={handleEnroll}>
+              {screen.texts?.buttonText ?? 'Continue'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Try Another Method Link */}
+      <div className="links">
+        <a href="#" onClick={(e) => { e.preventDefault(); handlePickAuthenticator(); }}>
+          {screen.texts?.pickAuthenticatorText ?? 'Try another method'}
+        </a>
+      </div>
+
+      {/* Error Messages */}
+      {mfaPushWelcome.transaction.hasErrors && mfaPushWelcome.transaction.errors && (
+        <div className="error-container">
+          {mfaPushWelcome.transaction.errors.map((error: any, index: number) => (
+            <p key={index}>{error?.message}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

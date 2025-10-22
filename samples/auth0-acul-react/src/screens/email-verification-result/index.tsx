@@ -1,18 +1,18 @@
 import React from 'react';
 import { useEmailVerificationResult } from '@auth0/auth0-acul-react/email-verification-result';
+import { Logo } from '../../components/Logo';
 
 const EmailVerificationResultScreen: React.FC = () => {
-  // Instantiate the SDK class for the Email Verification Result screen
   const emailVerificationResultManager = useEmailVerificationResult();
-  const { client, screen, transaction, organization } = emailVerificationResultManager;
-
-  // Determine the message and styling based on the verification status
-  let statusMessage = 'An unexpected error occurred.';
-  let statusColor = 'text-gray-700'; // Default color
-  let title = screen.texts?.title ?? 'Email Verification'; // Default title
+  const { screen, transaction, organization } = emailVerificationResultManager;
 
   const verificationStatus = screen.data?.status;
   const loginLink = screen.loginLink;
+
+
+  let statusMessage = 'An unexpected error occurred.';
+  let statusColor = 'text-gray-700'; // Default color
+  let title = screen.texts?.title ?? 'Email Verification'; // Default title
 
   if (verificationStatus === 'success') {
     statusMessage = screen.texts?.descriptionSuccess ?? 'Your email has been successfully verified.';
@@ -22,12 +22,16 @@ const EmailVerificationResultScreen: React.FC = () => {
     statusMessage = screen.texts?.descriptionFailure ?? 'There was an issue verifying your email. Please try again or contact support.';
     statusColor = 'text-red-600';
     title = screen.texts?.titleFailure ?? 'Verification Failed';
-  } else if (verificationStatus === 'already_verified') {
+  } else if (verificationStatus === 'already-verified') {
     statusMessage = screen.texts?.descriptionAlreadyVerified ?? 'This email address has already been verified.';
     statusColor = 'text-blue-600';
     title = screen.texts?.titleAlreadyVerified ?? 'Email Already Verified';
+  } else {
+    // Handle unknown status
+    statusMessage = screen.texts?.description ?? `Email verification status: ${verificationStatus || 'unknown'}`;
+    statusColor = 'text-gray-700';
+    console.warn('Unknown verification status:', verificationStatus);
   }
-  // Add more status checks as needed based on actual possible values
 
   const handleGoToLogin = (): void => {
     if (loginLink) {
@@ -36,27 +40,35 @@ const EmailVerificationResultScreen: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8 text-center">
-        {client.logoUrl && (
-          <img src={client.logoUrl} alt={client.name ?? 'Application Logo'} className="mx-auto h-16 mb-6" />
-        )}
-        <h1 className={`text-2xl font-semibold mb-4 ${statusColor}`}>
-          {title}
-        </h1>
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
+        {/* Logo */}
+        <div className="flex justify-center">
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
+        </div>
 
-        <p className={`text-gray-700 mb-6 ${statusColor}`}>
+        {/* Title */}
+        <h2 className="mt-6 text-center text-xl font-semibold text-gray-900">
+          {title}
+        </h2>
+        
+        {/* Status Message */}
+        <p className={`mt-2 text-center text-sm ${statusColor}`}>
           {statusMessage}
         </p>
 
+        {/* Organization Info */}
         {organization?.name && (
-          <p className="text-sm text-gray-500 mb-2">
+          <p className="mt-4 text-center text-sm text-gray-500">
             Organization: {organization.displayName || organization.name}
           </p>
         )}
 
+        {/* Error Messages */}
         {transaction.errors && transaction.errors.length > 0 && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 text-left" role="alert">
+          <div className="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-left" role="alert">
             <strong className="font-bold">Error(s):</strong>
             {transaction.errors.map((err, index) => (
               <p key={`tx-error-${index}`} className="block sm:inline ml-2">{err.message}</p>
@@ -64,13 +76,16 @@ const EmailVerificationResultScreen: React.FC = () => {
           </div>
         )}
 
+        {/* Login Button */}
         {loginLink && (
-          <button
-            onClick={handleGoToLogin}
-            className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
-          >
-            {screen.texts?.buttonText ?? 'Proceed to Login'}
-          </button>
+          <div className="mt-6">
+            <button
+              onClick={handleGoToLogin}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              {screen.texts?.buttonText ?? 'Proceed to Login'}
+            </button>
+          </div>
         )}
       </div>
     </div>
