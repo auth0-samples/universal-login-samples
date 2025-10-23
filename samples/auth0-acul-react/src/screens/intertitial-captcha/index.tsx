@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useInterstitialCaptcha } from '@auth0/auth0-acul-react/interstitial-captcha';
+import { Logo } from '../../components/Logo';
 
 const InterstitialCaptchaScreen: React.FC = () => {
   const [captcha, setCaptcha] = useState('');
@@ -25,40 +26,42 @@ const InterstitialCaptchaScreen: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Interstitial Captcha
-        </h2>
-      </div>
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="captcha" className="block text-sm font-medium text-gray-700">
-                Captcha
-              </label>
-              <div className="mt-1">
-                <input
-                  id="captcha"
-                  name="captcha"
-                  type="text"
-                  required
-                  value={captcha}
-                  onChange={(e) => setCaptcha(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Submit Captcha
-            </button>
-          </form>
-          {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
-          {success && <div className="text-green-600 text-sm mt-2">Captcha submitted successfully!</div>}
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
+        {/* Logo */}
+        <div className="flex justify-center">
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
+        </div>
+        {/* Title */}
+        <h2 className="mt-6 text-center text-xl font-semibold text-gray-900">Interstitial Captcha</h2>
+        <p className="mt-2 text-center text-sm text-gray-500">Complete the captcha challenge to continue.</p>
+
+        <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="captcha" className="block text-sm font-medium text-gray-700 mb-1">Captcha</label>
+            <input
+              id="captcha"
+              name="captcha"
+              type="text"
+              required
+              value={captcha}
+              onChange={(e) => setCaptcha(e.target.value)}
+              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+          <button
+            type="submit"
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Submit Captcha
+          </button>
+        </form>
+
+        <div className="mt-4 min-h-[20px]" aria-live="polite">
+          {error && <p className="text-xs text-red-600 text-center">{error}</p>}
+          {success && !error && <p className="text-xs text-green-600 text-center">Captcha submitted successfully!</p>}
         </div>
       </div>
     </div>

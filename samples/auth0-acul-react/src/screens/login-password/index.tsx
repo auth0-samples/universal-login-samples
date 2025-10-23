@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react';
-import { useScreen, useTransaction, login } from '@auth0/auth0-acul-react/login-password';
+import { useLoginPassword, useScreen, useTransaction, login } from '@auth0/auth0-acul-react/login-password';
 import { Logo } from '../../components/Logo';
 // import { useErrors } from '@auth0/auth0-acul-react';
 // import type { AculError } from '@auth0/auth0-acul-react';
 
 const LoginPasswordScreen: React.FC = () => {
+  const [loginPasswordManager] = useState(() => useLoginPassword());
+  console.log(loginPasswordManager);
   const screen = useScreen();
   
   const transaction = useTransaction();
@@ -118,7 +120,7 @@ const LoginPasswordScreen: React.FC = () => {
             {screen.links.reset_password && (
               <p className="mt-2 text-center text-sm text-indigo-600 hover:text-indigo-500 cursor-pointer">
                 <a href={screen.links.reset_password}>
-                  {screen.texts?.forgotPasswordText || 'Forgot password?'}
+                  Reset Password
                 </a>
               </p>
             )}

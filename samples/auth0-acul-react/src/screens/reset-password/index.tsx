@@ -108,7 +108,7 @@ const ResetPasswordScreen: React.FC = () => {
             <input
               type="password"
               id="confirmPassword"
-              value={confirmPassword}
+              value={password}
               placeholder="Confirm new password"
               onChange={(e) => setConfirmPassword(e.target.value)}
               required

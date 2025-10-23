@@ -52,12 +52,22 @@ import MfaWebAuthnEnrollmentSuccessScreen from "./screens/mfa-webauthn-enrollmen
 import MfaWebAuthnPlatformChallengeScreen from "./screens/mfa-webauthn-platform-challenge";
 import MfaWebAuthnRoamingEnrollmentScreen from "./screens/mfa-webauthn-roaming-enrollment";
 import MfaWebAuthnErrorScreen from "./screens/mfa-webauthn-error";
+import DeviceCodeActivationAllowedScreen from "./screens/device-code-activation-allowed";
+import DeviceCodeActivationDeniedScreen from "./screens/device-code-activation-denied";
+import DeviceCodeActivationScreen from "./screens/device-code-activation";
+import DeviceCodeConfirmationScreen from "./screens/device-code-confirmation";
+import LogoutScreen from "./screens/logout";
+import ResetPasswordMfaEmailChallengeScreen from "./screens/reset-password-mfa-email-challenge";
+import ResetPasswordMfaOtpChallengeScreen from "./screens/reset-password-mfa-otp-challenge";
+import ResetPasswordMfaPhoneChallengeScreen from "./screens/reset-password-mfa-phone-challenge";
+import ResetPasswordMfaRecoveryCodeChallengeScreen from "./screens/reset-password-mfa-recovery-code-challenge";
 
 const screenMap: Record<string, React.FC> = {
   "login": LoginScreen,
   "login-id": LoginIdScreen,
   "login-passwordless-email-code": LoginPasswordlessEmailCodeScreen,
   "login-passwordless-sms-otp": LoginPasswordlessSmsOtpScreen,
+  "logout": LogoutScreen,
   "logout-complete": LogoutCompleteScreen,
   "logout-aborted": LogoutAbortedScreen,
   "login-password": LoginPasswordScreen,
@@ -104,7 +114,15 @@ const screenMap: Record<string, React.FC> = {
   "mfa-webauthn-enrollment-success": MfaWebAuthnEnrollmentSuccessScreen,
   "mfa-webauthn-platform-challenge": MfaWebAuthnPlatformChallengeScreen,
   "mfa-webauthn-roaming-enrollment": MfaWebAuthnRoamingEnrollmentScreen,
-  "mfa-webauthn-error": MfaWebAuthnErrorScreen
+  "mfa-webauthn-error": MfaWebAuthnErrorScreen,
+  "reset-password-mfa-email-challenge": ResetPasswordMfaEmailChallengeScreen,
+  "reset-password-mfa-otp-challenge": ResetPasswordMfaOtpChallengeScreen,
+  "reset-password-mfa-phone-challenge": ResetPasswordMfaPhoneChallengeScreen,
+  "reset-password-mfa-recovery-code-challenge": ResetPasswordMfaRecoveryCodeChallengeScreen,
+  "device-code-activation": DeviceCodeActivationScreen,
+  "device-code-activation-allowed": DeviceCodeActivationAllowedScreen,
+  "device-code-activation-denied": DeviceCodeActivationDeniedScreen,
+  "device-code-confirmation": DeviceCodeConfirmationScreen,
 };
 
 const App: React.FC = () => {
