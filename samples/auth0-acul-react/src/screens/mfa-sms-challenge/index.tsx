@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useMfaSmsChallenge, useResend } from '@auth0/auth0-acul-react/mfa-sms-challenge';
+import { useMfaSmsChallenge, useResend, pickSms, getACall, tryAnotherMethod, continueMfaSmsChallenge } from '@auth0/auth0-acul-react/mfa-sms-challenge';
 import { Logo } from '../../components/Logo';
 
 const MfaSmsChallengeScreen = () => {
@@ -23,7 +23,7 @@ const MfaSmsChallengeScreen = () => {
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      await mfaSmsChallenge.continueMfaSmsChallenge({
+      await continueMfaSmsChallenge({
         code,
         rememberDevice,
       });
@@ -34,7 +34,7 @@ const MfaSmsChallengeScreen = () => {
 
   const handlePickSms = async () => {
     try {
-      await mfaSmsChallenge.pickSms();
+      await pickSms();
     } catch (error) {
       console.error('Pick SMS failed:', error);
     }
@@ -50,7 +50,7 @@ const MfaSmsChallengeScreen = () => {
 
   const handleTryAnotherMethod = async () => {
     try {
-      await mfaSmsChallenge.tryAnotherMethod();
+      await tryAnotherMethod();
     } catch (error) {
       console.error('Try another method failed:', error);
     }
@@ -58,7 +58,7 @@ const MfaSmsChallengeScreen = () => {
 
   const handleGetACall = async () => {
     try {
-      await mfaSmsChallenge.getACall();
+      await getACall();
     } catch (error) {
       console.error('Get a call failed:', error);
     }

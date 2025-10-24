@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useEmailOTPChallenge, submitCode, resendCode } from '@auth0/auth0-acul-react/email-otp-challenge';
+import { useEmailOTPChallenge, submitCode, useResend } from '@auth0/auth0-acul-react/email-otp-challenge';
 import { Logo } from '../../components/Logo';
 
 const EmailOTPChallengeScreen: React.FC = () => {
@@ -7,6 +7,7 @@ const EmailOTPChallengeScreen: React.FC = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const emailOTPChallengeManager = useEmailOTPChallenge();
+  const { disabled, remaining, startResend } = useResend();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,8 +25,7 @@ const EmailOTPChallengeScreen: React.FC = () => {
     setError('');
     setSuccess(false);
     try {
-      await resendCode();
-      setSuccess(true);
+      await startResend();
     } catch (err: any) {
       setError(err.message || 'Failed to resend code. Please try again.');
     }
@@ -79,9 +79,10 @@ const EmailOTPChallengeScreen: React.FC = () => {
         <button
           type="button"
           onClick={handleResendCode}
-          className="w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          disabled={disabled}
+          className={`w-full flex justify-center py-2 px-4 border text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${disabled ? 'border-gray-300 text-gray-400 bg-gray-100 cursor-not-allowed' : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'}`}
         >
-          Resend Code
+          {disabled ? `Resend in ${remaining}s` : 'Resend Code'}
         </button>
 
         {/* Messages */}
