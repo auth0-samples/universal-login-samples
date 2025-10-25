@@ -31,6 +31,10 @@ const LoginPasswordScreen: React.FC = () => {
     loginPasswordManager.federatedLogin({ connection: connectionName });
   };
 
+  const handleSwitchConnection = (connectionName: string) => {
+    loginPasswordManager.switchConnection({ connection: connectionName });
+  };
+
   const handleSubmit = () => {
     const password = passwordRef.current?.value || "";
     const captcha = captchaRef.current?.value || "";
@@ -41,7 +45,7 @@ const LoginPasswordScreen: React.FC = () => {
     <div className="prompt-container">
       {/* Logo */}
       <Logo />
-      
+
       {/* Login Form */}
       <div className="input-container">
         <label>Enter your username</label>
@@ -52,7 +56,7 @@ const LoginPasswordScreen: React.FC = () => {
           placeholder="Enter your username"
           disabled
         />
-        
+
         <label>Enter your password</label>
         <input
           type="password"
@@ -91,6 +95,20 @@ const LoginPasswordScreen: React.FC = () => {
             Continue with {connection.name}
           </Button>
         ))}
+      </div>
+
+      {/* Switch Connection Options */}
+      <div className="federated-login-container">
+        {loginPasswordManager.transaction.currentConnection && (
+          <>
+            <Button onClick={() => handleSwitchConnection('email')}>
+              Switch to Email
+            </Button>
+            <Button onClick={() => handleSwitchConnection('sms')}>
+              Switch to SMS
+            </Button>
+          </>
+        )}
       </div>
 
       {/* Links */}

@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import LoginPasswordlessSmsOtp from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
+import { Logo } from '../../components/Logo';
+import '../../styles/screens/login-passwordless-sms-otp.scss';
 
 const LoginPasswordlessSmsOtpScreen: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const loginPasswordlessSmsOtp = new LoginPasswordlessSmsOtp();
+
+  const username = loginPasswordlessSmsOtp.screen.data?.username || '';
+  const screenTexts = loginPasswordlessSmsOtp.screen.texts
+
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [resent, setResent] = useState(false);
 
-  const loginPasswordlessSmsOtp = new LoginPasswordlessSmsOtp();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setError('');
     setSuccess(false);
     setResent(false);
@@ -49,72 +55,82 @@ const LoginPasswordlessSmsOtpScreen: React.FC = () => {
     }
   };
 
+  const handleEdit = () => {
+    const editLink = loginPasswordlessSmsOtp.screen.links?.edit_identifier;
+    if (editLink) {
+      // Navigate to edit identifier screen
+      window.location.href = editLink;
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Continue with SMS OTP
-        </h2>
+    <div className="prompt-container login-passwordless-sms-otp-container">
+      {/* Logo */}
+      <Logo />
+
+      {/* Title */}
+      <div className="title-container">
+        <h1>{screenTexts?.title}</h1>
+        {screenTexts?.description && (
+          <p>{screenTexts.description}</p>
+        )}
       </div>
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <div className="space-y-6">
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                Username (optional)
-              </label>
-              <div className="mt-1">
-                <input
-                  id="username"
-                  name="username"
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your username (optional)"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="otp" className="block text-sm font-medium text-gray-700">
-                OTP
-              </label>
-              <div className="mt-1">
-                <input
-                  id="otp"
-                  name="otp"
-                  type="text"
-                  required
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter the OTP"
-                />
-              </div>
-            </div>
 
-            {error && <div className="text-red-600 text-sm">{error}</div>}
-            {success && <div className="text-green-600 text-sm">Login successful!</div>}
-            {resent && <div className="text-blue-600 text-sm">OTP resent to your phone.</div>}
-
-            <div className="flex items-center justify-between">
-              <button
-                onClick={handleSubmit}
-                className="flex-1 mr-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Continue
-              </button>
-              <button
-                type="button"
-                onClick={handleResend}
-                className="flex-1 ml-2 py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-blue-50 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Resend OTP
-              </button>
-            </div>
-          </div>
+      {/* Username Display with Edit Button */}
+      {username && (
+        <div className="username-display">
+          <span className="username-text">{username}</span>
+          <button onClick={handleEdit} className="edit-button">
+            {screenTexts?.editText}
+          </button>
         </div>
+      )}
+
+      {/* OTP Form */}
+      <form className="input-container" onSubmit={handleSubmit}>
+        <label htmlFor="otp">{screenTexts?.placeholder}</label>
+        <input
+          type="text"
+          id="otp"
+          value={otp}
+          onChange={(e) => setOtp(e.target.value)}
+          placeholder={screenTexts?.placeholder}
+          required
+          className="otp-input"
+        />
+
+        <div className="button-container">
+          <button id="continue" type="submit">{screenTexts?.buttonText}</button>
+        </div>
+      </form>
+
+      {/* Resend Section */}
+      <div className="resend-section">
+        <span className="resend-text">{screenTexts?.resendText} </span>
+        <button onClick={handleResend} className="resend-button">
+          {screenTexts?.resendActionText}
+        </button>
       </div>
+
+      {/* Success Messages */}
+      {success && (
+        <div className="error-container">
+          <p className="success-message">Login successful!</p>
+        </div>
+      )}
+
+      {resent && (
+        <div className="error-container">
+          <p className="info-message">OTP resent to your phone.</p>
+        </div>
+      )}
+
+      {/* Error Messages */}
+      {error && (
+        <div className="error-container">
+          <p>{error}</p>
+        </div>
+      )}
     </div>
   );
 };
