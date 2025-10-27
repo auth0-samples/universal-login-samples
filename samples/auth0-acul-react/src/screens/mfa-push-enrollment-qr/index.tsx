@@ -1,11 +1,27 @@
-import React from 'react';
-import { useMfaPushEnrollmentQr, pickAuthenticator } from '@auth0/auth0-acul-react/mfa-push-enrollment-qr';
+import React, { useEffect } from 'react';
+import { useMfaPushEnrollmentQr, pickAuthenticator, useMfaPolling } from '@auth0/auth0-acul-react/mfa-push-enrollment-qr';
 import { Logo } from '../../components/Logo';
 
 const MfaPushEnrollmentQrScreen: React.FC = () => {
   const mfaPushEnrollmentQr = useMfaPushEnrollmentQr();
   const { screen } = mfaPushEnrollmentQr;
   const { qrCode, qrUri, showCodeCopy } = screen.data || {};
+
+  const { isRunning, startPolling, stopPolling } = useMfaPolling({
+      intervalMs: 3000,
+      onCompleted: () => {
+        console.log('Push approved | declined');
+      },
+      onError: (error) => {
+        console.error('Polling error:', error);
+      }
+    });
+  
+    useEffect(() => {
+      startPolling();
+      return () => stopPolling();
+    }, [startPolling, stopPolling]);
+  
 
   const handlePickAuthenticator = async () => {
     try {
