@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Logo } from '../../components/Logo';
 import PhoneIdentifierChallenge from '@auth0/auth0-acul-js/phone-identifier-challenge';
 
 const PhoneIdentifierChallengeScreen: React.FC = () => {
@@ -9,7 +10,7 @@ const PhoneIdentifierChallengeScreen: React.FC = () => {
   const [returned, setReturned] = useState(false);
 
   const phoneIdentifierChallenge = new PhoneIdentifierChallenge();
-
+  phoneIdentifierChallenge.screen.data?.showLinkSms
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setError('');
@@ -49,7 +50,7 @@ const PhoneIdentifierChallengeScreen: React.FC = () => {
     setResent(false);
     setReturned(false);
     try {
-      await phoneIdentifierChallenge.returnToPrevious();
+      await phoneIdentifierChallenge.screen.data?.showLinkVoice ? phoneIdentifierChallenge.switchToVoice() : phoneIdentifierChallenge.switchToText();
       setReturned(true);
     } catch {
       setError('Failed to return to previous step. Please try again later.');
@@ -57,59 +58,59 @@ const PhoneIdentifierChallengeScreen: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Phone Identifier Challenge
-        </h2>
-      </div>
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="code" className="block text-sm font-medium text-gray-700">
-                Code
-              </label>
-              <div className="mt-1">
-                <input
-                  id="code"
-                  name="code"
-                  type="text"
-                  required
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
+    <div className="prompt-container">
+      <Logo />
+      <h1>{phoneIdentifierChallenge.screen.texts?.title || "Verify Your Identity"}</h1>
+      <p>{phoneIdentifierChallenge.screen.texts?.description || `We have sent a text message to ${phoneIdentifierChallenge.screen.data?.phone}`}</p>
+      <div className="input-container space-y-4">
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="code" className="block text-sm font-medium text-gray-700">
+              Code
+            </label>
+            <div className="mt-1">
+              <input
+                id="code"
+                name="code"
+                type="text"
+                required
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              />
             </div>
+          </div>
+          <button
+            type="submit"
+            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Continue
+          </button>
+        </form>
+        <form className="space-y-6 mt-4" onSubmit={handleResend}>
+          <div className="text-sm text-gray-600 text-center">
+            <span>Didn't receive a code?</span>
             <button
-              type="submit"
-              className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              type="button"
+              onClick={handleResend}
+              className="ml-2 font-medium text-blue-600 hover:text-blue-500"
             >
-              Submit Challenge
+              Resend
             </button>
-          </form>
-          <form className="space-y-6 mt-4" onSubmit={handleResend}>
+            <span className="mx-2">or</span>
             <button
-              type="submit"
-              className="w-full py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              type="button"
+              onClick={handleReturn}
+              className="font-medium text-blue-600 hover:text-blue-500"
             >
-              Resend Code
+              {phoneIdentifierChallenge.screen.data?.showLinkVoice ? "get a call" : "send a text"}
             </button>
-          </form>
-          <form className="space-y-6 mt-4" onSubmit={handleReturn}>
-            <button
-              type="submit"
-              className="w-full py-2 px-4 border border-gray-400 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-            >
-              Return to Previous
-            </button>
-          </form>
-          {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
-          {success && <div className="text-green-600 text-sm mt-2">Challenge submitted successfully!</div>}
-          {resent && <div className="text-blue-600 text-sm mt-2">Code resent to your phone.</div>}
-          {returned && <div className="text-blue-600 text-sm mt-2">Returned to previous step.</div>}
-        </div>
+          </div>
+        </form>
+        {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
+        {success && <div className="text-green-600 text-sm mt-2">Challenge submitted successfully!</div>}
+        {resent && <div className="text-blue-600 text-sm mt-2">Code resent to your phone.</div>}
+        {returned && <div className="text-blue-600 text-sm mt-2">Returned to previous step.</div>}
       </div>
     </div>
   );

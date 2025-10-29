@@ -1,13 +1,12 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useScreen, useTransaction, login, federatedLogin, passkeyLogin, useLoginIdentifiers } from '@auth0/auth0-acul-react/login-id';
 import { Logo } from '../../components/Logo';
 
 const LoginIdScreen: React.FC = () => {
   const screen = useScreen();
   const transaction = useTransaction();
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const captchaRef = useRef<HTMLInputElement>(null);
+  const [username, setUsername] = useState('');
+  const [captcha, setCaptcha] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
@@ -19,15 +18,11 @@ const LoginIdScreen: React.FC = () => {
   }, [activeIdentifiers]);
 
   const handleLoginClick = async () => {
-    const username = usernameRef.current?.value ?? '';
-    const password = passwordRef.current?.value ?? '';
-    const captcha = captchaRef.current?.value ?? '';
-
     setIsLoading(true);
     setErrorMessages([]);
 
     try {
-      await login({ username, password, captcha });
+      await login({ username, captcha });
     } catch (err: any) {
       setErrorMessages([err?.message || 'Login failed']);
     } finally {
@@ -95,7 +90,8 @@ const LoginIdScreen: React.FC = () => {
                 autoComplete="username"
                 required
                 placeholder={identifierLabel}
-                ref={usernameRef}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
@@ -112,7 +108,8 @@ const LoginIdScreen: React.FC = () => {
                   name="captcha"
                   type="text"
                   placeholder={screen.texts?.captchaCodePlaceholder || 'Enter captcha'}
-                  ref={captchaRef}
+                  value={captcha}
+                  onChange={(e) => setCaptcha(e.target.value)}
                   required
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
