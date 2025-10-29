@@ -1,27 +1,17 @@
-import React, { useRef, useState } from 'react';
-import { useLoginPassword, useScreen, useTransaction, login } from '@auth0/auth0-acul-react/login-password';
+import React, { useState } from 'react';
+import { useScreen, useTransaction, login } from '@auth0/auth0-acul-react/login-password';
 import { Logo } from '../../components/Logo';
-// import { useErrors } from '@auth0/auth0-acul-react';
-// import type { AculError } from '@auth0/auth0-acul-react';
 
 const LoginPasswordScreen: React.FC = () => {
-  const [loginPasswordManager] = useState(() => useLoginPassword());
-  console.log(loginPasswordManager);
   const screen = useScreen();
   
   const transaction = useTransaction();
-  // const errors: AculError[] = useErrors({ type: 'server' });
-
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
-
   const username = screen.data?.username || '';
 
- 
   const handleLoginClick = async () => {
-    const password = passwordRef.current?.value ?? '';
-
     setIsLoading(true);
     setErrorMessages([]);
 
@@ -82,7 +72,8 @@ const LoginPasswordScreen: React.FC = () => {
               autoComplete="current-password"
               required
               placeholder={screen.texts?.passwordPlaceholder || 'Password'}
-              ref={passwordRef}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)} 
               className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
@@ -120,7 +111,7 @@ const LoginPasswordScreen: React.FC = () => {
             {screen.links.reset_password && (
               <p className="mt-2 text-center text-sm text-indigo-600 hover:text-indigo-500 cursor-pointer">
                 <a href={screen.links.reset_password}>
-                  Reset Password
+                  {screen.texts?.forgotPasswordText || 'Forgot password?'}
                 </a>
               </p>
             )}
