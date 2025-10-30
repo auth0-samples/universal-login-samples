@@ -50,7 +50,7 @@ const PhoneIdentifierChallengeScreen: React.FC = () => {
     setResent(false);
     setReturned(false);
     try {
-      await phoneIdentifierChallenge.screen.data?.showLinkVoice ? phoneIdentifierChallenge.switchToVoice() : phoneIdentifierChallenge.switchToText();
+      await (phoneIdentifierChallenge.screen.data?.showLinkVoice ? phoneIdentifierChallenge.switchToVoice() : phoneIdentifierChallenge.switchToText());
       setReturned(true);
     } catch {
       setError('Failed to return to previous step. Please try again later.');

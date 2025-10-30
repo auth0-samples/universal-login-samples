@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useScreen, useTransaction, login } from '@auth0/auth0-acul-react/login-password';
+import { useScreen, useTransaction, login, useErrors } from '@auth0/auth0-acul-react/login-password';
 import { Logo } from '../../components/Logo';
 
 const LoginPasswordScreen: React.FC = () => {
@@ -9,6 +9,7 @@ const LoginPasswordScreen: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
+  const { hasError, errors } = useErrors();
   const username = screen.data?.username || '';
 
   const handleLoginClick = async () => {
@@ -118,6 +119,15 @@ const LoginPasswordScreen: React.FC = () => {
           </>
         )}
 
+
+        {
+          hasError && (
+            errors.map((error, i) => (
+              <p key={i} className="mt-2 text-red-600 text-center text-sm">{error.message}</p>
+            ))
+          )
+        }
+
         {/* Errors */}
         {transaction.hasErrors && errorMessages.length > 0 && (
           <div className="mt-4 text-red-600 text-center text-sm">
@@ -126,6 +136,7 @@ const LoginPasswordScreen: React.FC = () => {
             ))}
           </div>
         )}
+        
       </div>
     </div>
   );

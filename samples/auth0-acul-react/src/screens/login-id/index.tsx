@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useScreen, useTransaction, login, federatedLogin, passkeyLogin, useLoginIdentifiers } from '@auth0/auth0-acul-react/login-id';
+import { useScreen, useTransaction, login, federatedLogin, passkeyLogin, useLoginIdentifiers, useErrors } from '@auth0/auth0-acul-react/login-id';
 import { Logo } from '../../components/Logo';
 
 const LoginIdScreen: React.FC = () => {
@@ -11,6 +11,7 @@ const LoginIdScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const activeIdentifiers = useLoginIdentifiers();
+  const { hasError, errors } = useErrors();
 
   const identifierLabel = useMemo(() => {
     if (activeIdentifiers?.length === 1) return `Enter your ${activeIdentifiers[0]}`;
@@ -183,6 +184,14 @@ const LoginIdScreen: React.FC = () => {
             {screen.texts?.passkeyButtonText || 'Continue with a passkey'}
           </button>
         )}
+
+        {
+          hasError && (
+            errors.map((error, i) => (
+              <p key={i} className="mt-2 text-red-600 text-center text-sm">{error.message}</p>
+            ))
+          )
+        }
 
 
         {transaction.hasErrors && errorMessages.length > 0 && (

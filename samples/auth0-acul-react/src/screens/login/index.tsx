@@ -6,6 +6,7 @@ import {
   login,
   federatedLogin,
   useLoginIdentifiers,
+  useErrors
 } from "@auth0/auth0-acul-react/login";
 
 const LoginScreen: React.FC = () => {
@@ -20,6 +21,8 @@ const LoginScreen: React.FC = () => {
 
   const activeIdentifiers = useLoginIdentifiers();
   const federatedConnections = transaction.alternateConnections ?? [];
+
+  const { hasError, errors } = useErrors();
 
   const identifierLabel = useMemo(() => {
     if (activeIdentifiers?.length === 1) return `Enter your ${activeIdentifiers[0]}`;
@@ -186,6 +189,14 @@ const LoginScreen: React.FC = () => {
             </a>
           )}
         </div>
+
+        {
+          hasError && (
+            errors.map((error, i) => (
+              <p key={i} className="mt-2 text-red-600 text-center text-sm">{error.message}</p>
+            ))
+          )
+        }
 
         {/* Errors */}
         {transaction.hasErrors && errorMessages.length > 0 && (
