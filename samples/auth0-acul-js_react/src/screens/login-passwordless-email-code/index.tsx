@@ -54,13 +54,13 @@ const LoginPasswordlessEmailCodeScreen: React.FC = () => {
     }
   };
 
-  const handleSwitchConnection = async (connectionName: string) => {
-    try {
-      await loginPasswordlessEmailCode.switchConnection({ connection: connectionName });
-    } catch {
-      setError('Failed to switch connection. Please try again.');
-    }
-  };
+  // const handleSwitchConnection = async (connectionName: string) => {
+  //   try {
+  //     await loginPasswordlessEmailCode.switchConnection({ connection: connectionName });
+  //   } catch {
+  //     setError('Failed to switch connection. Please try again.');
+  //   }
+  // };
 
   return (
     <div className="prompt-container login-passwordless-email-code-container">
@@ -110,11 +110,11 @@ const LoginPasswordlessEmailCodeScreen: React.FC = () => {
       </div>
 
       {/* Switch Connection Options */}
-      <div className="federated-login-container">
+      {/* <div className="federated-login-container">
         <Button onClick={() => handleSwitchConnection('sms')}>
           Switch to SMS
         </Button>
-      </div>
+      </div> */}
 
       {/* Success Messages */}
       {success && (

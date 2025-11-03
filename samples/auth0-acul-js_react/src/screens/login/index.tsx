@@ -44,19 +44,19 @@ const LoginScreen: React.FC = () => {
     await loginManager.federatedLogin({ connection: connectionName });
   };
 
-  const handleChangeLanguage = async () => {
-    const { username, password } = getFormValues();
-    // console.log("Changing language to French for user:", username);
+  // const handleChangeLanguage = async () => {
+  //   const { username, password } = getFormValues();
+  //   // console.log("Changing language to French for user:", username);
 
-    await loginManager.changeLanguage({
-      username: username,
-      password: password,
-      language: "fr",
-      persist: "session"
-    });
-    console.log("Changing language to French for user:", username);
+  //   await loginManager.changeLanguage({
+  //     username: username,
+  //     password: password,
+  //     language: "fr",
+  //     persist: "session"
+  //   });
+  //   console.log("Changing language to French for user:", username);
 
-  };
+  // };
 
   const activeIdentifiers = useMemo(() => loginManager.getLoginIdentifiers(), []);
 
@@ -121,9 +121,9 @@ const LoginScreen: React.FC = () => {
           <Button id="continue" onClick={handleLogin}>{screenTexts?.buttonText || "Continue"}</Button>
         </div>
 
-        <div className="button-container" style={{ marginTop: '1rem' }}>
+        {/* <div className="button-container" style={{ marginTop: '1rem' }}>
           <Button id="change-language" onClick={handleChangeLanguage}>Change Language</Button>
-        </div>
+        </div> */}
       </div>
 
       {/* Federated Login */}
