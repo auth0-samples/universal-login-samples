@@ -29,17 +29,17 @@ const MfaWebAuthnErrorScreen: React.FC = () => {
         {screenData && (
           <div className="bg-red-50 p-3 rounded-md border border-red-200 text-sm text-red-700">
             <p><strong>Error Type:</strong> {screenData.errorType}</p>
-            <p><strong>Authenticator Type:</strong> {screenData.webauthnType}</p>
+            <p><strong>Authenticator Type:</strong>{screenData.webAuthnType}</p>
           </div>
         )}
-         {transaction.errors && transaction.errors.length > 0 && (
-           <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md mt-4" role="alert">
-             <p className="font-bold">{texts.alertListTitle ?? 'Alerts'}</p>
-             {transaction.errors.map((err, index) => (
-               <p key={index}>{err.message}</p>
-             ))}
-           </div>
-         )}
+        {transaction.errors && transaction.errors.length > 0 && (
+          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md mt-4" role="alert">
+            <p className="font-bold">{texts.alertListTitle ?? 'Alerts'}</p>
+            {transaction.errors.map((err, index) => (
+              <p key={index}>{err.message}</p>
+            ))}
+          </div>
+        )}
 
         <div className="space-y-3">
           <button
@@ -63,7 +63,7 @@ const MfaWebAuthnErrorScreen: React.FC = () => {
           >
             {texts.tryAnotherMethodButtonText ?? 'Try Another Method'}
           </button>
-          
+
           <button
             onClick={() => handleAction(() => sdk.noThanks())}
             className="w-full flex justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"

@@ -31,9 +31,9 @@ const LoginPasswordScreen: React.FC = () => {
     loginPasswordManager.federatedLogin({ connection: connectionName });
   };
 
-  const handleSwitchConnection = (connectionName: string) => {
-    loginPasswordManager.switchConnection({ connection: connectionName });
-  };
+  // const handleSwitchConnection = (connectionName: string) => {
+  //   loginPasswordManager.switchConnection({ connection: connectionName });
+  // };
 
   const handleSubmit = () => {
     const password = passwordRef.current?.value || "";
@@ -98,7 +98,7 @@ const LoginPasswordScreen: React.FC = () => {
       </div>
 
       {/* Switch Connection Options */}
-      <div className="federated-login-container">
+      {/* <div className="federated-login-container">
         {loginPasswordManager.transaction.currentConnection && (
           <>
             <Button onClick={() => handleSwitchConnection('email')}>
@@ -109,7 +109,7 @@ const LoginPasswordScreen: React.FC = () => {
             </Button>
           </>
         )}
-      </div>
+      </div> */}
 
       {/* Links */}
       {screenLinks && (

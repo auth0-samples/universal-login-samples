@@ -48,11 +48,11 @@ const SignupIdScreen: React.FC = () => {
       return;
     }
 
-    if(!isValid){
+    if (!isValid) {
       setError(errors[0].message);
       return;
     }
-    
+
     try {
       await signupIdManager.signup({
         email,

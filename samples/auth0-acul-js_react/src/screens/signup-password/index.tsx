@@ -19,9 +19,9 @@ const SignupPasswordScreen: React.FC = () => {
 
   const { isValid, results } = signupPasswordManager.validatePassword(password);
 
-  const handleSwitchConnection = (connectionName: string) => {
-    signupPasswordManager.switchConnection({ connection: connectionName });
-  };
+  // const handleSwitchConnection = (connectionName: string) => {
+  //   signupPasswordManager.switchConnection({ connection: connectionName });
+  // };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +46,7 @@ const SignupPasswordScreen: React.FC = () => {
   return (
     <div className="prompt-container">
       <Logo />
-
+      <Button onClick={() => { }}>Button</Button>
       {/* Title Section (inline, not imported) */}
       <div className="title-container">
         <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900">{title}</h1>
@@ -164,7 +164,7 @@ const SignupPasswordScreen: React.FC = () => {
       </div>
 
       {/* Switch Connection Options */}
-      <div className="federated-login-container">
+      {/* <div className="federated-login-container">
         {signupPasswordManager.transaction?.currentConnection && (
           <>
             <Button onClick={() => handleSwitchConnection('email')}>
@@ -175,7 +175,7 @@ const SignupPasswordScreen: React.FC = () => {
             </Button>
           </>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
