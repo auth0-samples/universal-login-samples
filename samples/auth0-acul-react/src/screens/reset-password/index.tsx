@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   useScreen,
   useTransaction,
@@ -13,16 +13,13 @@ const ResetPasswordScreen: React.FC = () => {
   const screen = useScreen();
   const transaction = useTransaction();
 
-  const captchaRef = useRef<HTMLInputElement>(null);
-
+  const [captcha, setCaptcha] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const { isValid, results } = usePasswordValidation(password);
   const { errors, hasError, dismiss } = useErrors();
 
   const handleResetPassword = () => {
-    const captcha = captchaRef.current?.value ?? '';
-
     if (!isValid || password !== confirmPassword) {
       return;
     }
@@ -151,7 +148,8 @@ const ResetPasswordScreen: React.FC = () => {
               <input
                 type="text"
                 id="captcha"
-                ref={captchaRef}
+                value={captcha}
+                onChange={(e) => setCaptcha(e.target.value)}
                 placeholder="Enter the captcha"
                 className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />

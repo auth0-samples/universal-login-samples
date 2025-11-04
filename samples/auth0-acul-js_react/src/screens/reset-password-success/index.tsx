@@ -1,24 +1,30 @@
-import React from "react";
-import { useResetPasswordSuccessManager } from './hooks/useResetPasswordSuccessManager';
+import React, { useState } from "react";
+import ResetPasswordSuccess from "@auth0/auth0-acul-js/reset-password-success";
+import { withWindowDebug } from "../../utils";
 import { Logo } from "../../components/Logo";
-import { Title } from './components/Title';
-import { ErrorMessages } from './components/ErrorMessages';
 
-const ResetPasswordScreen: React.FC = () => {
-  const { resetPasswordSuccessManager } = useResetPasswordSuccessManager();
+const ResetPasswordSuccessScreen: React.FC = () => {
+  // Manager setup
+  const [resetPasswordSuccessManager] = useState(() => new ResetPasswordSuccess());
+  withWindowDebug(resetPasswordSuccessManager, 'resetPasswordSuccess');
 
   return (
     <div className="prompt-container">
       <Logo />
-      <Title screenTexts={resetPasswordSuccessManager.screen.texts!} />
-      
-      <p>{ resetPasswordSuccessManager.screen.texts?.description }</p>
+      <div className="title-container">
+        <h1>{resetPasswordSuccessManager.screen.texts?.title}</h1>
+        <p>{resetPasswordSuccessManager.screen.texts?.description}</p>
+      </div>
 
       {resetPasswordSuccessManager.transaction.hasErrors && resetPasswordSuccessManager.transaction.errors && (
-        <ErrorMessages errors={resetPasswordSuccessManager.transaction.errors!} />
+        <div className="error-container">
+          {resetPasswordSuccessManager.transaction.errors.map((error: any, index: number) => (
+            <p key={index}>{error?.message}</p>
+          ))}
+        </div>
       )}
     </div>
   );
 };
 
-export default ResetPasswordScreen;
+export default ResetPasswordSuccessScreen;

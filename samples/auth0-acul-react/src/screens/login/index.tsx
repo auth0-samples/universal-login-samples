@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { Logo } from "../../components/Logo";
 import {
   useScreen,
@@ -6,15 +6,15 @@ import {
   login,
   federatedLogin,
   useLoginIdentifiers,
+  useErrors
 } from "@auth0/auth0-acul-react/login";
 
 const LoginScreen: React.FC = () => {
   const screen = useScreen();
   const transaction = useTransaction();
-
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const captchaRef = useRef<HTMLInputElement>(null);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [captcha, setCaptcha] = useState('');
 
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -22,15 +22,14 @@ const LoginScreen: React.FC = () => {
   const activeIdentifiers = useLoginIdentifiers();
   const federatedConnections = transaction.alternateConnections ?? [];
 
+  const { hasError, errors } = useErrors();
+
   const identifierLabel = useMemo(() => {
     if (activeIdentifiers?.length === 1) return `Enter your ${activeIdentifiers[0]}`;
     return `Enter your ${activeIdentifiers?.join(" or ")}`;
   }, [activeIdentifiers]);
 
   const handleLogin = async () => {
-    const username = usernameRef.current?.value ?? "";
-    const password = passwordRef.current?.value ?? "";
-    const captcha = captchaRef.current?.value ?? "";
     setErrorMessages([]);
     setLoading(true);
 
@@ -93,7 +92,8 @@ const LoginScreen: React.FC = () => {
               type="text"
               autoComplete="username"
               placeholder={identifierLabel}
-              ref={usernameRef}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)} 
               required
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
@@ -110,7 +110,8 @@ const LoginScreen: React.FC = () => {
               type="password"
               autoComplete="current-password"
               placeholder="Enter your password"
-              ref={passwordRef}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
@@ -129,7 +130,8 @@ const LoginScreen: React.FC = () => {
                 name="captcha"
                 type="text"
                 placeholder="Enter captcha"
-                ref={captchaRef}
+                value={captcha}
+                onChange={(e) => setCaptcha(e.target.value)}
                 required
                 className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
@@ -187,6 +189,14 @@ const LoginScreen: React.FC = () => {
             </a>
           )}
         </div>
+
+        {
+          hasError && (
+            errors.map((error, i) => (
+              <p key={i} className="mt-2 text-red-600 text-center text-sm">{error.message}</p>
+            ))
+          )
+        }
 
         {/* Errors */}
         {transaction.hasErrors && errorMessages.length > 0 && (

@@ -1,25 +1,18 @@
-import React, { useRef, useState } from 'react';
-import { useScreen, useTransaction, login } from '@auth0/auth0-acul-react/login-password';
+import React, { useState } from 'react';
+import { useScreen, useTransaction, login, useErrors } from '@auth0/auth0-acul-react/login-password';
 import { Logo } from '../../components/Logo';
-// import { useErrors } from '@auth0/auth0-acul-react';
-// import type { AculError } from '@auth0/auth0-acul-react';
 
 const LoginPasswordScreen: React.FC = () => {
   const screen = useScreen();
   
   const transaction = useTransaction();
-  // const errors: AculError[] = useErrors({ type: 'server' });
-
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
-
+  const { hasError, errors } = useErrors();
   const username = screen.data?.username || '';
 
- 
   const handleLoginClick = async () => {
-    const password = passwordRef.current?.value ?? '';
-
     setIsLoading(true);
     setErrorMessages([]);
 
@@ -80,7 +73,8 @@ const LoginPasswordScreen: React.FC = () => {
               autoComplete="current-password"
               required
               placeholder={screen.texts?.passwordPlaceholder || 'Password'}
-              ref={passwordRef}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)} 
               className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
@@ -125,6 +119,15 @@ const LoginPasswordScreen: React.FC = () => {
           </>
         )}
 
+
+        {
+          hasError && (
+            errors.map((error, i) => (
+              <p key={i} className="mt-2 text-red-600 text-center text-sm">{error.message}</p>
+            ))
+          )
+        }
+
         {/* Errors */}
         {transaction.hasErrors && errorMessages.length > 0 && (
           <div className="mt-4 text-red-600 text-center text-sm">
@@ -133,6 +136,7 @@ const LoginPasswordScreen: React.FC = () => {
             ))}
           </div>
         )}
+        
       </div>
     </div>
   );
