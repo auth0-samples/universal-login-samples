@@ -14,11 +14,15 @@ interface Error {
 
 const LoginScreen: React.FC = () => {
   const [loginManager] = useState(() => new LoginSDK());
-  
+
+
   // Refs for form inputs
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const captchaRef = useRef<HTMLInputElement>(null);
+
+  console.log("usernameRef-->", usernameRef);
+
 
   // Get form values
   const getFormValues = () => ({
@@ -40,6 +44,20 @@ const LoginScreen: React.FC = () => {
     await loginManager.federatedLogin({ connection: connectionName });
   };
 
+  // const handleChangeLanguage = async () => {
+  //   const { username, password } = getFormValues();
+  //   // console.log("Changing language to French for user:", username);
+
+  //   await loginManager.changeLanguage({
+  //     username: username,
+  //     password: password,
+  //     language: "fr",
+  //     persist: "session"
+  //   });
+  //   console.log("Changing language to French for user:", username);
+
+  // };
+
   const activeIdentifiers = useMemo(() => loginManager.getLoginIdentifiers(), []);
 
   const getIdentifierLabel = () => {
@@ -57,7 +75,7 @@ const LoginScreen: React.FC = () => {
     <div className="prompt-container">
       {/* Logo */}
       <Logo />
-      
+
       {/* Title */}
       <div className="title-container">
         <h1>{screenTexts?.title}</h1>
@@ -70,38 +88,42 @@ const LoginScreen: React.FC = () => {
           Pick country code - {loginManager.transaction.countryCode}: +{loginManager.transaction.countryPrefix}
         </button>
 
-        <label>{getIdentifierLabel()}</label>
-        <input 
-          type="text" 
-          id="username" 
-          ref={usernameRef} 
-          placeholder={getIdentifierLabel()} 
+        <label>{screenTexts?.usernameOrEmailPlaceholder || screenTexts?.usernamePlaceholder || getIdentifierLabel()}</label>
+        <input
+          type="text"
+          id="username"
+          ref={usernameRef}
+          placeholder={screenTexts?.usernameOrEmailPlaceholder || screenTexts?.usernamePlaceholder || getIdentifierLabel()}
         />
 
-        <label>Enter your password</label>
-        <input 
-          type="password" 
-          id="password" 
-          ref={passwordRef} 
-          placeholder="Enter your password" 
+        <label>{screenTexts?.passwordPlaceholder || "Enter your password"}</label>
+        <input
+          type="password"
+          id="password"
+          ref={passwordRef}
+          placeholder={screenTexts?.passwordPlaceholder || "Enter your password"}
         />
 
         {loginManager.screen.isCaptchaAvailable && (
           <div className="captcha-container">
             <img src={loginManager.screen.captchaImage ?? ""} alt="Captcha" />
-            <label>Enter the captcha</label>
-            <input 
-              type="text" 
-              id="captcha" 
-              ref={captchaRef} 
-              placeholder="Enter the captcha" 
+            <label>{screenTexts?.captchaCodePlaceholder || "Enter the captcha"}</label>
+            <input
+              type="text"
+              id="captcha"
+              ref={captchaRef}
+              placeholder={screenTexts?.captchaCodePlaceholder || "Enter the captcha"}
             />
           </div>
         )}
 
         <div className="button-container">
-          <Button id="continue" onClick={handleLogin}>Continue</Button>
+          <Button id="continue" onClick={handleLogin}>{screenTexts?.buttonText || "Continue"}</Button>
         </div>
+
+        {/* <div className="button-container" style={{ marginTop: '1rem' }}>
+          <Button id="change-language" onClick={handleChangeLanguage}>Change Language</Button>
+        </div> */}
       </div>
 
       {/* Federated Login */}
@@ -118,8 +140,8 @@ const LoginScreen: React.FC = () => {
 
       {/* Links */}
       <div className="links">
-        {signupLink && <a href={signupLink}>Sign Up</a>}
-        {resetPasswordLink && <a href={resetPasswordLink}>Forgot Password?</a>}
+        {signupLink && <a href={signupLink}>{screenTexts?.signupActionLinkText || "Sign Up"}</a>}
+        {resetPasswordLink && <a href={resetPasswordLink}>{screenTexts?.forgotPasswordText || "Forgot Password?"}</a>}
       </div>
 
       {/* Error Messages */}

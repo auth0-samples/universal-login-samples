@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import MfaWebAuthnRoamingChallenge, {
-  type VerifySecurityKeyOptions} from '@auth0/auth0-acul-js/mfa-webauthn-roaming-challenge'; // Adjust path as necessary
+  type VerifySecurityKeyOptions
+} from '@auth0/auth0-acul-js/mfa-webauthn-roaming-challenge';
 
 const MfaWebAuthnRoamingChallengeScreen: React.FC = () => {
   // Instantiate the SDK class. It's memoized to avoid re-creation on re-renders.
@@ -14,11 +15,11 @@ const MfaWebAuthnRoamingChallengeScreen: React.FC = () => {
   // Callback to handle the primary verification action
   const handleVerifyWithSecurityKey = useCallback(() => {
     const opts: VerifySecurityKeyOptions = {};
-      if (screen?.showRememberDevice) {
-        opts.rememberDevice = rememberDevice;
-      }
-      sdk.verify(opts);
-  }, [sdk, rememberDevice, screen?.showRememberDevice]);
+    if (screen?.data?.showRememberDevice) {
+      opts.rememberDevice = rememberDevice;
+    }
+    sdk.verify(opts);
+  }, [sdk, rememberDevice, screen?.data?.showRememberDevice]);
 
   // Callback for trying another MFA method
   const handleTryAnotherMethod = useCallback(() => {
@@ -37,9 +38,9 @@ const MfaWebAuthnRoamingChallengeScreen: React.FC = () => {
           <p className="mt-2 text-gray-600">
             {texts.description ?? 'Please insert your security key and follow the browser prompts to continue.'}
           </p>
-          {screen?.webauthnType && (
+          {screen?.data?.webAuthnType && (
             <p className="mt-1 text-sm text-gray-500">
-              (Authenticator type: {screen.webauthnType})
+              (Authenticator type: {screen.data.webAuthnType})
             </p>
           )}
         </div>
@@ -55,7 +56,7 @@ const MfaWebAuthnRoamingChallengeScreen: React.FC = () => {
         )}
 
         {/* Remember device checkbox */}
-        {screen?.showRememberDevice && (
+        {screen?.data?.showRememberDevice && (
           <div className="flex items-center">
             <input
               id="rememberDevice"

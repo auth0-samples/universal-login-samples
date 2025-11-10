@@ -17,6 +17,10 @@ const SignupPasswordScreen: React.FC = () => {
   const { isValid: isPasswordValid, results: passwordResults } =
     signupPasswordManager.validatePassword(password);
 
+  // const handleSwitchConnection = (connectionName: string) => {
+  //   signupPasswordManager.switchConnection({ connection: connectionName });
+  // };
+
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     await signupPasswordManager.signup({
@@ -181,6 +185,20 @@ const SignupPasswordScreen: React.FC = () => {
           </div>
         </form>
       </div>
+
+      {/* Switch Connection Options */}
+      {/* <div className="federated-login-container">
+        {signupPasswordManager.transaction?.currentConnection && (
+          <>
+            <Button onClick={() => handleSwitchConnection('email')}>
+              Switch to Email
+            </Button>
+            <Button onClick={() => handleSwitchConnection('sms')}>
+              Switch to SMS
+            </Button>
+          </>
+        )}
+      </div> */}
     </div>
   );
 };

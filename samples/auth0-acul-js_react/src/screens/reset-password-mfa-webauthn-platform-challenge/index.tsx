@@ -8,15 +8,15 @@ const ResetPasswordMfaWebAuthnPlatformChallengeComponent: React.FC = () => {
   const sdk = useMemo(() => new ResetPasswordMfaWebAuthnPlatformChallenge(), []);
   const { screen, transaction, client } = sdk;
   const texts = screen.texts ?? {};
-  const { publicKey: publicKeyChallengeOptions, showRememberDevice } = screen;
-
+  const { publicKey: publicKeyChallengeOptions, } = screen;
+  const { showRememberDevice } = screen.data ?? {};
   const [rememberDevice, setRememberDevice] = useState(false);
 
   const handleVerify = useCallback(() => {
     const opts: ContinueWithPasskeyOptions = {};
-      if (showRememberDevice) {
-        opts.rememberDevice = rememberDevice;
-      }
+    if (showRememberDevice) {
+      opts.rememberDevice = rememberDevice;
+    }
     sdk.continueWithPasskey(opts);
   }, [sdk, rememberDevice, showRememberDevice]);
 
@@ -78,13 +78,13 @@ const ResetPasswordMfaWebAuthnPlatformChallengeComponent: React.FC = () => {
           {/* Button to manually trigger verification if auto-trigger fails or as a retry option */}
           {/* This might only be shown if publicKeyChallengeOptions exist but initial auto-verify failed */}
           {publicKeyChallengeOptions && (
-             <button
-                onClick={handleVerify}
-                disabled={!publicKeyChallengeOptions}
-                className="w-full flex justify-center items-center px-4 py-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                {(texts.retryButtonText ?? 'Retry Verification')}
-              </button>
+            <button
+              onClick={handleVerify}
+              disabled={!publicKeyChallengeOptions}
+              className="w-full flex justify-center items-center px-4 py-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {(texts.retryButtonText ?? 'Retry Verification')}
+            </button>
           )}
 
           <button

@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import LoginPasswordlessEmailCode from '@auth0/auth0-acul-js/login-passwordless-email-code';
+import { Logo } from '../../components/Logo';
+import Button from '../../components/Button';
+import '../../styles/screens/login-passwordless-email-code.scss';
 
 const LoginPasswordlessEmailCodeScreen: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const loginPasswordlessEmailCode = new LoginPasswordlessEmailCode();
+
+  const email = loginPasswordlessEmailCode.screen.data?.username || '';
+  const screenTexts = loginPasswordlessEmailCode.screen.texts;
+
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [resent, setResent] = useState(false);
 
-  const loginPasswordlessEmailCode = new LoginPasswordlessEmailCode();
-
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess(false);
@@ -41,69 +46,95 @@ const LoginPasswordlessEmailCodeScreen: React.FC = () => {
     }
   };
 
+  const handleEdit = () => {
+    const editLink = loginPasswordlessEmailCode.screen.links?.edit_identifier;
+    if (editLink) {
+      // Navigate to edit identifier screen
+      window.location.href = editLink;
+    }
+  };
+
+  // const handleSwitchConnection = async (connectionName: string) => {
+  //   try {
+  //     await loginPasswordlessEmailCode.switchConnection({ connection: connectionName });
+  //   } catch {
+  //     setError('Failed to switch connection. Please try again.');
+  //   }
+  // };
+
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Continue with Email Code
-        </h2>
+    <div className="prompt-container login-passwordless-email-code-container">
+      {/* Logo */}
+      <Logo />
+
+      {/* Title */}
+      <div className="title-container">
+        <h1>{screenTexts?.title || 'Continue with Email Code'}</h1>
+        <p>{screenTexts?.description || 'Enter the code sent to your email'}</p>
       </div>
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <div className="mt-1">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="code" className="block text-sm font-medium text-gray-700">
-                Code
-              </label>
-              <div className="mt-1">
-                <input
-                  id="code"
-                  name="code"
-                  type="text"
-                  required
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
-            {error && <div className="text-red-600 text-sm">{error}</div>}
-            {success && <div className="text-green-600 text-sm">Login successful!</div>}
-            {resent && <div className="text-blue-600 text-sm">Code resent to your email.</div>}
-            <div className="flex items-center justify-between">
-              <button
-                type="submit"
-                className="flex-1 mr-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Continue
-              </button>
-              <button
-                type="button"
-                onClick={handleResend}
-                className="flex-1 ml-2 py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Resend Code
-              </button>
-            </div>
-          </form>
+
+      {/* Email Display with Edit Button */}
+      {email && (
+        <div className="email-display">
+          <span className="email-text">{email}</span>
+          <button onClick={handleEdit} className="edit-button">
+            {screenTexts?.editText || 'Edit'}
+          </button>
         </div>
+      )}
+
+      {/* Email Code Form */}
+      <form className="input-container" onSubmit={handleSubmit}>
+        <label htmlFor="code">{screenTexts?.placeholder || 'Enter the code'}</label>
+        <input
+          type="text"
+          id="code"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          placeholder={screenTexts?.placeholder || 'Enter the code'}
+          required
+          className="code-input"
+        />
+
+        <div className="button-container">
+          <button id="continue" type="submit">{screenTexts?.buttonText || 'Continue'}</button>
+        </div>
+      </form>
+
+      {/* Resend Section */}
+      <div className="resend-section">
+        <span className="resend-text">{screenTexts?.resendText || "Didn't receive a code?"} </span>
+        <button onClick={handleResend} className="resend-button">
+          {screenTexts?.resendActionText || 'Resend'}
+        </button>
       </div>
+
+      {/* Switch Connection Options */}
+      {/* <div className="federated-login-container">
+        <Button onClick={() => handleSwitchConnection('sms')}>
+          Switch to SMS
+        </Button>
+      </div> */}
+
+      {/* Success Messages */}
+      {success && (
+        <div className="error-container">
+          <p className="success-message">Login successful!</p>
+        </div>
+      )}
+
+      {resent && (
+        <div className="error-container">
+          <p className="info-message">Code resent to your email.</p>
+        </div>
+      )}
+
+      {/* Error Messages */}
+      {error && (
+        <div className="error-container">
+          <p>{error}</p>
+        </div>
+      )}
     </div>
   );
 };

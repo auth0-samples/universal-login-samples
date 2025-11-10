@@ -18,7 +18,7 @@ const ResetPasswordMfaWebAuthnRoamingChallengeComponent: React.FC = () => {
 
   const handleUseSecurityKey = useCallback(async () => {
     const opts: UseSecurityKeyOptions = {};
-    if (sdk.screen.showRememberDevice) {
+    if (sdk.screen.data?.showRememberDevice) {
       opts.rememberDevice = rememberDevice;
     }
     sdk.useSecurityKey(opts);
@@ -26,7 +26,7 @@ const ResetPasswordMfaWebAuthnRoamingChallengeComponent: React.FC = () => {
 
   const handleTryAnotherMethod = useCallback(async () => {
     const opts: TryAnotherMethodOptions = {};
-    if (sdk.screen.showRememberDevice) {
+    if (sdk.screen.data?.showRememberDevice) {
       opts.rememberDevice = rememberDevice;
     }
     sdk.tryAnotherMethod(opts);
@@ -38,7 +38,7 @@ const ResetPasswordMfaWebAuthnRoamingChallengeComponent: React.FC = () => {
       name: "NotSupportedError",
       message: "The browser does not support the requested WebAuthn operation on this device (simulated)."
     };
-    sdk.showError({ error: simulatedError, rememberDevice: sdk.screen.showRememberDevice && rememberDevice });
+    sdk.showError({ error: simulatedError, rememberDevice: sdk.screen.data?.showRememberDevice && rememberDevice });
   };
 
 
@@ -60,7 +60,7 @@ const ResetPasswordMfaWebAuthnRoamingChallengeComponent: React.FC = () => {
               Organization: {organization.displayName || organization.name}
             </p>
           )}
-           {publicKeyChallenge && (
+          {publicKeyChallenge && (
             <p className="mt-1 text-xs text-gray-400 break-all">
               Challenge: {typeof publicKeyChallenge === 'string' ? publicKeyChallenge : JSON.stringify(publicKeyChallenge)}
             </p>
@@ -78,7 +78,7 @@ const ResetPasswordMfaWebAuthnRoamingChallengeComponent: React.FC = () => {
         )}
 
         {/* Remember device checkbox */}
-        {sdk.screen.showRememberDevice && (
+        {sdk.screen.data?.showRememberDevice && (
           <div className="flex items-center">
             <input
               id="rememberDevice"
