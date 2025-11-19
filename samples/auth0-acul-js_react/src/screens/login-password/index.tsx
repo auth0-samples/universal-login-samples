@@ -21,6 +21,7 @@ const LoginPasswordScreen: React.FC = () => {
   const screenLinks = loginPasswordManager.screen.links;
   const { signupLink, resetPasswordLink } = loginPasswordManager.screen;
   const errors = loginPasswordManager.transaction.hasErrors ? loginPasswordManager.transaction.errors : null;
+  // console.log(loginPasswordManager.transaction, "loginPasswordManager.transaction");
 
   // Handlers
   const login = (options: { username: string; password: string; captcha: string }) => {
@@ -31,9 +32,9 @@ const LoginPasswordScreen: React.FC = () => {
     loginPasswordManager.federatedLogin({ connection: connectionName });
   };
 
-  // const handleSwitchConnection = (connectionName: string) => {
-  //   loginPasswordManager.switchConnection({ connection: connectionName });
-  // };
+  const handleSwitchConnection = (connectionName: string) => {
+    loginPasswordManager.switchConnection({ connection: connectionName });
+  };
 
   const handleSubmit = () => {
     const password = passwordRef.current?.value || "";
@@ -98,18 +99,18 @@ const LoginPasswordScreen: React.FC = () => {
       </div>
 
       {/* Switch Connection Options */}
-      {/* <div className="federated-login-container">
-        {loginPasswordManager.transaction.currentConnection && (
-          <>
-            <Button onClick={() => handleSwitchConnection('email')}>
-              Switch to Email
-            </Button>
-            <Button onClick={() => handleSwitchConnection('sms')}>
-              Switch to SMS
-            </Button>
-          </>
-        )}
-      </div> */}
+      <div className="federated-login-container">
+        {/* {loginPasswordManager.transaction.currentConnection && ( */}
+        <>
+          <Button onClick={() => handleSwitchConnection('email')}>
+            Switch to Email
+          </Button>
+          <Button onClick={() => handleSwitchConnection('sms')}>
+            Switch to SMS
+          </Button>
+        </>
+        {/* )} */}
+      </div>
 
       {/* Links */}
       {screenLinks && (

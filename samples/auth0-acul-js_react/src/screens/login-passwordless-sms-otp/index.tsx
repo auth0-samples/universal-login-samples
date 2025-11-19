@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import LoginPasswordlessSmsOtp from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
 import { Logo } from '../../components/Logo';
+import Button from '../../components/Button';
 import '../../styles/screens/login-passwordless-sms-otp.scss';
 
 const LoginPasswordlessSmsOtpScreen: React.FC = () => {
@@ -63,6 +64,16 @@ const LoginPasswordlessSmsOtpScreen: React.FC = () => {
     }
   };
 
+  // const handleSwitchConnection = async () => {
+  //   try {
+  //     await loginPasswordlessSmsOtp.switchConnection({
+  //       connection: 'Username-Password-Authentication'
+  //     });
+  //   } catch (error) {
+  //     console.error('Failed to switch connection:', error);
+  //   }
+  // };
+
   return (
     <div className="prompt-container login-passwordless-sms-otp-container">
       {/* Logo */}
@@ -111,6 +122,14 @@ const LoginPasswordlessSmsOtpScreen: React.FC = () => {
           {screenTexts?.resendActionText}
         </button>
       </div>
+
+
+      {/* Switch Connection Options */}
+      {/* <div className="federated-login-container">
+        <Button onClick={() => handleSwitchConnection()}>
+          Switch to login password
+        </Button>
+      </div> */}
 
       {/* Success Messages */}
       {success && (

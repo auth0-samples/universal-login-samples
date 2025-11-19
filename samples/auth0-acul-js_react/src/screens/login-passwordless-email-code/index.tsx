@@ -54,11 +54,13 @@ const LoginPasswordlessEmailCodeScreen: React.FC = () => {
     }
   };
 
-  // const handleSwitchConnection = async (connectionName: string) => {
+  // const handleSwitchConnection = async () => {
   //   try {
-  //     await loginPasswordlessEmailCode.switchConnection({ connection: connectionName });
-  //   } catch {
-  //     setError('Failed to switch connection. Please try again.');
+  //     await loginPasswordlessEmailCode.switchConnection({
+  //       connection: 'Username-Password-Authentication'
+  //     });
+  //   } catch (error) {
+  //     console.error('Failed to switch connection:', error);
   //   }
   // };
 
@@ -111,8 +113,8 @@ const LoginPasswordlessEmailCodeScreen: React.FC = () => {
 
       {/* Switch Connection Options */}
       {/* <div className="federated-login-container">
-        <Button onClick={() => handleSwitchConnection('sms')}>
-          Switch to SMS
+        <Button onClick={() => handleSwitchConnection()}>
+          Switch to login password
         </Button>
       </div> */}
 
