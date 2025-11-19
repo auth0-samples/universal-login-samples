@@ -53,6 +53,19 @@ const LoginIdScreen: React.FC = () => {
     handleLogin(username, captcha);
   };
 
+  const handleChangeLanguage = async (language: string) => {
+    try {
+      await loginManager.changeLanguage({
+        language,
+        persist: 'session'
+      });
+    } catch (error) {
+      console.error("Failed to change language:", error);
+    }
+  };
+
+  // console.log("Tenant Enabled Locales:", loginManager.tenant.enabledLocales);
+
   // Get active identifiers
   const activeIdentifiers = useMemo(() => loginManager.getLoginIdentifiers(), []);
 
@@ -67,7 +80,7 @@ const LoginIdScreen: React.FC = () => {
     <div className="prompt-container">
       {/* Logo */}
       <Logo />
-      
+
       {/* Title */}
       <div className="title-container">
         <h1>{screenTexts?.title}</h1>
@@ -136,6 +149,23 @@ const LoginIdScreen: React.FC = () => {
           {loginManager.transaction.errors.map((error: Error, index: number) => (
             <p key={index}>{error?.message}</p>
           ))}
+        </div>
+      )}
+
+      {/* Language Switcher */}
+      {loginManager.tenant.enabledLocales && (
+        <div className="language-switcher-container" style={{ marginTop: '20px', textAlign: 'center' }}>
+          <select
+            onChange={(e) => handleChangeLanguage(e.target.value)}
+            defaultValue={loginManager.transaction.locale}
+            style={{ padding: '5px' }}
+          >
+            {loginManager.tenant.enabledLocales.map((locale: string) => (
+              <option key={locale} value={locale}>
+                {locale.toUpperCase()}
+              </option>
+            ))}
+          </select>
         </div>
       )}
     </div>
