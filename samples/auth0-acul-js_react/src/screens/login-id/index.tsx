@@ -21,7 +21,7 @@ const LoginIdScreen: React.FC = () => {
   // Register passkey autofill on mount (only if passkeys are enabled)
   useEffect(() => {
     (async () => {
-      if (loginManager.transaction.isPasskeyEnabled || loginManager.transaction.showPasskeyAutofill) {
+      if (loginManager.transaction.isPasskeyEnabled) {
         try {
           await loginManager.registerPasskeyAutofill('username');
         } catch (error) {
