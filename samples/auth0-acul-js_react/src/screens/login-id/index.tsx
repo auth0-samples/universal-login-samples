@@ -18,10 +18,16 @@ const LoginIdScreen: React.FC = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const captchaRef = useRef<HTMLInputElement>(null);
 
-  // Register passkey autofill on mount
+  // Register passkey autofill on mount (only if passkeys are enabled)
   useEffect(() => {
     (async () => {
-      await loginManager.registerPasskeyAutofill('username');
+      if (loginManager.transaction.isPasskeyEnabled || loginManager.transaction.showPasskeyAutofill) {
+        try {
+          await loginManager.registerPasskeyAutofill('username');
+        } catch (error) {
+          console.warn("Passkey autofill registration failed:", error);
+        }
+      }
     })();
   }, []);
 
@@ -36,6 +42,8 @@ const LoginIdScreen: React.FC = () => {
     const options = {
       username,
       captcha: loginManager.screen.isCaptchaAvailable ? captcha : "",
+      // language: 'hi',
+      // persist: 'session'
     };
     loginManager.login(options);
   };
@@ -45,7 +53,11 @@ const LoginIdScreen: React.FC = () => {
   };
 
   const handlePasskeyLogin = () => {
-    loginManager.passkeyLogin();
+    if (loginManager.transaction.isPasskeyEnabled) {
+      loginManager.passkeyLogin();
+    } else {
+      console.warn("Passkeys are not enabled for this application");
+    }
   };
 
   const onLoginClick = () => {
@@ -130,10 +142,12 @@ const LoginIdScreen: React.FC = () => {
         ))}
       </div>
 
-      {/* Passkey Button */}
-      <div className="passkey-container">
-        <Button onClick={handlePasskeyLogin}>Continue with Passkey</Button>
-      </div>
+      {/* Passkey Button - only show if passkeys are enabled */}
+      {loginManager.transaction.isPasskeyEnabled && (
+        <div className="passkey-container">
+          <Button onClick={handlePasskeyLogin}>Continue with Passkey</Button>
+        </div>
+      )}
 
       {/* Links */}
       {loginManager.screen.links && (
