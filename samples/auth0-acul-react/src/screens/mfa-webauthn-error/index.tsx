@@ -1,6 +1,6 @@
 import React from 'react';
-import { 
-  useScreen, 
+import {
+  useScreen,
   useTransaction,
   tryAgain,
   usePassword,
@@ -76,7 +76,7 @@ const MfaWebAuthnErrorScreen: React.FC = () => {
         {screenData && (
           <div className="mt-6 bg-red-50 p-3 rounded-md border border-red-200 text-sm text-red-700">
             <p><strong>Error Type:</strong> {screenData.errorType}</p>
-            <p><strong>Authenticator Type:</strong> {screenData.webauthnType}</p>
+            <p><strong>Authenticator Type:</strong> {screenData.webAuthnType}</p>
           </div>
         )}
 
@@ -112,7 +112,7 @@ const MfaWebAuthnErrorScreen: React.FC = () => {
           >
             {texts.tryAnotherMethodButtonText ?? 'Try Another Method'}
           </button>
-          
+
           <button
             onClick={handleNoThanks}
             className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
