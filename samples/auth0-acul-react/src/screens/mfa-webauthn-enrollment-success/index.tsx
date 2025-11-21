@@ -7,7 +7,7 @@ import {
   useClient,
   useTransaction,
   continueMethod
-} from '@auth0/auth0-acul-react/mfa-webauthn-enrollment-success'; 
+} from '@auth0/auth0-acul-react/mfa-webauthn-enrollment-success';
 
 const MfaWebAuthnEnrollmentSuccessScreen: React.FC = () => {
   const sdk = useMfaWebAuthnEnrollmentSuccess();
@@ -19,14 +19,14 @@ const MfaWebAuthnEnrollmentSuccessScreen: React.FC = () => {
   const screenData = screen?.data;
 
   const authenticatorTypeFriendlyName = useMemo(() => {
-    if (screenData?.webauthnType === 'webauthn-platform') {
+    if (screenData?.webAuthnType === 'webauthn-platform') {
       return texts.platformAuthenticatorName ?? 'Device Authenticator';
     }
-    if (screenData?.webauthnType === 'webauthn-roaming') {
+    if (screenData?.webAuthnType === 'webauthn-roaming') {
       return texts.roamingAuthenticatorName ?? 'Security Key';
     }
     return 'Authenticator';
-  }, [screenData?.webauthnType, texts]);
+  }, [screenData?.webAuthnType, texts]);
 
   const handleContinue = () => {
     continueMethod();

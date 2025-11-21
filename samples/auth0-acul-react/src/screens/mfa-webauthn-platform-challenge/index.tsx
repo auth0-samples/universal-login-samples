@@ -8,7 +8,7 @@ import {
   useTransaction,
   verify,
   tryAnotherMethod,
-} from '@auth0/auth0-acul-react/mfa-webauthn-platform-challenge'; 
+} from '@auth0/auth0-acul-react/mfa-webauthn-platform-challenge';
 import { VerifyPlatformAuthenticatorOptions } from "@auth0/auth0-acul-react/types";
 
 const MfaWebAuthnPlatformChallengeScreen: React.FC = () => {
@@ -20,7 +20,8 @@ const MfaWebAuthnPlatformChallengeScreen: React.FC = () => {
   const transaction = useTransaction();
 
   const texts = screen?.texts ?? {};
-  const { publicKey: publicKeyChallengeOptions, showRememberDevice } = screen ?? {};
+  const { publicKey: publicKeyChallengeOptions } = screen ?? {};
+  const { showRememberDevice } = screen?.data ?? {};
 
   const [rememberDevice, setRememberDevice] = useState(false);
 
@@ -92,9 +93,8 @@ const MfaWebAuthnPlatformChallengeScreen: React.FC = () => {
           <button
             onClick={handleVerify}
             disabled={!publicKeyChallengeOptions}
-            className={`w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
-              !publicKeyChallengeOptions ? "bg-indigo-400" : "bg-indigo-600 hover:bg-indigo-700"
-            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+            className={`w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${!publicKeyChallengeOptions ? "bg-indigo-400" : "bg-indigo-600 hover:bg-indigo-700"
+              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
           >
             {texts.buttonText ?? 'Verify with Device'}
           </button>
