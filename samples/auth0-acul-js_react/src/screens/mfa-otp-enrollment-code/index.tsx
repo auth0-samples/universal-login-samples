@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
 import MfaOtpEnrollmentCode from '@auth0/auth0-acul-js/mfa-otp-enrollment-code';
+import { Logo } from '../../components/Logo';
+import Button from '../../components/Button';
 
 const MfaOtpEnrollmentCodeScreen: React.FC = () => {
   const [code, setCode] = useState('');
 
   const mfaOtpEnrollmentCode = new MfaOtpEnrollmentCode();
   const { screen, transaction } = mfaOtpEnrollmentCode;
+  const screenTexts = screen?.texts;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await mfaOtpEnrollmentCode.continue({
-      code,
-    });
+  const handleContinue = () => {
+    mfaOtpEnrollmentCode.continue({ code });
+  };
+
+  const handleToggleView = async () => {
+    try {
+      await mfaOtpEnrollmentCode.toggleView();
+    } catch (error) {
+      console.error('Failed to toggle view:', error);
+    }
   };
 
   const handleTryAnotherMethod = async () => {
@@ -19,72 +27,113 @@ const MfaOtpEnrollmentCodeScreen: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          { screen?.texts?.title ?? 'Secure Your Account' }
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          { screen?.texts?.description ?? 'Manually enter the following code into your preferred authenticator app and then enter the provided one-time code below.' }
-        </p>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Code: {screen.data?.text_code}
-        </p>
+    <div className="prompt-container">
+      {/* Logo */}
+      <Logo />
+
+      {/* Title */}
+      <div className="title-container" style={{ textAlign: 'center' }}>
+        <h1>{screenTexts?.title ?? 'Secure Your Account'}</h1>
+        <p>{screenTexts?.description ?? 'Manually enter the following code into your preferred authenticator app and then enter the provided one-time code below.'}</p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="code" className="block text-sm font-medium text-gray-700">
-                {screen?.texts?.placeholder ?? 'Enter your one-time code'}
-              </label>
-              <div className="mt-1">
-                <input
-                  id="code"
-                  name="code"
-                  type="text"
-                  placeholder={screen?.texts?.placeholder ?? 'Enter your one-time code'}
-                  required
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
+      {/* Code Display */}
+      <div className="input-container">
+        <div style={{
+          padding: '1rem',
+          backgroundColor: '#f5f5f5',
+          borderRadius: '0.25rem',
+          textAlign: 'center',
+          fontSize: '1.2rem',
+          fontWeight: '600',
+          letterSpacing: '0.1em',
+          marginBottom: '1rem',
+          wordBreak: 'break-all',
+          overflowWrap: 'break-word'
+        }}>
+          {screen.data?.text_code}
+        </div>
 
-            {transaction?.errors?.length && (
-              <div className="mt-2 mb-4">
-                {transaction?.errors.map((err, index) => (
-                  <p key={index} className="text-red-500">
-                    {err.message}
-                  </p>
-                ))}
-              </div>
-            )}
+        {/* Copy Code Button */}
+        <div className="button-container" style={{ marginBottom: '1rem' }}>
+          <button
+            className="button"
+            style={{ backgroundColor: 'white', color: '#673ab7', border: '1px solid #673ab7' }}
+            onClick={() => {
+              navigator.clipboard.writeText(screen.data?.text_code || '');
+            }}
+          >
+            {screenTexts?.copyCodeButtonText ?? 'Copy code'}
+          </button>
+        </div>
 
-            <div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Verify Code
-              </button>
-            </div>
-          </form>
+        {/* Toggle View Link */}
+        <div className="links" style={{ marginBottom: '1.5rem' }}>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handleToggleView();
+            }}
+          >
+            {screenTexts?.scanQrCodeInstead ?? 'Scan QR code instead'}
+          </a>
+        </div>
 
-          <div className="mt-6">
-            <div className="flex justify-center">
-              <button
-                onClick={handleTryAnotherMethod}
-                className="text-sm text-blue-600 hover:text-blue-500"
-              >
-                {screen?.texts?.tryAnotherMethod ?? 'Try another method'}
-              </button>
-            </div>
-          </div>
+        {/* Separator */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%',
+          margin: '1.5rem 0',
+          textAlign: 'center'
+        }}>
+          <div style={{ flex: 1, height: '1px', backgroundColor: '#ededed' }}></div>
+          <span style={{ padding: '0 1rem', color: '#666', textTransform: 'uppercase', fontSize: '0.85rem' }}>
+            {screenTexts?.separatorText ?? 'Then'}
+          </span>
+          <div style={{ flex: 1, height: '1px', backgroundColor: '#ededed' }}></div>
+        </div>
+
+        {/* OTP Input */}
+        <label>{screenTexts?.placeholder ?? 'Enter your one-time code'}</label>
+        <input
+          type="text"
+          id="code"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          placeholder={screenTexts?.placeholder ?? 'Enter your one-time code'}
+        />
+
+        {/* Continue Button */}
+        <div className="button-container">
+          <Button onClick={handleContinue}>
+            {screenTexts?.buttonText ?? 'Continue'}
+          </Button>
         </div>
       </div>
+
+      {/* Try Another Method Link */}
+      <div className="links">
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            handleTryAnotherMethod();
+          }}
+        >
+          {screenTexts?.pickAuthenticatorText ?? 'Try another method'}
+        </a>
+      </div>
+
+      {/* Error Messages */}
+      {transaction?.errors?.length && (
+        <div className="error-container">
+          {transaction.errors.map((error, index) => (
+            <p key={index}>{error?.message}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
