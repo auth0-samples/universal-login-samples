@@ -21,9 +21,6 @@ const LoginScreen: React.FC = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const captchaRef = useRef<HTMLInputElement>(null);
 
-  console.log("usernameRef-->", usernameRef);
-
-
   // Get form values
   const getFormValues = () => ({
     username: usernameRef.current?.value ?? "",

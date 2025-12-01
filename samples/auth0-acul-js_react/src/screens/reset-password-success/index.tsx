@@ -23,6 +23,18 @@ const ResetPasswordSuccessScreen: React.FC = () => {
           ))}
         </div>
       )}
+
+      {/* Back to Login Button */}
+      {resetPasswordSuccessManager.screen.links?.back_to_app && (
+        <div className="button-container">
+          <a
+            href={resetPasswordSuccessManager.screen.links.back_to_app}
+            className="button"
+          >
+            {resetPasswordSuccessManager.screen.texts?.buttonText || "Back to App"}
+          </a>
+        </div>
+      )}
     </div>
   );
 };
