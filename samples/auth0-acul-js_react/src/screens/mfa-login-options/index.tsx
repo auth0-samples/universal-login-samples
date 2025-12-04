@@ -18,7 +18,7 @@ enum FactorTypeEnum {
 
 const MfaLoginOptionsScreen: React.FC = () => {
   const mfaBeginEnrollOptions = new MfaBeginEnrollOptions();
-  const { tenant, screen: { texts } } = mfaBeginEnrollOptions;
+  const { tenant, user, screen: { texts } } = mfaBeginEnrollOptions;
 
   /** Dynamically map factor IDs to display names */
   const factorDisplayNames: Record<MfaLoginFactorType, string> = {
@@ -56,19 +56,24 @@ const MfaLoginOptionsScreen: React.FC = () => {
         <p>{texts?.description ?? 'Choose a Multi-factor Authentication Method'}</p>
       </div>
 
-      {/* Factor Options */}
-      <div className="input-container">
-        {tenant.enabledFactors?.map((factor) => {
-          const factorEnum = factor as MfaLoginFactorType;
-          return (
-            <div key={factor} className="button-container">
-              <button onClick={() => handleFactorSelection(factorEnum)}>
-                {factorDisplayNames[factorEnum]}
-              </button>
-            </div>
-          );
-        })}
-      </div>
+      {/* User Enrolled Factors */}
+      {user.enrolledFactors && user.enrolledFactors.length > 0 && (
+        <div className="input-container" style={{ marginBottom: '1.5rem' }}>
+          <h3 style={{ marginBottom: '0.75rem', fontSize: '0.875rem', fontWeight: '600', color: '#666' }}>
+            YOUR ENROLLED METHODS
+          </h3>
+          {user.enrolledFactors.map((factor: string) => {
+            const factorEnum = factor as MfaLoginFactorType;
+            return (
+              <div key={`enrolled-${factor}`} className="button-container">
+                <button onClick={() => handleFactorSelection(factorEnum)}>
+                  {factorDisplayNames[factorEnum]}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* Error Messages */}
       {mfaBeginEnrollOptions.transaction.hasErrors && mfaBeginEnrollOptions.transaction.errors && (

@@ -14,13 +14,13 @@ const MfaOtpEnrollmentCodeScreen: React.FC = () => {
     mfaOtpEnrollmentCode.continue({ code });
   };
 
-  const handleToggleView = async () => {
-    try {
-      await mfaOtpEnrollmentCode.toggleView();
-    } catch (error) {
-      console.error('Failed to toggle view:', error);
-    }
-  };
+  // const handleToggleView = async () => {
+  //   try {
+  //     await mfaOtpEnrollmentCode.toggleView();
+  //   } catch (error) {
+  //     console.error('Failed to toggle view:', error);
+  //   }
+  // };
 
   const handleTryAnotherMethod = async () => {
     await mfaOtpEnrollmentCode.tryAnotherMethod();
@@ -73,7 +73,7 @@ const MfaOtpEnrollmentCodeScreen: React.FC = () => {
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              handleToggleView();
+              // handleToggleView();
             }}
           >
             {screenTexts?.scanQrCodeInstead ?? 'Scan QR code instead'}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MfaPushEnrollmentQr from '@auth0/auth0-acul-js/mfa-push-enrollment-qr';
 import { Logo } from '../../components/Logo';
 
@@ -8,6 +8,27 @@ const MfaPushEnrollmentQrScreen: React.FC = () => {
   const { screen } = mfaPushEnrollmentQr;
   const { qrCode, qrUri, showCodeCopy } = screen.data || {};
   const screenTexts = screen.texts!;
+
+  // Start polling when component mounts
+  useEffect(() => {
+    const pollingControl = mfaPushEnrollmentQr.pollingManager({
+      intervalMs: 5000,
+      onCompleted: async () => {
+        // Automatically continue to next screen after QR code is scanned
+        await mfaPushEnrollmentQr.continue();
+      },
+      onError: (error) => {
+        console.error('Polling error:', error);
+      },
+    });
+
+    pollingControl.startPolling();
+
+    // Cleanup: stop polling when component unmounts
+    return () => {
+      pollingControl.stopPolling();
+    };
+  }, []);
 
   // Handlers
   const handlePickAuthenticator = async () => {
@@ -35,7 +56,7 @@ const MfaPushEnrollmentQrScreen: React.FC = () => {
     <div className="prompt-container">
       {/* Logo */}
       <Logo />
-      
+
       {/* Title */}
       <div className="title-container" style={{ textAlign: 'center' }}>
         <h1>{screenTexts?.title ?? 'Enroll with Push Notification'}</h1>
